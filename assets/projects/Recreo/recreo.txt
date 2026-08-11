@@ -1,0 +1,26 @@
+🌍 Recreo Group – Eco-Friendly Creative Education Platform
+Project Overview Recreo Group is an interactive web-based educational platform dedicated to inspiring children and youth to transform waste into valuable art (DIY Crafts). Driven by the spirit of sustainability, this platform bridges creativity with environmental awareness, proving that everyday discarded items—like plastic bottles and cardboard—hold their own magic when combined with a little creativity.
+
+My Role Full-Stack Web Developer & UI/UX Re-designer
+
+The Challenge Initially, the project featured a rigid, outdated interface that lacked responsiveness across devices. Furthermore, the platform needed interactive features to boost user engagement, alongside a modernized navigation system and tutorial card layout to effectively deliver its educational content.
+
+What I Did (Key Contributions)
+
+UI/UX Overhaul & Modernization: Executed a complete user interface (UI) redesign leveraging Glassmorphism, Soft Shadows, and Smooth Transitions. Replaced the default typography with a modern Google Fonts pairing (Plus Jakarta Sans & Playfair Display) to deliver a premium, clean, and aesthetic feel.
+Fully Responsive Layout: Comprehensively implemented CSS Flexbox and Grid architectures, ensuring the website looks flawless and functions seamlessly across Desktops, Tablets, and Smartphones.
+Interactive Eco-Warrior Quiz: Designed and developed an interactive educational quiz feature using Vanilla JavaScript. The quiz includes smooth transition animations and an automated grading system (percentage score) at the end to test users' knowledge about recycling and the environment.
+Component Modularity: Refactored the Front-end architecture, utilizing dynamic PHP includes for components like the Navbar and Footer. This ensured that global design updates (CSS) were automatically and consistently applied across all pages.
+Content & Image Optimization: Restructured the layout for craft tutorials and user creations, embedding highly relevant, High-Definition (HD) imagery to significantly improve the visual presentation of the final products.
+Tech Stack Used
+
+Frontend: HTML5, Modern CSS3 (Variables, Flexbox, Grid), Vanilla JavaScript.
+Backend: PHP (Native)
+Database: MySQL (PDO API)
+Tools/Version Control: Git, GitHub, NPM (Scripts).
+Key Takeaways Developing Recreo Group not only sharpened my technical skills in Web Modernization and UI/UX Design, but it also taught me how technology can be utilized as a positive medium to campaign for environmental sustainability.
+
+💡 Extra Tips for Your Portfolio:
+
+Add Screenshots: Make sure to include screenshots of the Home page (especially the Crafts & Creations sections with the new HD images), the Plastic Bottle Tutorial page, and the Eco-Warrior Quiz completion screen showing a score.
+Link to GitHub: Include a link to your Recreo Group GitHub repository so recruiters can see the clean code you've written and your rich, green commit history!

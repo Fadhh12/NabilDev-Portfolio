@@ -1,0 +1,10 @@
+Folder ini untuk menyimpan file CV kamu.
+
+⚠️ PENTING: Simpan CV versi PDF dengan nama:
+  → NabilFadhlur_CV.pdf
+
+Tombol "Download CV" di halaman utama akan otomatis mendownload file ini.
+
+Jika namamu berbeda, update baris ini di js/main.js:
+  a.href = 'assets/cv/NabilFadhlur_CV.pdf';
+  a.download = 'NabilFadhlur_CV.pdf';

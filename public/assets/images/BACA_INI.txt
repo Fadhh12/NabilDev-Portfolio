@@ -1,0 +1,17 @@
+Folder ini untuk menyimpan FOTO PROFIL kamu.
+
+⚠️ PENTING: Tambahkan file foto kamu dengan nama PERSIS:
+  → nabil-photo.jpg
+
+Format yang didukung: .jpg, .jpeg, .png, .webp
+
+Jika fotomu format berbeda (misalnya .png), ubah baris ini di index.html:
+  src="assets/images/nabil-photo.jpg"
+menjadi:
+  src="assets/images/nabil-photo.png"
+
+Tips foto terbaik:
+- Resolusi minimal 400x400px
+- Format portrait/square
+- Background netral atau profesional
+- Berpakaian rapi/formal

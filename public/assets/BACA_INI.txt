@@ -1,0 +1,14 @@
+Folder ini untuk menyimpan file SERTIFIKAT kamu.
+
+Format: PDF atau gambar (PNG/JPG)
+
+Penamaan yang disarankan:
+- google-data-analytics-cert.pdf
+- deeplearning-ai-specialization.pdf  
+- aws-cloud-practitioner.pdf
+- jababeka-scholarship.jpg
+- eecc-english-certificate.pdf
+- google-ambassador-cert.pdf
+
+Setelah menambahkan file, update URL di index.html:
+  <a class="cert-link" href="assets/certificates/nama-file.pdf">View ...</a>

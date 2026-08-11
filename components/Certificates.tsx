@@ -1,0 +1,135 @@
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import Image from "next/image";
+
+// Placeholder data since certificates images aren't fully specified
+const CERTIFICATES = [
+  { id: 1, title: "Machine Learning", issuer: "Coursera / Google", date: "2024", file: "/assets/certificates/Machine Learning.pdf", desc: "Comprehensive Machine Learning certification." },
+  { id: 2, title: "Google AI", issuer: "Google", date: "2024", file: "/assets/certificates/Google AI.pdf", desc: "Google AI learning path certification." },
+  { id: 3, title: "Copilot Best Practices", issuer: "Microsoft", date: "2024", file: "/assets/certificates/Copilot Best Practices, Ethics and Regulatory Implications.pdf", desc: "Best practices, ethics and regulatory implications for using Microsoft Copilot." },
+  { id: 4, title: "AI for App Building", issuer: "Microsoft", date: "2024", file: "/assets/certificates/AI for App Building Sertification.pdf", desc: "Certification for AI App Building." },
+  { id: 5, title: "AI Efficiencies & Governance", issuer: "Microsoft", date: "2024", file: "/assets/certificates/AIEfficienciesandGovernance_Badge20260725-21-tn06uc.pdf", desc: "Badge and certification for AI Efficiencies and Governance." },
+  { id: 6, title: "Intro to Generative AI", issuer: "Google", date: "2024", file: "/assets/certificates/Introduction to Generative AI Learning Path.pdf", desc: "Generative AI learning path certification." },
+  { id: 7, title: "Responsible AI & Risk Management", issuer: "Microsoft", date: "2024", file: "/assets/certificates/ResponsibleAIandRiskManagement_Badge20260724-20-36jmdw.pdf", desc: "Certification for Responsible AI practices." },
+  { id: 8, title: "Your Everyday AI Companion", issuer: "Microsoft", date: "2024", file: "/assets/certificates/Your Everyday AI Companion.pdf", desc: "Everyday AI Companion certification." }
+];
+
+export default function Certificates() {
+  const [showAll, setShowAll] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<typeof CERTIFICATES[0] | null>(null);
+
+  const displayedCerts = showAll ? CERTIFICATES : CERTIFICATES.slice(0, 3);
+
+  return (
+    <section id="certificates" className="py-16 md:py-24 bg-surface-container relative z-10 w-full overflow-hidden snap-start min-h-screen flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-4"
+          >
+            Achievements
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ delay: 0.1 }}
+            className="font-display text-[clamp(28px,4vw,42px)] font-bold tracking-[-0.03em] text-on-surface"
+          >
+            Licenses & <span className="text-primary">Certifications</span>
+          </motion.h2>
+        </div>
+
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence>
+            {displayedCerts.map((cert, i) => (
+              <motion.div 
+                layout
+                key={cert.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+                className="bg-surface border border-outline-variant rounded-[20px] overflow-hidden group hover:border-primary transition-all duration-300"
+              >
+                <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50">
+                  <div className="absolute inset-0 z-0">
+                    <embed src={cert.file + "#toolbar=0&navpanes=0&scrollbar=0"} type="application/pdf" className="w-full h-full object-cover pointer-events-none" />
+                  </div>
+                  {/* Invisible overlay to prevent pointer events on the PDF in the card */}
+                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => setSelectedCert(cert)}></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-display text-[18px] font-bold text-on-surface mb-1">{cert.title}</h3>
+                  <p className="text-[14px] font-semibold text-on-surface-variant mb-4">{cert.issuer} • {cert.date}</p>
+                  
+                  <button 
+                    onClick={() => setSelectedCert(cert)}
+                    className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {CERTIFICATES.length > 3 && (
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => setShowAll(!showAll)}
+              className="px-8 py-3 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-full text-[12px] font-bold tracking-[0.08em] uppercase hover:border-primary hover:text-primary transition-all"
+            >
+              {showAll ? "Show Less" : "View All Certificates →"}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedCert && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCert(null)}
+              className="fixed inset-0 bg-on-surface/50 backdrop-blur-sm z-[2000]"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
+              animate={{ opacity: 1, y: "-50%", scale: 1, x: "-50%" }}
+              exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
+              className="fixed top-1/2 left-1/2 w-[90%] max-w-[600px] bg-surface rounded-[24px] overflow-hidden z-[2010] shadow-2xl border border-outline-variant"
+              style={{ x: "-50%", y: "-50%" }}
+            >
+              <div className="h-[250px] bg-surface-dim relative border-b border-outline-variant">
+                 <embed src={selectedCert.file + "#toolbar=0"} type="application/pdf" className="w-full h-full" />
+              </div>
+              <div className="p-8">
+                <h3 className="font-display text-[24px] font-bold text-on-surface mb-2">{selectedCert.title}</h3>
+                <p className="text-[14px] font-semibold text-primary mb-6">Issued by {selectedCert.issuer} • {selectedCert.date}</p>
+                <p className="text-[15px] leading-[1.7] text-on-surface-variant mb-8">
+                  {selectedCert.desc}
+                </p>
+                <button 
+                  onClick={() => setSelectedCert(null)}
+                  className="w-full py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}

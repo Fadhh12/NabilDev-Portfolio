@@ -1,0 +1,44 @@
+Jarvis AI: Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)
+
+🤖 Jarvis AI: University Assistant Chatbot
+📝 Overview (Deskripsi Singkat)
+Jarvis AI is an intelligent, context-aware chatbot designed specifically to assist students at President University. Built with modern web technologies and a Retrieval-Augmented Generation (RAG) architecture, this chatbot helps students quickly find answers regarding enrollment, academic regulations, GPA access, and university facilities without having to wait in long queues at the Academic Bureau. The application features a sleek, responsive dark-mode UI and supports seamless switching between multiple AI models (Llama 3.2 and Gemini 2.5 Flash).
+
+✨ Key Features (Fitur Utama)
+Multi-Model Support: Users can switch between localized Llama 3.2 models and Google's Gemini 2.5 Flash on the fly to compare response accuracy and speed.
+RAG Architecture (Retrieval-Augmented Generation): The chatbot doesn't just guess; it retrieves context directly from the university's official FAQ and handbook data before generating an answer.
+Context-Aware Recommendations: Automatically suggests contextually relevant follow-up questions to help users navigate their academic queries.
+Session Management: Built-in chat history sidebar to track past conversations, switch between active sessions, and clear history securely.
+Fully Responsive UI: A premium, dark-themed user interface with smooth typing animations, glassmorphism effects, and a mobile-friendly hamburger menu.
+🛠️ Tech Stack & Tools (Teknologi yang Digunakan)
+Frontend (User Interface):
+
+React.js 18 – Core library for building interactive user interfaces.
+Vite – Next-generation frontend tooling for ultra-fast compilation and hot-module replacement.
+Vanilla CSS / Custom Animations – For sleek styling, responsive media queries, and smooth typing indicator animations without relying heavily on bloated CSS frameworks.
+Axios – Promise-based HTTP client for seamless communication with the backend.
+Backend (Server & API Gateway):
+
+Node.js & Express.js – Handles API routing, session management, and serves as the middleware connecting the frontend to the AI engine.
+RESTful API Architecture – Clean endpoints for fetching models, storing chat sessions, and sending prompts.
+Cors & Dotenv – For secure cross-origin requests and environment variable management.
+AI & NLP Engine (Core Logic):
+
+Python & FastAPI – The core microservice handling the heavy lifting for AI processing.
+Llama 3.2 (via Ollama) – Local, privacy-focused Large Language Model.
+Google Gemini 2.5 Flash API – Cloud-based LLM for lightning-fast, highly accurate responses.
+RAG System Workflow – Employs vector search and custom context-injection to ensure the AI only answers based on validated university data.
+⚙️ How It Works (Arsitektur Sistem)
+User Input: The user types a question in the React frontend.
+API Gateway: The Express.js server receives the prompt and checks the user's active session.
+AI Processing: The prompt is forwarded to the Python backend where the RAG pipeline is triggered.
+Context Retrieval: The system scans the university's database (FAQ markdown documents) to find information matching the user's intent.
+Generation & Response: The chosen LLM (Llama or Gemini) crafts a natural, helpful response using the retrieved data, which is then streamed back to the frontend with a realistic typing animation.
+🎯 The Problem it Solves (Solusi yang Ditawarkan)
+Before this chatbot, students had to manually search through dozens of PDF handbooks or visit the Academic Bureau in person for simple questions like "How do I drop a class?" or "What is the deadline for enrollment?". Jarvis AI centralizes this knowledge base, providing instant, accurate, 24/7 assistance, thereby reducing the administrative burden on university staff and improving the student experience.
+
+💡 Tips untuk di Portofolio-mu:
+
+Tambahkan Screenshot UI (seperti yang kamu kirim tadi) di antara bagian Overview dan Key Features.
+Tambahkan Screenshot Mobile View di bagian Fully Responsive UI.
+Gunakan font-weight tebal pada nama-nama teknologi (React, Node.js, FastAPI) agar mata recruiter langsung tertuju ke skill yang kamu miliki.
