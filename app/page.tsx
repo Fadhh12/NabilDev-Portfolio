@@ -1,6 +1,5 @@
 "use client";
 
-import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import TechStack from "@/components/TechStack";
@@ -13,9 +12,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <Nav />
-      
-      <main className="min-h-screen relative overflow-hidden">
+      <main id="main-scroll" className="relative h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth">
         <div className="grid-pattern absolute inset-0 z-[-1]" />
         
         {/* Hero Section */}

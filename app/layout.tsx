@@ -3,6 +3,7 @@ import { Fraunces, Plus_Jakarta_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import GlobalBackground from "@/components/GlobalBackground";
+import Nav from "@/components/Nav";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -28,11 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("scroll-smooth snap-y snap-mandatory", "font-sans", geist.variable)}>
+    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)}>
       <body
         className={`${fraunces.variable} ${plusJakartaSans.variable} font-body antialiased relative min-h-screen bg-surface`}
       >
         <GlobalBackground />
+        <Nav />
         {children}
       </body>
     </html>

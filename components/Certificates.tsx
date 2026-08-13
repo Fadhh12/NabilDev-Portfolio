@@ -22,10 +22,21 @@ export default function Certificates() {
 
   const displayedCerts = showAll ? CERTIFICATES : CERTIFICATES.slice(0, 3);
 
+  const openCert = (cert: typeof CERTIFICATES[0]) => {
+    setSelectedCert(cert);
+    const mainScroll = document.getElementById('main-scroll');
+    if (mainScroll) mainScroll.style.scrollSnapType = 'none';
+  };
+  const closeCert = () => {
+    setSelectedCert(null);
+    const mainScroll = document.getElementById('main-scroll');
+    if (mainScroll) mainScroll.style.scrollSnapType = 'y mandatory';
+  };
+
   return (
-    <section id="certificates" className="py-16 md:py-24 bg-surface-container relative z-10 w-full overflow-hidden snap-start min-h-screen flex flex-col justify-center">
+    <section id="certificates" className="min-h-[100dvh] py-12 pt-16 pb-16 bg-surface-container relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-16">
+        <div className="text-center mb-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -45,7 +56,7 @@ export default function Certificates() {
           </motion.h2>
         </div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence>
             {displayedCerts.map((cert, i) => (
               <motion.div 
@@ -59,17 +70,17 @@ export default function Certificates() {
               >
                 <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50">
                   <div className="absolute inset-0 z-0">
-                    <embed src={cert.file + "#toolbar=0&navpanes=0&scrollbar=0"} type="application/pdf" className="w-full h-full object-cover pointer-events-none" />
+                    <embed src={cert.file + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH"} type="application/pdf" style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }} />
                   </div>
                   {/* Invisible overlay to prevent pointer events on the PDF in the card */}
-                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => setSelectedCert(cert)}></div>
+                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)}></div>
                 </div>
                 <div className="p-6">
                   <h3 className="font-display text-[18px] font-bold text-on-surface mb-1">{cert.title}</h3>
                   <p className="text-[14px] font-semibold text-on-surface-variant mb-4">{cert.issuer} • {cert.date}</p>
                   
                   <button 
-                    onClick={() => setSelectedCert(cert)}
+                    onClick={() => openCert(cert)}
                     className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors"
                   >
                     View Details
@@ -81,14 +92,23 @@ export default function Certificates() {
         </motion.div>
 
         {CERTIFICATES.length > 3 && (
-          <div className="flex justify-center mt-12">
+          <motion.div
+            layout
+            className="flex justify-center mt-8 mb-4"
+          >
             <button 
-              onClick={() => setShowAll(!showAll)}
-              className="px-8 py-3 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-full text-[12px] font-bold tracking-[0.08em] uppercase hover:border-primary hover:text-primary transition-all"
+              onClick={() => {
+                setShowAll(!showAll);
+                if (showAll) {
+                  const el = document.getElementById('certificates');
+                  if (el) el.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="px-10 py-4 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-full text-[13px] font-bold tracking-[0.06em] uppercase hover:border-primary hover:text-primary transition-all shadow-md"
             >
-              {showAll ? "Show Less" : "View All Certificates →"}
+              {showAll ? "↑ Show Less" : "View All Certificates →"}
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
 
@@ -100,27 +120,38 @@ export default function Certificates() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedCert(null)}
+              onClick={() => closeCert()}
               className="fixed inset-0 bg-on-surface/50 backdrop-blur-sm z-[2000]"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
               animate={{ opacity: 1, y: "-50%", scale: 1, x: "-50%" }}
               exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
-              className="fixed top-1/2 left-1/2 w-[90%] max-w-[600px] bg-surface rounded-[24px] overflow-hidden z-[2010] shadow-2xl border border-outline-variant"
+              className="fixed top-1/2 left-1/2 w-[95%] max-w-[800px] max-h-[90vh] bg-surface rounded-[24px] overflow-hidden z-[2010] shadow-2xl border border-outline-variant flex flex-col"
               style={{ x: "-50%", y: "-50%" }}
             >
-              <div className="h-[250px] bg-surface-dim relative border-b border-outline-variant">
-                 <embed src={selectedCert.file + "#toolbar=0"} type="application/pdf" className="w-full h-full" />
+              {/* Close button always on top */}
+              <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-outline-variant shrink-0">
+                <div>
+                  <h3 className="font-display text-[20px] md:text-[24px] font-bold text-on-surface">{selectedCert.title}</h3>
+                  <p className="text-[13px] font-semibold text-primary mt-0.5">Issued by {selectedCert.issuer} • {selectedCert.date}</p>
+                </div>
+                <button 
+                  onClick={() => closeCert()}
+                  className="p-2.5 rounded-full bg-surface-container hover:bg-surface-container-highest border border-outline-variant text-on-surface-variant hover:text-on-surface transition-all shrink-0 ml-4"
+                >
+                  ✕
+                </button>
               </div>
-              <div className="p-8">
-                <h3 className="font-display text-[24px] font-bold text-on-surface mb-2">{selectedCert.title}</h3>
-                <p className="text-[14px] font-semibold text-primary mb-6">Issued by {selectedCert.issuer} • {selectedCert.date}</p>
-                <p className="text-[15px] leading-[1.7] text-on-surface-variant mb-8">
+              <div className="flex-1 min-h-[220px] md:min-h-[380px] bg-surface-dim relative flex flex-col overflow-hidden">
+                 <embed src={selectedCert.file + "#toolbar=0&view=FitH"} type="application/pdf" className="w-full flex-1" style={{ display: 'block', minHeight: '220px' }} />
+              </div>
+              <div className="px-6 py-4 shrink-0">
+                <p className="text-[13px] md:text-[15px] leading-[1.7] text-on-surface-variant mb-4">
                   {selectedCert.desc}
                 </p>
                 <button 
-                  onClick={() => setSelectedCert(null)}
+                  onClick={() => closeCert()}
                   className="w-full py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-colors"
                 >
                   Close

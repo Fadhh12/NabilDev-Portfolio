@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-surface-container-low to-surface-container relative z-10 w-full snap-start min-h-screen flex flex-col justify-center">
+    <section id="about" className="h-[100dvh] py-12 bg-gradient-to-br from-surface-container-low to-surface-container relative z-10 w-full snap-start snap-always overflow-y-auto overflow-x-hidden flex flex-col justify-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-16">
-          <motion.div 
+        <div className="text-center mb-6">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -15,7 +15,7 @@ export default function About() {
           >
             Behind the Code
           </motion.div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -24,7 +24,7 @@ export default function About() {
           >
             About <span className="text-primary">Me</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -35,8 +35,8 @@ export default function About() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[60px] items-start">
-          <motion.div 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -60,7 +60,7 @@ export default function About() {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -76,10 +76,10 @@ export default function About() {
             <p className="text-[16px] leading-[1.8] text-on-surface-variant italic mb-6">
               "Great interfaces aren't just seen; they are felt. I believe that motion, deliberate spacing, and robust state management are the differences between an application that works, and an application that people want to use."
             </p>
-            
+
             <div className="mt-auto pt-6 border-t border-outline-variant flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="font-bold text-on-surface text-[14px]">M Nabil</span>
+                <span className="font-bold text-on-surface text-[14px]">Nabil</span>
                 <span className="text-[11px] font-semibold tracking-[0.05em] uppercase text-primary mt-1">Lead Developer</span>
               </div>
             </div>

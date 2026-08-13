@@ -31,11 +31,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 bg-surface-container-highest relative z-10 w-full overflow-hidden snap-start min-h-screen flex flex-col justify-center">
+    <section id="contact" className="h-[100dvh] py-10 bg-surface-container-highest relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-center">
       <div className="absolute inset-0 grid-pattern opacity-30 z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           
           {/* ─── Left: CTA Copy ─── */}
           <motion.div
@@ -51,8 +51,8 @@ export default function Contact() {
               Let&apos;s build<br />
               something <span className="text-primary">great.</span>
             </h2>
-            <p className="text-[17px] leading-[1.75] text-on-surface-variant mb-10 max-w-[480px]">
-              Open for new opportunities, collaborations, and interesting projects. Whether you have a question or just want to say hi — drop a message and I&apos;ll get back to you.
+            <p className="text-[15px] leading-[1.65] text-on-surface-variant mb-6 max-w-[480px]">
+              Open for new opportunities, collaborations, and interesting projects. Whether you have a question or just want to say hi, drop a message and I&apos;ll get back to you.
             </p>
 
             {/* Contact Details */}
@@ -77,11 +77,11 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-[11px] font-semibold uppercase tracking-widest text-on-surface-variant">GitHub</div>
-                  <div className="text-[15px] font-bold text-on-surface group-hover:text-primary transition-colors">nabilfadh</div>
+                  <div className="text-[15px] font-bold text-on-surface group-hover:text-primary transition-colors">Fadhh12</div>
                 </div>
               </a>
 
-              <a href="https://linkedin.com/in/mnabilfadh" target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
+              <a href="https://www.linkedin.com/in/nabil-fadhlur-rahman-686794320/" target="_blank" rel="noreferrer" className="flex items-center gap-4 group">
                 <div className="w-11 h-11 bg-surface-container border border-outline-variant rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="group-hover:fill-on-primary transition-all">
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
@@ -89,14 +89,14 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-[11px] font-semibold uppercase tracking-widest text-on-surface-variant">LinkedIn</div>
-                  <div className="text-[15px] font-bold text-on-surface group-hover:text-primary transition-colors">mnabilfadh</div>
+                  <div className="text-[15px] font-bold text-on-surface group-hover:text-primary transition-colors">Nabil Fadhlur Rahman</div>
                 </div>
               </a>
             </div>
 
             {/* CV Download */}
             <a
-              href="/assets/cv/NabilDev-CV.pdf"
+              href="/assets/cv/Nabil_CV_General_Professional.pdf"
               target="_blank"
               className="inline-flex items-center gap-2 mt-10 px-6 py-3 border-2 border-outline-variant text-on-surface rounded-xl font-bold text-[13px] hover:border-primary hover:text-primary transition-all"
             >
