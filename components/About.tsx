@@ -44,14 +44,14 @@ export default function About() {
             className="flex flex-col gap-6"
           >
             <p className="text-[17px] leading-[1.8] text-on-surface-variant">
-              Hi, I&apos;m Nabil. I build <strong className="text-on-surface">fast web applications</strong> using modern frameworks like React and Next.js. My approach focuses on writing clean code and creating simple, effective user interfaces.
+              Hi, I&apos;m Nabil. I specialize in bridging the gap between <strong className="text-on-surface">Artificial Intelligence and Web Development</strong>. My expertise lies in building intelligent, scalable systems from machine learning models to dynamic, high-performance web applications.
             </p>
             <p className="text-[17px] leading-[1.8] text-on-surface-variant">
-              I&apos;ve worked on various projects, from dynamic dashboards to scalable platforms. I enjoy adopting new technologies and learning modern web standards to deliver better products.
+              With a strong foundation in computer science and data-driven solutions, I enjoy tackling complex problems and transforming them into elegant, user-centric experiences. Whether it&apos;s training algorithms or crafting intuitive interfaces, I&apos;m driven by a passion for continuous innovation.
             </p>
 
             <div className="flex flex-wrap gap-2 mt-4">
-              {['Frontend Architecture', 'UI/UX Interactive', 'Performance Optimization', 'Clean Code'].map((tag, i) => (
+              {['AI & Machine Learning', 'Full-Stack Development', 'Data Engineering', 'System Architecture'].map((tag, i) => (
                 <div key={i} className="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-full text-[12px] font-semibold text-on-surface-variant">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                   {tag}
@@ -74,13 +74,13 @@ export default function About() {
               My Engineering Philosophy
             </h3>
             <p className="text-[16px] leading-[1.8] text-on-surface-variant italic mb-6">
-              "Great interfaces aren't just seen; they are felt. I believe that motion, deliberate spacing, and robust state management are the differences between an application that works, and an application that people want to use."
+              &quot;True innovation happens at the intersection of intelligence and usability. I believe that the most powerful algorithms are only as effective as the interfaces that present them. My goal is to engineer systems that are not only computationally robust, but also deeply intuitive for the end user.&quot;
             </p>
 
             <div className="mt-auto pt-6 border-t border-outline-variant flex items-center justify-between">
               <div className="flex flex-col">
                 <span className="font-bold text-on-surface text-[14px]">Nabil</span>
-                <span className="text-[11px] font-semibold tracking-[0.05em] uppercase text-primary mt-1">Lead Developer</span>
+                <span className="text-[11px] font-semibold tracking-[0.05em] uppercase text-primary mt-1">AI & Software Engineer</span>
               </div>
             </div>
           </motion.div>

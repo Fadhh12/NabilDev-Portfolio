@@ -2,8 +2,26 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, extend, useFrame, type ThreeElement, type ThreeEvent } from '@react-three/fiber';
+import { Canvas, extend, useFrame, useThree, type ThreeElement, type ThreeEvent } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
+
+function CameraFit({ isMobile }: { isMobile: boolean }) {
+  const { camera, size } = useThree();
+  useEffect(() => {
+    if (camera.type === 'PerspectiveCamera') {
+      const pc = camera as THREE.PerspectiveCamera;
+      if (!isMobile) {
+        pc.zoom = 680 / size.height;
+        pc.position.y = 0; // Center at y=0 on desktop (card at y=1 is fine because of zoom out)
+      } else {
+        pc.zoom = 1; // Default zoom on mobile
+        pc.position.y = 1; // Move camera UP on mobile so the card (at y=1) is perfectly centered
+      }
+      pc.updateProjectionMatrix();
+    }
+  }, [camera, size.height, isMobile]);
+  return null;
+}
 import {
   BallCollider,
   CuboidCollider,
@@ -75,13 +93,14 @@ export default function Lanyard({
   }, []);
 
   return (
-    <div className="relative z-0 w-full h-[680px] flex justify-center items-center transform scale-100 origin-center pointer-events-auto cursor-grab active:cursor-grabbing">
+    <div className="relative z-0 w-full h-full min-h-[400px] flex justify-center items-center transform scale-100 origin-center pointer-events-auto cursor-grab active:cursor-grabbing">
       <Canvas
         camera={{ position, fov }}
         dpr={[2, 3]}
         gl={{ alpha: transparent, antialias: true, preserveDrawingBuffer: true }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
+        <CameraFit isMobile={isMobile} />
         <ambientLight intensity={Math.PI} />
         <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
           <Band

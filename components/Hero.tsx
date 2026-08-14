@@ -151,7 +151,7 @@ export default function Hero() {
         </div>
 
         {/* Right Side: Interactive Lanyard Card */}
-        <div className="lg:w-[40%] flex justify-center lg:justify-end items-start relative w-full h-[35vh] min-h-[280px] lg:min-h-[680px] lg:h-auto mt-2 md:mt-4 lg:mt-0 lg:translate-x-12">
+        <div className="lg:w-[40%] flex justify-center lg:justify-end items-center relative w-full h-[35vh] min-h-[280px] lg:h-[120dvh] mt-2 md:mt-4 lg:mt-0 lg:translate-x-12">
           <Lanyard position={[0, 0, 13]} fov={16} gravity={[0, -40, 0]} frontImage="/assets/images/foto.jpg" />
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function Contact() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          
+
           {/* ─── Left: CTA Copy ─── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -130,7 +130,7 @@ export default function Contact() {
                     name="name"
                     type="text"
                     required
-                    placeholder="Nabil Rahman"
+                    placeholder="John Doe"
                     value={form.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3.5 bg-surface border border-outline-variant rounded-xl text-[14px] text-on-surface placeholder:text-on-surface-variant/50 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
