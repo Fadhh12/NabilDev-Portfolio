@@ -31,7 +31,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="h-[100dvh] py-10 bg-surface-container-highest relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-center">
+    <section id="contact" className="min-h-[100dvh] py-10 pb-28 lg:pb-10 bg-surface-container-highest relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-center">
       <div className="absolute inset-0 grid-pattern opacity-30 z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">

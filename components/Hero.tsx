@@ -56,14 +56,14 @@ export default function Hero() {
     <section id="home" className="h-[100dvh] pt-0 pb-4 flex relative overflow-hidden snap-start snap-always" ref={containerRef}>
       
       {/* Lanyard Container (Absolute for both Desktop & Mobile) */}
-      <div className="absolute top-0 right-0 w-full lg:w-[45%] h-[50vh] lg:h-[100dvh] flex justify-center items-start lg:items-center z-0 pointer-events-none lg:right-[2%]">
+      <div className="absolute top-0 right-0 w-full lg:w-[45%] h-[48vh] lg:h-[100dvh] flex justify-center items-start lg:items-center z-0 pointer-events-none lg:right-[2%]">
         <div className="w-full h-full pointer-events-auto flex items-start lg:items-center justify-center">
           <Lanyard position={[0, 0, 13]} fov={16} gravity={[0, -40, 0]} frontImage="/assets/images/foto.jpg" />
         </div>
       </div>
 
       {/* Text Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row h-full justify-end lg:justify-start items-start lg:items-center relative z-10 pointer-events-none pb-24 lg:pb-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row h-full justify-end lg:justify-start items-start lg:items-center relative z-10 pointer-events-none pb-20 lg:pb-0">
         
         {/* Left Side: Text Content */}
         <div className="lg:w-[55%] flex flex-col z-10 w-full relative xl:pr-12 pointer-events-auto">
@@ -77,10 +77,10 @@ export default function Hero() {
             Available for Work
           </motion.div>
           
-          <div className="font-display text-[clamp(52px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-on-surface flex flex-col items-start">
+          <div className="font-display text-[clamp(36px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-on-surface flex flex-col items-start">
             <SplitText
               text="Nabil Fadhlur"
-              className="font-display text-[clamp(52px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-on-surface text-left m-0 p-0"
+              className="font-display text-[clamp(36px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-on-surface text-left m-0 p-0"
               delay={50}
               duration={1.25}
               ease="power3.out"
@@ -91,7 +91,7 @@ export default function Hero() {
             />
             <SplitText
               text="Rahman."
-              className="font-display text-[clamp(52px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-primary not-italic text-left m-0 p-0"
+              className="font-display text-[clamp(36px,8vw,88px)] font-black leading-[1.05] tracking-[-0.05em] text-primary not-italic text-left m-0 p-0"
               delay={50}
               duration={1.25}
               ease="power3.out"
@@ -110,7 +110,7 @@ export default function Hero() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="absolute text-[24px] md:text-[28px] font-bold text-on-surface-variant font-display"
+                  className="absolute text-[18px] md:text-[28px] font-bold text-on-surface-variant font-display"
                 >
                   {roles[currentRole]}
                 </motion.div>
@@ -121,7 +121,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-[16px] md:text-[18px] leading-[1.6] md:leading-[1.7] text-on-surface-variant mt-3 md:mt-4 max-w-[640px]"
+            className="text-[13px] md:text-[18px] leading-[1.6] md:leading-[1.7] text-on-surface-variant mt-2 md:mt-4 max-w-[640px]"
           >
             I build intelligent systems that bridge Artificial Intelligence and Web Development to solve real-world problems.
           </motion.p>

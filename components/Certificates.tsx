@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 
 // Placeholder data since certificates images aren't fully specified
 const CERTIFICATES = [
@@ -19,6 +18,14 @@ const CERTIFICATES = [
 export default function Certificates() {
   const [showAll, setShowAll] = useState(false);
   const [selectedCert, setSelectedCert] = useState<typeof CERTIFICATES[0] | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const displayedCerts = showAll ? CERTIFICATES : CERTIFICATES.slice(0, 3);
 
@@ -68,12 +75,22 @@ export default function Certificates() {
                 transition={{ duration: 0.4 }}
                 className="bg-surface border border-outline-variant rounded-[20px] overflow-hidden group hover:border-primary transition-all duration-300"
               >
-                <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50">
-                  <div className="absolute inset-0 z-0">
-                    <iframe src={encodeURI(cert.file) + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH"} className="w-full h-full border-none pointer-events-none" />
+                <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50 flex items-center justify-center">
+                  {/* Clean certificate preview placeholder — iframes don't render on mobile */}
+                  <div className="flex flex-col items-center gap-3 px-6 text-center pointer-events-none select-none">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="9" y1="13" x2="15" y2="13" />
+                        <line x1="9" y1="17" x2="15" y2="17" />
+                        <polyline points="9 9 10 9" />
+                      </svg>
+                    </div>
+                    <span className="text-[13px] font-semibold text-on-surface-variant">{cert.issuer}</span>
                   </div>
-                  {/* Invisible overlay to prevent pointer events on the PDF in the card */}
-                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)}></div>
+                  {/* Click overlay */}
+                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)} />
                 </div>
                 <div className="p-6">
                   <h3 className="font-display text-[18px] font-bold text-on-surface mb-1">{cert.title}</h3>
@@ -143,19 +160,34 @@ export default function Certificates() {
                   ✕
                 </button>
               </div>
-              <div className="flex-1 min-h-[220px] md:min-h-[380px] bg-surface-dim relative flex flex-col overflow-hidden">
-                 <iframe src={encodeURI(selectedCert.file) + "#toolbar=0&view=FitH"} className="w-full flex-1 border-none min-h-[220px]" />
+              <div className="flex-1 min-h-[260px] md:min-h-[420px] bg-surface-dim relative flex flex-col overflow-hidden">
+                {/* Use Google Docs viewer for cross-platform PDF rendering (works on iOS/Android) */}
+                <iframe
+                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(`https://nabilfadhlur.vercel.app${selectedCert.file}`)}&embedded=true`}
+                  className="w-full flex-1 border-none min-h-[260px]"
+                  allow="fullscreen"
+                />
               </div>
               <div className="px-6 py-4 shrink-0">
                 <p className="text-[13px] md:text-[15px] leading-[1.7] text-on-surface-variant mb-4">
                   {selectedCert.desc}
                 </p>
-                <button 
-                  onClick={() => closeCert()}
-                  className="w-full py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-colors"
-                >
-                  Close
-                </button>
+                <div className="flex gap-3">
+                  <a
+                    href={selectedCert.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-colors text-center"
+                  >
+                    Open PDF
+                  </a>
+                  <button
+                    onClick={() => closeCert()}
+                    className="flex-1 py-3 bg-surface-container text-on-surface border border-outline-variant rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </>
