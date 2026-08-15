@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <section id="about" className="h-[100dvh] py-12 bg-gradient-to-br from-surface-container-low to-surface-container relative z-10 w-full snap-start snap-always overflow-y-auto overflow-x-hidden flex flex-col justify-center">
+    <section id="about" className="min-h-[100dvh] py-12 pt-24 pb-20 bg-gradient-to-br from-surface-container-low to-surface-container relative z-10 w-full overflow-y-auto overflow-x-hidden flex flex-col justify-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-6">
           <motion.div

@@ -70,7 +70,7 @@ export default function Certificates() {
               >
                 <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50">
                   <div className="absolute inset-0 z-0">
-                    <embed src={cert.file + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH"} type="application/pdf" style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }} />
+                    <iframe src={encodeURI(cert.file) + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH"} className="w-full h-full border-none pointer-events-none" />
                   </div>
                   {/* Invisible overlay to prevent pointer events on the PDF in the card */}
                   <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)}></div>
@@ -144,7 +144,7 @@ export default function Certificates() {
                 </button>
               </div>
               <div className="flex-1 min-h-[220px] md:min-h-[380px] bg-surface-dim relative flex flex-col overflow-hidden">
-                 <embed src={selectedCert.file + "#toolbar=0&view=FitH"} type="application/pdf" className="w-full flex-1" style={{ display: 'block', minHeight: '220px' }} />
+                 <iframe src={encodeURI(selectedCert.file) + "#toolbar=0&view=FitH"} className="w-full flex-1 border-none min-h-[220px]" />
               </div>
               <div className="px-6 py-4 shrink-0">
                 <p className="text-[13px] md:text-[15px] leading-[1.7] text-on-surface-variant mb-4">

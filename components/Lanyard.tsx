@@ -12,10 +12,10 @@ function CameraFit({ isMobile }: { isMobile: boolean }) {
       const pc = camera as THREE.PerspectiveCamera;
       if (!isMobile) {
         pc.zoom = 680 / size.height;
-        pc.position.y = 0; // Center at y=0 on desktop (card at y=1 is fine because of zoom out)
+        pc.position.y = -0.1; // Shift camera up slightly to lower the card 
       } else {
-        pc.zoom = 1; // Default zoom on mobile
-        pc.position.y = 1; // Move camera UP on mobile so the card (at y=1) is perfectly centered
+        pc.zoom = 0.7; // Reduce zoom on mobile
+        pc.position.y = -0.1; // Shift camera up slightly to lower the card
       }
       pc.updateProjectionMatrix();
     }
@@ -229,15 +229,28 @@ function Band({
       const ry = rect.y * H;
       const rw = rect.w * W;
       const rh = rect.h * H;
+      
+      // Expand target area slightly to cover any baked white borders
+      const borderMarginX = rw * 0.04;
+      const borderMarginY = rh * 0.04;
+      const targetW = rw + borderMarginX * 2;
+      const targetH = rh + borderMarginY * 2;
+
       const pick = imageFit === 'contain' ? Math.min : Math.max;
-      const scale = pick(rw / img.width, rh / img.height);
+      const scale = pick(targetW / img.width, targetH / img.height);
       const dw = img.width * scale;
       const dh = img.height * scale;
+      
+      // Center horizontally
       const dx = rx + (rw - dw) / 2;
-      const dy = ry + (rh - dh) / 2;
+      
+      // For vertical alignment, align exactly to the top (ry) so faces don't get cropped
+      const dy = ry;
+
       ctx.save();
+      // Clip to the original rect so we don't bleed into the other side of the atlas
       ctx.beginPath();
-      ctx.rect(rx, ry, rw, rh);
+      ctx.rect(rx, ry, rw, rh + (rh * 0.02)); // slight bleed on bottom to ensure coverage
       ctx.clip();
       ctx.drawImage(img, dx, dy, dw, dh);
       ctx.restore();
@@ -371,7 +384,7 @@ function Band({
           resolution={isMobile ? [1000, 2000] : [1000, 1000]}
           useMap={1}
           map={texture}
-          repeat={[-4, 1]}
+          repeat={[-2, 1]}
           lineWidth={lanyardWidth}
         />
       </mesh>

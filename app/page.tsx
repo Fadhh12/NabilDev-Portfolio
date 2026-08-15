@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <main id="main-scroll" className="relative h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth">
+      <main id="main-scroll" className="relative h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-proximity scroll-smooth">
         <div className="grid-pattern absolute inset-0 z-[-1]" />
         
         {/* Hero Section */}

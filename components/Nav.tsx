@@ -4,14 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import clsx from "clsx";
+import { Home, Briefcase, Award, Send, Menu, X, Code, FileText, User } from "lucide-react";
 
 const NAV_LINKS = [
-  { name: "Home", href: "/#home" },
-  { name: "About", href: "/#about" },
-  { name: "Stack", href: "/#stack" },
-  { name: "Projects", href: "/#projects" },
-  { name: "Experience", href: "/#experience" },
-  { name: "Certificates", href: "/#certificates" },
+  { name: "Home", href: "/#home", icon: Home },
+  { name: "About", href: "/#about", icon: User },
+  { name: "Stack", href: "/#stack", icon: Code },
+  { name: "Projects", href: "/#projects", icon: Briefcase },
+  { name: "Experience", href: "/#experience", icon: FileText },
+  { name: "Certificates", href: "/#certificates", icon: Award },
 ];
 
 export default function Nav() {
@@ -63,10 +64,10 @@ export default function Nav() {
 
   return (
     <>
-      {/* ─── Main Nav Bar ─── */}
+      {/* ─── Desktop Nav Bar ─── */}
       <motion.nav
         className={clsx(
-          "fixed top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center justify-center px-6 py-2.5 rounded-full border border-outline-variant/40 transition-all duration-500 overflow-hidden cursor-pointer",
+          "hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-[1000] items-center justify-center px-6 py-2.5 rounded-full border border-outline-variant/40 transition-all duration-500 overflow-hidden cursor-pointer",
           scrolled
             ? "bg-surface/95 backdrop-blur-xl shadow-[0_8px_40px_rgba(26,28,24,0.12)]"
             : "bg-surface/85 backdrop-blur-md shadow-[0_4px_24px_rgba(26,28,24,0.08)]",
@@ -134,97 +135,92 @@ export default function Nav() {
               >
                 Hire Me
               </Link>
-
-              {/* Mobile Hamburger */}
-              <button
-                id="mobile-menu-btn"
-                className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px] rounded-full hover:bg-primary/10 transition-colors ml-1 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMobileOpen((v) => !v);
-                }}
-                aria-label="Toggle mobile menu"
-              >
-                <motion.span
-                  animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="w-5 h-[2px] bg-on-surface rounded-full block origin-center"
-                />
-                <motion.span
-                  animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-                  transition={{ duration: 0.2 }}
-                  className="w-5 h-[2px] bg-on-surface rounded-full block"
-                />
-                <motion.span
-                  animate={mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="w-5 h-[2px] bg-on-surface rounded-full block origin-center"
-                />
-              </button>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
 
-      {/* ─── Mobile Menu Overlay ─── */}
+      {/* ─── Mobile Bottom Nav Bar ─── */}
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] w-[90%] max-w-[400px]">
+        <div className="bg-[#111111] border border-white/10 rounded-full shadow-2xl p-2 flex items-center justify-around">
+          <Link href="/#home" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
+            <Home className="w-[22px] h-[22px]" />
+          </Link>
+          <Link href="/#projects" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
+            <Briefcase className="w-[22px] h-[22px]" />
+          </Link>
+          <Link href="/#certificates" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
+            <Award className="w-[22px] h-[22px]" />
+          </Link>
+          <Link href="/#contact" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
+            <Send className="w-[22px] h-[22px]" />
+          </Link>
+          <button 
+            className="p-3 text-white/70 hover:text-white transition-colors cursor-pointer"
+            onClick={() => setMobileOpen(true)}
+          >
+            <Menu className="w-[22px] h-[22px]" />
+          </button>
+        </div>
+      </div>
+
+      {/* ─── Mobile Menu Overlay (From Bottom) ─── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               key="mobile-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[998] bg-black/40 backdrop-blur-sm md:hidden"
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[1001] bg-black/60 backdrop-blur-sm md:hidden"
               onClick={() => setMobileOpen(false)}
             />
-
-            {/* Drawer */}
             <motion.div
               key="mobile-drawer"
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 350, damping: 30 }}
-              className="fixed top-20 left-4 right-4 z-[999] md:hidden"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 z-[1002] md:hidden bg-surface rounded-t-3xl overflow-hidden shadow-2xl border-t border-outline-variant/30"
             >
-              <div className="bg-surface/98 backdrop-blur-2xl border border-outline-variant/50 rounded-3xl shadow-2xl overflow-hidden">
-                {/* Drawer Header */}
-                <div className="px-6 pt-6 pb-4 border-b border-outline-variant/30">
-                  <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-on-surface-variant">
-                    Navigation
-                  </p>
+              <div className="flex flex-col p-6 max-h-[80vh] overflow-y-auto">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-display text-[22px] font-extrabold text-primary">Menu</h3>
+                  <button 
+                    onClick={() => setMobileOpen(false)}
+                    className="p-2 rounded-full bg-surface-container hover:bg-surface-container-highest transition-colors"
+                  >
+                    <X className="w-5 h-5 text-on-surface" />
+                  </button>
                 </div>
-
-                {/* Nav Links */}
-                <div className="px-3 py-3">
+                
+                <div className="flex flex-col gap-2">
                   {NAV_LINKS.map((item, i) => (
                     <motion.div
                       key={item.name}
-                      initial={{ opacity: 0, x: -12 }}
+                      initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 + 0.05 }}
+                      transition={{ delay: i * 0.05 + 0.1 }}
                     >
                       <Link
                         href={item.href}
                         onClick={handleMobileLinkClick}
-                        className="flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-primary/8 text-on-surface hover:text-primary transition-all duration-200 group"
+                        className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-primary/8 text-on-surface hover:text-primary transition-all duration-200 group"
                       >
-                        <span className="text-[15px] font-semibold tracking-wide">{item.name}</span>
-                        <span className="ml-auto text-on-surface-variant/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all text-[12px]">→</span>
+                        <item.icon className="w-5 h-5 text-on-surface-variant group-hover:text-primary" />
+                        <span className="text-[16px] font-semibold tracking-wide">{item.name}</span>
                       </Link>
                     </motion.div>
                   ))}
                 </div>
 
-                {/* CTA Button */}
-                <div className="px-6 pb-5 pt-2">
+                <div className="mt-8 pt-6 border-t border-outline-variant/30">
                   <Link
                     href="/#contact"
                     onClick={handleMobileLinkClick}
-                    className="flex items-center justify-center w-full py-3.5 rounded-2xl bg-on-surface text-surface text-[13px] font-bold tracking-[0.08em] uppercase hover:bg-primary hover:text-on-primary transition-all duration-300"
+                    className="flex items-center justify-center w-full py-4 rounded-2xl bg-primary text-on-primary text-[14px] font-bold tracking-[0.08em] uppercase hover:scale-[1.02] transition-all"
                   >
                     Hire Me
                   </Link>
