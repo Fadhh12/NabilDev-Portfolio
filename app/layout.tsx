@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Inter, Caveat, Space_Mono } from "next/font/google";
+import { Anton, Inter, Caveat, Space_Mono, Stardos_Stencil } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import GlobalBackground from "@/components/GlobalBackground";
@@ -25,6 +25,14 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
+// Chunky stencil display font for the big section titles (ABOUT, PROJECTS,
+// LET'S TALK, the hero name, ...) — matches the reference template's look.
+const stardosStencil = Stardos_Stencil({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "NabilDev - AI Engineer & Full-Stack Developer",
   description: "Portfolio of Nabil Fadhlur Rahman",
@@ -38,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("scroll-smooth", "font-sans", inter.variable)}>
       <body
-        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} font-sans antialiased relative min-h-screen bg-surface`}
+        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} ${stardosStencil.variable} font-sans antialiased relative min-h-screen bg-surface`}
       >
         <GlobalBackground />
         <Nav />

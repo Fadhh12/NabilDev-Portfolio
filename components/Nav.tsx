@@ -4,157 +4,147 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import clsx from "clsx";
-import { Home, Briefcase, Award, Send, Menu, X, Images, User } from "lucide-react";
+import { Star, User, LayoutGrid, Diamond, Heart, Menu, X } from "lucide-react";
+import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const NAV_LINKS = [
-  { name: "Home", href: "/#home", icon: Home },
-  { name: "About", href: "/#about", icon: User },
-  { name: "Projects", href: "/#projects", icon: Briefcase },
-  { name: "Certificates", href: "/#certificates", icon: Award },
-  { name: "Playground", href: "/#gallery", icon: Images },
+  { name: "Home", href: "/#home", id: "home", icon: Star },
+  { name: "About", href: "/#about", id: "about", icon: User },
+  { name: "Projects", href: "/#projects", id: "projects", icon: LayoutGrid },
+  { name: "Playground", href: "/#gallery", id: "gallery", icon: Diamond },
+];
+
+const SOCIALS = [
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/nabil-fadhlur-rahman-686794320/", icon: FaLinkedin, bg: "var(--ca-yellow)" },
+  { name: "GitHub", href: "https://github.com/Fadhh12", icon: FaGithub, bg: "var(--ca-magenta)" },
+  { name: "Instagram", href: "https://instagram.com", icon: FaInstagram, bg: "var(--ca-green)" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [isShrunk, setIsShrunk] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const lastScrollYRef = useRef(0);
+  const [activeSection, setActiveSection] = useState("home");
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const scrollContainer = document.getElementById('main-scroll') || window;
-
+    const scrollContainer = document.getElementById("main-scroll") || window;
     const handleScroll = () => {
-      const target = document.getElementById('main-scroll');
-      const latest = target ? target.scrollTop : (window.scrollY || document.documentElement.scrollTop);
-
-      if (latest > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-        setIsShrunk(false);
-      }
-
-      if (latest > lastScrollYRef.current && latest > 150) {
-        setIsShrunk(true);
-      } else if (latest < lastScrollYRef.current) {
-        setIsShrunk(false);
-      }
-
-      lastScrollYRef.current = latest;
+      const target = document.getElementById("main-scroll");
+      const latest = target ? target.scrollTop : window.scrollY || document.documentElement.scrollTop;
+      setScrolled(latest > 50);
     };
-
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true, capture: true });
-    return () => scrollContainer.removeEventListener('scroll', handleScroll, { capture: true });
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true, capture: true });
+    return () => scrollContainer.removeEventListener("scroll", handleScroll, { capture: true });
   }, []);
 
-  // Lock body scroll when mobile menu open
+  // Scrollspy — highlight the tab for whichever section is centered in view.
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    const root = document.getElementById("main-scroll") || null;
+    const sections = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(Boolean) as HTMLElement[];
+    if (!sections.length) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { root, threshold: [0.3, 0.5, 0.7] }
+    );
+    sections.forEach((s) => observerRef.current?.observe(s));
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
-
-  const handleMobileLinkClick = () => {
-    setMobileOpen(false);
-  };
 
   return (
     <>
       {/* ─── Desktop Nav Bar ─── */}
       <motion.nav
         className={clsx(
-          "hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-[1000] items-center justify-center px-6 py-2.5 rounded-full border border-outline-variant/40 transition-all duration-500 overflow-hidden cursor-pointer",
+          "hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-[1000] items-center gap-2 px-3 py-2 rounded-full border border-outline-variant/40 transition-shadow duration-500",
           scrolled
             ? "bg-surface/95 backdrop-blur-xl shadow-[0_8px_40px_rgba(26,28,24,0.12)]"
-            : "bg-surface/85 backdrop-blur-md shadow-[0_4px_24px_rgba(26,28,24,0.08)]",
-          isShrunk ? "w-[80px]" : "w-auto"
+            : "bg-surface/85 backdrop-blur-md shadow-[0_4px_24px_rgba(26,28,24,0.08)]"
         )}
-        onClick={() => isShrunk && setIsShrunk(false)}
         initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1, width: isShrunk ? 80 : "auto" }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        <AnimatePresence mode="wait">
-          {isShrunk ? (
-            <motion.div
-              key="dots"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.2 }}
-              className="flex flex-row gap-1.5 items-center justify-center h-[36px]"
-            >
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{
-                    duration: 0.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.15,
-                  }}
-                  className="w-1.5 h-1.5 bg-primary rounded-full"
-                />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="full-nav"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center w-full justify-between gap-2 whitespace-nowrap"
-            >
-              <Link href="/#home" className="font-display text-[22px] font-extrabold text-primary tracking-tight mr-4">
-                NabilDev.
-              </Link>
+        {/* Smiley logo */}
+        <Link
+          href="/#home"
+          aria-label="Home"
+          className="w-9 h-9 rounded-full flex items-center justify-center text-[18px] shrink-0"
+          style={{ background: "var(--ca-pink-soft)" }}
+        >
+          🙂
+        </Link>
 
-              {/* Desktop links */}
-              <ul className="items-center gap-1 list-none m-0 p-0 hidden md:flex">
-                {NAV_LINKS.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+        <ul className="flex items-center gap-1 list-none m-0 p-0">
+          {NAV_LINKS.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <li key={item.name} className="relative">
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: "var(--ca-yellow)" }}
+                    transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  />
+                )}
+                <Link
+                  href={item.href}
+                  className={clsx(
+                    "relative z-10 flex items-center gap-1.5 px-3.5 py-2 text-[11px] font-bold tracking-[0.08em] uppercase rounded-full transition-colors whitespace-nowrap",
+                    isActive ? "text-on-surface" : "text-on-surface-variant hover:text-primary"
+                  )}
+                >
+                  <item.icon className="w-3.5 h-3.5" />
+                  {item.name}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-              <Link
-                href="#contact"
-                className="hidden md:inline-flex items-center ml-2 px-5 py-2 text-[11px] font-bold tracking-[0.08em] uppercase text-on-primary bg-primary hover:bg-primary-container rounded-full transition-all hover:scale-105"
-              >
-                Hire Me
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="flex items-center gap-1.5 mx-1">
+          {SOCIALS.map((s) => (
+            <a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={s.name}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform"
+              style={{ background: s.bg }}
+            >
+              <s.icon className="w-4 h-4" />
+            </a>
+          ))}
+        </div>
+
+        <Link
+          href="#contact"
+          className="flex items-center gap-1.5 px-4 py-2 text-[11px] font-bold tracking-[0.08em] uppercase text-on-primary bg-primary hover:bg-primary-hover rounded-full transition-all"
+        >
+          <Heart className="w-3.5 h-3.5 fill-current" />
+          Contact
+        </Link>
       </motion.nav>
 
       {/* ─── Mobile Bottom Nav Bar ─── */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] w-[90%] max-w-[400px]">
         <div className="bg-[#111111] border border-white/10 rounded-full shadow-2xl p-2 flex items-center justify-around">
-          <Link href="/#home" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
-            <Home className="w-[22px] h-[22px]" />
-          </Link>
-          <Link href="/#projects" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
-            <Briefcase className="w-[22px] h-[22px]" />
-          </Link>
-          <Link href="/#certificates" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
-            <Award className="w-[22px] h-[22px]" />
-          </Link>
-          <Link href="/#contact" className="p-3 text-white/70 hover:text-white transition-colors" onClick={handleMobileLinkClick}>
-            <Send className="w-[22px] h-[22px]" />
-          </Link>
-          <button 
+          {NAV_LINKS.map((item) => (
+            <Link key={item.name} href={item.href} className="p-3 text-white/70 hover:text-white transition-colors">
+              <item.icon className="w-[22px] h-[22px]" />
+            </Link>
+          ))}
+          <button
             className="p-3 text-white/70 hover:text-white transition-colors cursor-pointer"
             onClick={() => setMobileOpen(true)}
           >
@@ -163,7 +153,7 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* ─── Mobile Menu Overlay (From Bottom) ─── */}
+      {/* ─── Mobile Menu Overlay ─── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -172,7 +162,6 @@ export default function Nav() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
               className="fixed inset-0 z-[1001] bg-black/60 backdrop-blur-sm md:hidden"
               onClick={() => setMobileOpen(false)}
             />
@@ -186,26 +175,21 @@ export default function Nav() {
             >
               <div className="flex flex-col p-6 max-h-[80vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-display text-[22px] font-extrabold text-primary">Menu</h3>
-                  <button 
-                    onClick={() => setMobileOpen(false)}
-                    className="p-2 rounded-full bg-surface-container hover:bg-surface-container-highest transition-colors"
-                  >
+                  <div className="flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-[16px]" style={{ background: "var(--ca-pink-soft)" }}>🙂</span>
+                    <h3 className="font-pixel text-[16px] text-primary">Menu</h3>
+                  </div>
+                  <button onClick={() => setMobileOpen(false)} className="p-2 rounded-full bg-surface-container hover:bg-surface-container-highest transition-colors">
                     <X className="w-5 h-5 text-on-surface" />
                   </button>
                 </div>
-                
+
                 <div className="flex flex-col gap-2">
                   {NAV_LINKS.map((item, i) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 + 0.1 }}
-                    >
+                    <motion.div key={item.name} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 + 0.1 }}>
                       <Link
                         href={item.href}
-                        onClick={handleMobileLinkClick}
+                        onClick={() => setMobileOpen(false)}
                         className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-primary/8 text-on-surface hover:text-primary transition-all duration-200 group"
                       >
                         <item.icon className="w-5 h-5 text-on-surface-variant group-hover:text-primary" />
@@ -215,15 +199,21 @@ export default function Nav() {
                   ))}
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-outline-variant/30">
-                  <Link
-                    href="/#contact"
-                    onClick={handleMobileLinkClick}
-                    className="flex items-center justify-center w-full py-4 rounded-2xl bg-primary text-on-primary text-[14px] font-bold tracking-[0.08em] uppercase hover:scale-[1.02] transition-all"
-                  >
-                    Hire Me
-                  </Link>
+                <div className="flex items-center gap-3 mt-6 pt-6 border-t border-outline-variant/30">
+                  {SOCIALS.map((s) => (
+                    <a key={s.name} href={s.href} target="_blank" rel="noreferrer" aria-label={s.name} className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ background: s.bg }}>
+                      <s.icon className="w-5 h-5" />
+                    </a>
+                  ))}
                 </div>
+
+                <Link
+                  href="/#contact"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full mt-4 py-4 rounded-2xl bg-primary text-on-primary text-[14px] font-bold tracking-[0.08em] uppercase hover:scale-[1.02] transition-all"
+                >
+                  <Heart className="w-4 h-4 fill-current" /> Contact
+                </Link>
               </div>
             </motion.div>
           </>

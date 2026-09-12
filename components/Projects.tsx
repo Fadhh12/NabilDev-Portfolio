@@ -101,13 +101,21 @@ const PROJECTS = [
   }
 ];
 
-// Cycled per project card — mirrors the colored category tags in the
-// reference "Crayon" template's featured-work grid.
+// Alternating card + ribbon-tab colors — mirrors the reference's stacked
+// "PROJECT 01 / 02 / 03" cards (dark → tan → pink → dark ...).
+const CARD_THEMES = [
+  { bg: "var(--ca-ink)", fg: "#ffffff", tab: "var(--ca-blue)" },
+  { bg: "var(--ca-yellow-soft)", fg: "var(--ca-ink)", tab: "var(--ca-ink)" },
+  { bg: "var(--ca-magenta)", fg: "#ffffff", tab: "var(--ca-ink)" },
+  { bg: "var(--ca-mint)", fg: "var(--ca-ink)", tab: "var(--ca-blue)" },
+];
 const TAG_COLORS = ["var(--ca-blue)", "var(--ca-magenta)", "var(--ca-green)", "var(--ca-orange)", "var(--ca-brown)"];
+
+const FEATURED = PROJECTS.slice(0, 4);
+const MORE = PROJECTS.slice(4);
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const openProject = (project: typeof PROJECTS[0]) => {
@@ -123,147 +131,168 @@ export default function Projects() {
     if (mainScroll) mainScroll.style.scrollSnapType = 'y mandatory';
   };
 
-  const visibleProjects = showAllProjects ? PROJECTS : PROJECTS.slice(0, 3);
-
   return (
-    <section id="projects" className="min-h-[100dvh] py-12 pb-16 bg-transparent relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-start">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+    <section id="projects" className="relative z-10 w-full overflow-x-hidden snap-start py-16 pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="font-hand text-[22px] text-on-surface-variant mb-2"
+        >
+          explore my work!
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ delay: 0.1 }}
+          className="font-pixel uppercase text-[clamp(32px,7vw,68px)] leading-[1.25] tracking-tight text-on-surface"
+        >
+          Featured Projects
+        </motion.h2>
+      </div>
 
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-3"
-            >
-              explore my work!
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: 0.1 }}
-              className="font-display uppercase text-[clamp(32px,6vw,64px)] leading-[0.95] tracking-[-0.02em] text-on-surface"
-            >
-              Featured Works
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: 0.15 }}
-              className="text-[14px] md:text-[16px] text-on-surface-variant mt-3 max-w-md"
-            >
-              A few things I&apos;ve built to make ideas ship faster and problems easier to solve.
-            </motion.p>
-          </div>
-
-          {PROJECTS.length > 3 && (
-            <motion.button
-              onClick={() => setShowAllProjects(!showAllProjects)}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="self-start md:self-auto flex items-center gap-2 px-5 py-2.5 border border-outline-variant text-on-surface-variant rounded-full text-[11px] font-bold tracking-[0.08em] uppercase hover:border-primary hover:text-primary transition-all"
-            >
-              {showAllProjects ? "Show Less" : "View All"}
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </motion.button>
-          )}
-        </div>
-
-        {/* Project Folders Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleProjects.map((project, idx) => (
-            <motion.div
+      {/* ── Sticky stack: each card pins at the same spot and the next one
+          slides up to cover it — pure CSS position:sticky, no JS needed. ── */}
+      <div className="relative">
+        {FEATURED.map((project, idx) => {
+          const theme = CARD_THEMES[idx % CARD_THEMES.length];
+          return (
+            <div
               key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: idx * 0.08, duration: 0.5 }}
-              className="group relative mt-8"
+              className="sticky top-20 md:top-24 h-[calc(100dvh-6rem)] flex items-center"
+              style={{ zIndex: idx + 1 }}
             >
-              {/* Folder Tab — colored per project, like the category tags in the reference */}
-              <div
-                className="absolute -top-7 left-0 border border-b-0 px-5 py-2 rounded-t-xl text-[11px] font-bold tracking-wider uppercase z-0 flex items-center gap-2 h-8"
-                style={{ background: TAG_COLORS[idx % TAG_COLORS.length], borderColor: TAG_COLORS[idx % TAG_COLORS.length], color: "#fff" }}
-              >
-                <Folder className="w-3.5 h-3.5" />
-                {project.category}
-              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div
+                  className="relative rounded-[28px] p-6 sm:p-10 md:p-12 shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center overflow-hidden"
+                  style={{ background: theme.bg, color: theme.fg }}
+                >
+                  {/* Corner-cut ribbon tab */}
+                  <div
+                    className="absolute -top-px left-0 px-5 py-2.5 text-[11px] font-bold tracking-widest uppercase flex items-center gap-2"
+                    style={{
+                      background: theme.tab,
+                      color: "#fff",
+                      clipPath: "polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%)",
+                    }}
+                  >
+                    <Folder className="w-3.5 h-3.5" /> Project 0{idx + 1}
+                  </div>
 
-              {/* Folder Body */}
-              <div
-                className="bg-surface-container border border-outline-variant/50 rounded-2xl rounded-tl-none p-5 relative z-10 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all h-full flex flex-col cursor-pointer"
-                style={{ borderTopColor: TAG_COLORS[idx % TAG_COLORS.length], borderTopWidth: 2 }}
-                onClick={() => openProject(project)}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-display text-[17px] font-bold text-on-surface leading-tight pr-2">
-                    {project.title}
-                  </h3>
-                  <div className="flex gap-2 shrink-0">
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
-                        <GitCommit className="w-4 h-4" />
-                      </a>
-                    )}
-                    {project.demo && (
-                      <a href={project.demo} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
+                  <div className="pt-10 md:pt-0">
+                    <div className="flex items-center gap-2 text-[12px] font-bold tracking-widest uppercase opacity-70 mb-4">
+                      <span className="w-2 h-2 rounded-full" style={{ background: "currentColor" }} />
+                      {project.category}
+                    </div>
+                    <h3 className="font-display text-[32px] sm:text-[42px] font-bold leading-[1.05] mb-4">
+                      {project.title}
+                    </h3>
+                    <p className="text-[14px] sm:text-[16px] leading-[1.6] opacity-85 mb-6 max-w-[420px]">
+                      {project.desc}
+                    </p>
+                    <button
+                      onClick={() => openProject(project)}
+                      className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest border-b-2 pb-1 hover:opacity-70 transition-opacity"
+                      style={{ borderColor: "currentColor" }}
+                    >
+                      View Project <ArrowUpRight className="w-4 h-4" />
+                    </button>
+                    <div className="flex flex-wrap gap-2 mt-6">
+                      {project.techStack?.slice(0, 3).map((t) => (
+                        <span key={t} className="px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wide" style={{ background: "rgba(255,255,255,0.15)" }}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="h-[220px] sm:h-[300px] md:h-[360px] w-full rounded-2xl overflow-hidden bg-black/20 relative isolate">
+                    <Carousel
+                      items={project.slides}
+                      baseWidth={420}
+                      autoplay={true}
+                      autoplayDelay={4000 + idx * 500}
+                      loop={false}
+                      pauseOnHover={true}
+                    />
                   </div>
                 </div>
-
-                <p className="text-[13px] text-on-surface-variant mb-4 flex-grow line-clamp-2">
-                  {project.desc}
-                </p>
-
-                <div className="h-[160px] w-full rounded-xl overflow-hidden bg-surface relative isolate mb-4">
-                  <Carousel
-                    items={project.slides}
-                    baseWidth={320}
-                    autoplay={true}
-                    autoplayDelay={4000 + (idx * 500)}
-                    loop={false}
-                    pauseOnHover={true}
-                  />
-                </div>
-                
-                <div className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors text-center mt-auto">
-                  View Details
-                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Show Less button — always visible below the grid */}
-        {showAllProjects && PROJECTS.length > 3 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex justify-center mt-10"
-          >
-            <button
-              onClick={() => {
-                setShowAllProjects(false);
-                const el = document.getElementById("projects");
-                if (el) el.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="flex items-center gap-2 px-8 py-3.5 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-full text-[12px] font-bold tracking-[0.08em] uppercase hover:border-primary hover:text-primary transition-all shadow-md"
-            >
-              ↑ Show Less
-            </button>
-          </motion.div>
-        )}
+            </div>
+          );
+        })}
       </div>
+
+      {/* ── Remaining projects, plain grid ── */}
+      {MORE.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {MORE.map((project, idx) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: idx * 0.08, duration: 0.5 }}
+                className="group relative mt-8"
+              >
+                <div
+                  className="absolute -top-7 left-0 border border-b-0 px-5 py-2 rounded-t-xl text-[11px] font-bold tracking-wider uppercase z-0 flex items-center gap-2 h-8"
+                  style={{ background: TAG_COLORS[idx % TAG_COLORS.length], borderColor: TAG_COLORS[idx % TAG_COLORS.length], color: "#fff" }}
+                >
+                  <Folder className="w-3.5 h-3.5" />
+                  {project.category}
+                </div>
+
+                <div
+                  className="bg-surface-container border border-outline-variant/50 rounded-2xl rounded-tl-none p-5 relative z-10 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all h-full flex flex-col cursor-pointer"
+                  style={{ borderTopColor: TAG_COLORS[idx % TAG_COLORS.length], borderTopWidth: 2 }}
+                  onClick={() => openProject(project)}
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="font-display text-[17px] font-bold text-on-surface leading-tight pr-2">
+                      {project.title}
+                    </h3>
+                    <div className="flex gap-2 shrink-0">
+                      {project.github && (
+                        <a href={project.github} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
+                          <GitCommit className="w-4 h-4" />
+                        </a>
+                      )}
+                      {project.demo && (
+                        <a href={project.demo} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-[13px] text-on-surface-variant mb-4 flex-grow line-clamp-2">
+                    {project.desc}
+                  </p>
+
+                  <div className="h-[160px] w-full rounded-xl overflow-hidden bg-surface relative isolate mb-4">
+                    <Carousel
+                      items={project.slides}
+                      baseWidth={320}
+                      autoplay={true}
+                      autoplayDelay={4000 + (idx * 500)}
+                      loop={false}
+                      pauseOnHover={true}
+                    />
+                  </div>
+
+                  <div className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors text-center mt-auto">
+                    View Details
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Modal */}
       <AnimatePresence>

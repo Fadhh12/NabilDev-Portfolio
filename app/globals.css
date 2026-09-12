@@ -132,6 +132,7 @@
   --font-body: var(--font-body);
   --font-hand: var(--font-hand);
   --font-mono-accent: var(--font-mono-accent);
+  --font-pixel: var(--font-pixel);
 }
 
 @layer base {
@@ -211,6 +212,43 @@
 @keyframes ca-wobble {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
+}
+
+@keyframes ca-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.08); }
+}
+
+.blink-eye {
+  transform-origin: center;
+  animation: ca-blink 4.5s ease-in-out infinite;
+}
+.blink-eye:nth-child(2) { animation-delay: 0.08s; }
+
+/* Cursor-follow spotlight — position via --spot-x / --spot-y (set from JS) */
+.spotlight {
+  position: relative;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(212, 242, 74, 0.18),
+    transparent 70%
+  );
+  opacity: var(--spot-opacity, 0);
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Washi-tape logo chip, used in the "trusted stack" strip */
+.washi-tape {
+  position: relative;
+  clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
 }
 
 @theme inline {

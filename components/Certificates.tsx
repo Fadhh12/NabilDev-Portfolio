@@ -52,31 +52,11 @@ export default function Certificates() {
   };
 
   return (
-    <section id="certificates" className="min-h-[100dvh] py-12 pt-16 pb-16 bg-surface-container relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-start">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-4"
-          >
-            Achievements
-          </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.1 }}
-            className="font-display text-[clamp(28px,4vw,42px)] font-bold tracking-[-0.03em] text-on-surface"
-          >
-            Licenses & <span className="text-primary">Certifications</span>
-          </motion.h2>
-        </div>
-
+    <div id="certificates" className="w-full">
+      <div className="w-full">
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence>
-            {displayedCerts.map((cert, i) => (
+            {displayedCerts.map((cert) => (
               <motion.div 
                 layout
                 key={cert.id}
@@ -193,6 +173,6 @@ export default function Certificates() {
           </>
         )}
       </AnimatePresence>
-    </section>
+    </div>
   );
 }
