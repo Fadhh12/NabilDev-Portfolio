@@ -5,71 +5,100 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* ORIGINAL FONTS & PRIMARY (Olive Theme) + ELEGANT WARM BACKGROUND */
-  --primary: oklch(0.205 0 0);
-  --primary-hover: #3c4c25;
-  --primary-light: #d6eab5;
-  --primary-container: #697a4f;
-  --on-primary: #ffffff;
-  
-  --secondary: oklch(0.97 0 0);
-  --secondary-container: #dbe3cd;
-  --on-secondary-container: #5e6554;
-  --tertiary: #585e52;
-  
-  /* ELEGANT WARM IVORY BACKGROUND */
-  --background: #FDFBF7; 
-  --surface: #FDFBF7;
-  --surface-container-low: #F6F4ED;
-  --surface-container: #EFECE3;
-  --surface-container-high: #E8E5D9;
-  --surface-container-highest: #E1DECF;
-  --surface-dim: #D1CEC0;
-  --surface-bright: #FFFFFF;
-  
-  /* ORIGINAL TEXT COLORS */
-  --on-surface: #1a1c18;
-  --on-surface-variant: #45483e;
-  --outline: #75786d;
-  --outline-variant: #c5c8bb;
-  --inverse-surface: #2f312d;
-  --inverse-on-surface: #f1f1ea;
-  --error: #ba1a1a;
+  /* ============================================================
+     "CRAYON" PALETTE — matched to the portfoliofy.io creative-artsy
+     template: warm paper surface, near-black ink, a lime action
+     accent, and a set of playful tag colors for categories/skills.
+     ============================================================ */
+  --ca-surface: #fdfdfb;
+  --ca-ink: #191510;
+  --ca-gray: #857b69;
+  --ca-chrome: #ece3d1;
+  --ca-tick: #c0b49d;
+  --ca-grid-line: rgba(25, 21, 16, 0.06);
+  --ca-grid-dot: rgba(25, 21, 16, 0.16);
+
+  --ca-blue: #2b57d6;
+  --ca-cyan: #b7c6ef;
+  --ca-yellow: #f7c948;
+  --ca-yellow-soft: #f3e2ad;
+  --ca-magenta: #ff4d8d;
+  --ca-green: #16b06a;
+  --ca-mint: #a9dfc6;
+  --ca-pink-soft: #ffc6da;
+  --ca-orange: #ff6a35;
+  --ca-brown: #5c3a2e;
+
+  --ca-lime: #d4f24a;
+  --ca-lime-ink: #1f2a00;
+  --ca-lime-soft: #e8f4bf;
+  --ca-paper: #f5f3ee;
+
+  /* Semantic tokens — kept so existing component classes (bg-surface,
+     text-on-surface-variant, border-outline-variant, bg-primary, ...)
+     repaint automatically with the new palette. */
+  --primary: var(--ca-ink);
+  --primary-hover: #2e2820;
+  --primary-light: var(--ca-lime-soft);
+  --primary-container: var(--ca-chrome);
+  --on-primary: var(--ca-lime);
+
+  --secondary: var(--ca-chrome);
+  --secondary-container: var(--ca-chrome);
+  --on-secondary-container: var(--ca-ink);
+  --tertiary: var(--ca-gray);
+
+  --background: var(--ca-paper);
+  --surface: var(--ca-surface);
+  --surface-container-low: #f8f6f0;
+  --surface-container: var(--ca-paper);
+  --surface-container-high: var(--ca-chrome);
+  --surface-container-highest: #e4ddc8;
+  --surface-dim: var(--ca-tick);
+  --surface-bright: #ffffff;
+
+  --on-surface: var(--ca-ink);
+  --on-surface-variant: var(--ca-gray);
+  --outline: var(--ca-tick);
+  --outline-variant: #ddd6c6;
+  --inverse-surface: var(--ca-ink);
+  --inverse-on-surface: var(--ca-paper);
+  --error: #c0392b;
 
   --transition-smooth: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Shadcn overrides mapped back to original earthy tones */
-  --foreground: #1a1c18;
-  --card: #FDFBF7;
-  --card-foreground: #1a1c18;
-  --popover: #FDFBF7;
-  --popover-foreground: #1a1c18;
-  --primary-foreground: #ffffff;
-  --secondary-foreground: #1a1c18;
-  --muted: #EFECE3;
-  --muted-foreground: #45483e;
-  --accent: #EFECE3;
-  --accent-foreground: #1a1c18;
-  --destructive: #ba1a1a;
-  --border: #c5c8bb;
-  --input: #c5c8bb;
-  --ring: #697a4f;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  
-  --sidebar: #FDFBF7;
-  --sidebar-foreground: #1a1c18;
-  --sidebar-primary: #3c4c25;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #EFECE3;
-  --sidebar-accent-foreground: #1a1c18;
-  --sidebar-border: #c5c8bb;
-  --sidebar-ring: #697a4f;
+  /* Shadcn overrides mapped to the same ink/paper palette */
+  --foreground: var(--ca-ink);
+  --card: var(--ca-surface);
+  --card-foreground: var(--ca-ink);
+  --popover: var(--ca-surface);
+  --popover-foreground: var(--ca-ink);
+  --primary-foreground: var(--ca-lime);
+  --secondary-foreground: var(--ca-ink);
+  --muted: var(--ca-paper);
+  --muted-foreground: var(--ca-gray);
+  --accent: var(--ca-chrome);
+  --accent-foreground: var(--ca-ink);
+  --destructive: #c0392b;
+  --border: #ddd6c6;
+  --input: #ddd6c6;
+  --ring: var(--ca-ink);
+  --chart-1: var(--ca-blue);
+  --chart-2: var(--ca-green);
+  --chart-3: var(--ca-magenta);
+  --chart-4: var(--ca-yellow);
+  --chart-5: var(--ca-orange);
+  --radius: 0.9rem;
+
+  --sidebar: var(--ca-surface);
+  --sidebar-foreground: var(--ca-ink);
+  --sidebar-primary: var(--ca-ink);
+  --sidebar-primary-foreground: var(--ca-lime);
+  --sidebar-accent: var(--ca-chrome);
+  --sidebar-accent-foreground: var(--ca-ink);
+  --sidebar-border: #ddd6c6;
+  --sidebar-ring: var(--ca-ink);
 }
 
 @theme {
@@ -97,8 +126,12 @@
   --color-inverse-surface: var(--inverse-surface);
   --color-inverse-on-surface: var(--inverse-on-surface);
   --color-error: var(--error);
+  --color-lime: var(--ca-lime);
+  --color-lime-ink: var(--ca-lime-ink);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
+  --font-hand: var(--font-hand);
+  --font-mono-accent: var(--font-mono-accent);
 }
 
 @layer base {
@@ -118,8 +151,8 @@
 
 
   ::selection {
-    background: var(--primary-light);
-    color: var(--primary-hover);
+    background: var(--ca-lime);
+    color: var(--ca-lime-ink);
   }
 
   ::-webkit-scrollbar { width: 8px; }
@@ -132,12 +165,52 @@
 }
 
 @layer utilities {
+  /* Dotted "ruled paper" grid — the scrapbook canvas backdrop */
   .grid-pattern {
-    background-image:
-      linear-gradient(rgba(81,97,57,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(81,97,57,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 32px,
+      var(--ca-grid-dot) 32px,
+      var(--ca-grid-dot) 33px
+    );
   }
+
+  /* Organic hand-drawn "blob" radius used on badges/photo frames */
+  .blob-radius {
+    border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+  }
+
+  /* Washi-tape corner fold, used on polaroid-style photos */
+  .tape-corner {
+    position: relative;
+  }
+  .tape-corner::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-top: 0 solid transparent;
+    border-bottom: 15px solid rgba(25, 21, 16, 0.22);
+    border-left: 15px solid transparent;
+    border-right: 0 solid transparent;
+  }
+
+  .tape-strip {
+    opacity: 0.85;
+    filter: drop-shadow(0 1.5px 1px rgba(25, 21, 16, 0.22));
+  }
+  .tape-strip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 34%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0) 86%);
+  }
+}
+
+@keyframes ca-wobble {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
 }
 
 @theme inline {
@@ -184,7 +257,6 @@
 }
 
 .dark {
-  /* ORIGINAL DARK THEME REVERTED */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import { Fraunces, Plus_Jakarta_Sans, Geist } from "next/font/google";
+import { Anton, Inter, Caveat, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import GlobalBackground from "@/components/GlobalBackground";
 import Nav from "@/components/Nav";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-const fraunces = Fraunces({
+const anton = Anton({
   variable: "--font-display",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK"],
+  weight: "400",
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-body",
+const caveat = Caveat({
+  variable: "--font-hand",
   subsets: ["latin"],
+  weight: ["500", "700"],
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-mono-accent",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,9 +36,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)}>
+    <html lang="en" className={cn("scroll-smooth", "font-sans", inter.variable)}>
       <body
-        className={`${fraunces.variable} ${plusJakartaSans.variable} font-body antialiased relative min-h-screen bg-surface`}
+        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} font-sans antialiased relative min-h-screen bg-surface`}
       >
         <GlobalBackground />
         <Nav />
