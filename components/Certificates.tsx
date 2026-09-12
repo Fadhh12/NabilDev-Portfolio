@@ -2,6 +2,17 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
+// Bundle the worker locally instead of fetching from a CDN — avoids version
+// mismatches with the installed pdfjs-dist and the blank first-paint while
+// the CDN script downloads.
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString();
 
 // Placeholder data since certificates images aren't fully specified
 const CERTIFICATES = [
@@ -41,7 +52,7 @@ export default function Certificates() {
   };
 
   return (
-    <section id="certificates" className="min-h-[100dvh] py-12 pt-16 pb-16 bg-surface-container relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-start">
+    <section id="certificates" className="min-h-[100dvh] py-12 pt-16 pb-16 bg-surface-container relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-6">
           <motion.div 
@@ -76,18 +87,10 @@ export default function Certificates() {
                 className="bg-surface border border-outline-variant rounded-[20px] overflow-hidden group hover:border-primary transition-all duration-300"
               >
                 <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50 flex items-center justify-center">
-                  {/* Clean certificate preview placeholder — iframes don't render on mobile */}
-                  <div className="flex flex-col items-center gap-3 px-6 text-center pointer-events-none select-none">
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="9" y1="13" x2="15" y2="13" />
-                        <line x1="9" y1="17" x2="15" y2="17" />
-                        <polyline points="9 9 10 9" />
-                      </svg>
-                    </div>
-                    <span className="text-[13px] font-semibold text-on-surface-variant">{cert.issuer}</span>
+                  <div className="w-full h-full relative overflow-hidden group pointer-events-none bg-white flex items-center justify-center">
+                    <Document file={cert.file} loading={<div className="w-full h-full bg-surface-container animate-pulse" />}>
+                      <Page pageNumber={1} width={400} renderTextLayer={false} renderAnnotationLayer={false} className="opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100" />
+                    </Document>
                   </div>
                   {/* Click overlay */}
                   <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)} />
@@ -160,13 +163,10 @@ export default function Certificates() {
                   ✕
                 </button>
               </div>
-              <div className="flex-1 min-h-[260px] md:min-h-[420px] bg-surface-dim relative flex flex-col overflow-hidden">
-                {/* Use Google Docs viewer for cross-platform PDF rendering (works on iOS/Android) */}
-                <iframe
-                  src={`https://docs.google.com/viewer?url=${encodeURIComponent(`https://nabilfadhlur.vercel.app${selectedCert.file}`)}&embedded=true`}
-                  className="w-full flex-1 border-none min-h-[260px]"
-                  allow="fullscreen"
-                />
+              <div className="flex-1 min-h-[260px] md:min-h-[420px] bg-surface-dim relative flex flex-col overflow-hidden items-center p-4 overflow-y-auto">
+                <Document file={selectedCert.file} loading={<div className="w-full h-[400px] bg-surface-container animate-pulse rounded-md" />}>
+                  <Page pageNumber={1} width={isMobile ? window.innerWidth * 0.85 : 600} renderTextLayer={false} renderAnnotationLayer={false} className="shadow-lg border border-outline-variant/30 bg-white" />
+                </Document>
               </div>
               <div className="px-6 py-4 shrink-0">
                 <p className="text-[13px] md:text-[15px] leading-[1.7] text-on-surface-variant mb-4">
