@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -31,7 +32,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="min-h-[100dvh] py-10 pb-28 lg:pb-10 bg-surface-container-highest relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-center">
+    <section id="contact" className="min-h-[100dvh] py-10 pb-28 lg:pb-10 bg-surface-container-highest relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-center">
       <div className="absolute inset-0 grid-pattern opacity-30 z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -44,16 +45,28 @@ export default function Contact() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-6">
-              Get In Touch
+            <div className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-3">
+              say hi
             </div>
-            <h2 className="font-display text-[clamp(36px,5vw,60px)] font-black tracking-[-0.04em] text-on-surface leading-[1.05] mb-6">
-              Let&apos;s build<br />
-              something <span className="text-primary">great.</span>
+            <h2 className="font-display uppercase text-[clamp(40px,7vw,84px)] leading-[0.92] tracking-[-0.02em] text-on-surface mb-6">
+              Let&apos;s talk
             </h2>
             <p className="text-[15px] leading-[1.65] text-on-surface-variant mb-6 max-w-[480px]">
-              Open for new opportunities, collaborations, and interesting projects. Whether you have a question or just want to say hi, drop a message and I&apos;ll get back to you.
+              Got a project, a hard problem, or just want to say hi? Send it over — I read every message and usually reply within 24 hours.
             </p>
+
+            {/* Comment bubble, scrapbook style */}
+            <div className="flex items-start gap-3 mb-8 max-w-[440px]">
+              <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white shadow-md shrink-0 relative">
+                <Image src="/assets/images/foto.jpg" alt="Nabil" fill className="object-cover" sizes="44px" />
+              </div>
+              <div className="bg-surface border border-outline-variant rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                <div className="text-[13px] font-bold text-on-surface mb-0.5">Nabil Fadhlur Rahman</div>
+                <p className="text-[13px] leading-[1.6] text-on-surface-variant">
+                  Open to internships, full-time roles, and interesting conversations about hard problems in AI and software.
+                </p>
+              </div>
+            </div>
 
             {/* Contact Details */}
             <div className="flex flex-col gap-5">
@@ -176,7 +189,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-[14px] tracking-wide hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(81,97,57,0.3)] active:scale-[0.99] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                className="w-full py-4 bg-primary text-on-primary rounded-xl font-bold text-[14px] tracking-wide hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(25,21,16,0.25)] active:scale-[0.99] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
                 {status === "loading" ? (
                   <>

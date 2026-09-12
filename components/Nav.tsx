@@ -4,15 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import clsx from "clsx";
-import { Home, Briefcase, Award, Send, Menu, X, Code, FileText, User } from "lucide-react";
+import { Home, Briefcase, Award, Send, Menu, X, Images, User } from "lucide-react";
 
 const NAV_LINKS = [
   { name: "Home", href: "/#home", icon: Home },
   { name: "About", href: "/#about", icon: User },
-  { name: "Stack", href: "/#stack", icon: Code },
   { name: "Projects", href: "/#projects", icon: Briefcase },
-  { name: "Experience", href: "/#experience", icon: FileText },
   { name: "Certificates", href: "/#certificates", icon: Award },
+  { name: "Playground", href: "/#gallery", icon: Images },
 ];
 
 export default function Nav() {
