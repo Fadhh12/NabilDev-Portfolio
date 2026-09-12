@@ -46,7 +46,7 @@ export default function Cursor() {
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,
           scale: isHovered ? 1.5 : 1,
-          backgroundColor: isHovered ? "rgba(214, 234, 181, 0.2)" : "rgba(0, 0, 0, 0)",
+          backgroundColor: isHovered ? "rgba(212, 242, 74, 0.25)" : "rgba(0, 0, 0, 0)",
         }}
         transition={{
           type: "spring",

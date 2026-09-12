@@ -89,8 +89,23 @@ export default function Carousel({
   loop = false,
   round = false
 }: CarouselProps): JSX.Element {
+  // Track the actual rendered width so the carousel never overflows a
+  // narrower parent (e.g. a mobile project card) — baseWidth is only a max.
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [measuredWidth, setMeasuredWidth] = useState<number>(baseWidth);
+
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    const update = () => setMeasuredWidth(Math.min(baseWidth, el.offsetWidth || baseWidth));
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [baseWidth]);
+
   const containerPadding = 16;
-  const itemWidth = baseWidth - containerPadding * 2;
+  const itemWidth = Math.max(measuredWidth - containerPadding * 2, 1);
   const trackItemOffset = itemWidth + GAP;
   const itemsForRender = useMemo(() => {
     if (!loop) return items;
@@ -214,12 +229,15 @@ export default function Carousel({
 
   return (
     <div
-      ref={containerRef}
-      className={`relative overflow-hidden p-3 h-full ${
+      ref={el => {
+        containerRef.current = el;
+        outerRef.current = el;
+      }}
+      className={`relative overflow-hidden p-3 h-full w-full ${
         round ? 'rounded-full border border-outline-variant' : 'rounded-[20px] border border-outline-variant/30'
       }`}
       style={{
-        width: `${baseWidth}px`,
+        maxWidth: `${baseWidth}px`,
         ...(round && { height: `${baseWidth}px` })
       }}
     >
