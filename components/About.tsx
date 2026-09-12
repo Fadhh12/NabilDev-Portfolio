@@ -1,89 +1,226 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+const PRINCIPLES = [
+  {
+    title: "Bridge intelligence and usability",
+    body: "The most powerful algorithm is only as good as the interface that presents it. I care as much about the model's accuracy as I do about whether a person actually understands what it's telling them.",
+    note: "smart AND simple.",
+    color: "var(--ca-yellow)",
+  },
+  {
+    title: "Engineer for real people",
+    body: "Computationally robust means nothing if the screen in front of someone is confusing. I build systems that hold up under the hood and still feel obvious to use.",
+    note: "no confusing screens.",
+    color: "var(--ca-mint)",
+  },
+  {
+    title: "Never stop iterating",
+    body: "Whether I'm training a model or refining a UI, I keep testing and cutting until only what matters is left. Good work rarely looks finished on the first pass.",
+    note: "done is a moving target.",
+    color: "var(--ca-pink-soft)",
+  },
+];
+
+const WORK = [
+  { role: "Google Student Ambassador", company: "Google · Team AI Gemini", period: "Apr 2026 – Sep 2026" },
+  { role: "IT Support", company: "PT Beritahu Digital", period: "Jun 2024 – Aug 2024" },
+];
+
+const EDUCATION = [
+  { role: "Candidate for S.Kom. (Informatics)", company: "President University · GPA 3.62/4.00", period: "Sep 2024 – Present" },
+  { role: "High School Diploma", company: "Pesantren Hidayatunnajah", period: "Jul 2020 – May 2023" },
+];
+
+const SKILLS = [
+  { label: "AI & Machine Learning", color: "var(--ca-yellow)", dark: false },
+  { label: "Full-Stack Development", color: "var(--ca-green)", dark: true },
+  { label: "Data Engineering", color: "var(--ca-magenta)", dark: true },
+  { label: "System Architecture", color: "var(--ca-blue)", dark: true },
+];
 
 export default function About() {
   return (
-    <section id="about" className="min-h-[100dvh] py-12 pt-24 pb-20 bg-gradient-to-br from-surface-container-low to-surface-container relative z-10 w-full overflow-y-auto overflow-x-hidden flex flex-col justify-start">
+    <section id="about" className="min-h-[100dvh] py-20 md:py-28 relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-6">
+
+        {/* Header */}
+        <div className="mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-4"
+            className="inline-flex items-center gap-2 mb-4"
           >
-            Behind the Code
+            <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full">
+              what&apos;s up
+            </span>
+            <span className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant">
+              about me!
+            </span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.1 }}
-            className="font-display text-[clamp(32px,5vw,52px)] font-bold tracking-[-0.03em] text-on-surface leading-[1.1]"
+            className="font-display uppercase text-[clamp(40px,7vw,84px)] leading-[0.95] tracking-[-0.02em] text-on-surface"
           >
-            About <span className="text-primary">Me</span>
+            About
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.2 }}
-            className="text-[17px] text-on-surface-variant mt-4 max-w-[520px] mx-auto"
-          >
-            Building robust and intuitive digital experiences.
-          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
-          >
-            <p className="text-[17px] leading-[1.8] text-on-surface-variant">
-              Hi, I&apos;m Nabil. I specialize in bridging the gap between <strong className="text-on-surface">Artificial Intelligence and Web Development</strong>. My expertise lies in building intelligent, scalable systems from machine learning models to dynamic, high-performance web applications.
-            </p>
-            <p className="text-[17px] leading-[1.8] text-on-surface-variant">
-              With a strong foundation in computer science and data-driven solutions, I enjoy tackling complex problems and transforming them into elegant, user-centric experiences. Whether it&apos;s training algorithms or crafting intuitive interfaces, I&apos;m driven by a passion for continuous innovation.
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16">
+          {/* Left: body + story + principles */}
+          <div className="flex flex-col gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="flex flex-col gap-5"
+            >
+              <p className="text-[16px] md:text-[19px] leading-[1.75] text-on-surface font-medium">
+                I&apos;m a product-minded engineer who gets a little too excited about making complicated things feel simple. I care about the small details, the edge cases everyone forgets, and shipping work that genuinely makes someone&apos;s day easier.
+              </p>
+              <p className="text-[15px] md:text-[17px] leading-[1.8] text-on-surface-variant">
+                I specialize in bridging the gap between <strong className="text-on-surface">Artificial Intelligence and Web Development</strong> — from training models to crafting the dynamic, high-performance interfaces people actually use. With a strong foundation in computer science and data-driven solutions, I enjoy tackling complex problems and turning them into elegant, user-centric experiences.
+              </p>
+            </motion.div>
 
-            <div className="flex flex-wrap gap-2 mt-4">
-              {['AI & Machine Learning', 'Full-Stack Development', 'Data Engineering', 'System Architecture'].map((tag, i) => (
-                <div key={i} className="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-full text-[12px] font-semibold text-on-surface-variant">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  {tag}
-                </div>
+            {/* Callout — pulled from his own engineering philosophy */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.1 }}
+              className="relative rounded-2xl p-6 md:p-8"
+              style={{ background: "var(--ca-ink)", color: "var(--ca-lime)" }}
+            >
+              <span className="font-hand text-[26px] leading-tight block">
+                &quot;True innovation happens at the intersection of intelligence and usability.&quot;
+              </span>
+              <p className="text-[13px] md:text-[14px] leading-[1.7] mt-3 opacity-80">
+                I believe the most powerful algorithms are only as effective as the interfaces that present them — so I engineer systems that are computationally robust and deeply intuitive at the same time.
+              </p>
+            </motion.div>
+
+            {/* Principles */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+              {PRINCIPLES.map((p, i) => (
+                <motion.div
+                  key={p.title}
+                  initial={{ opacity: 0, y: 20, rotate: i % 2 === 0 ? -2 : 2 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -1.5 : 1.5 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-surface border border-outline-variant rounded-2xl p-5 shadow-sm flex flex-col gap-2"
+                >
+                  <span
+                    className="w-8 h-8 flex items-center justify-center rounded-full text-[13px] font-bold shrink-0"
+                    style={{ background: p.color, color: "var(--ca-ink)" }}
+                  >
+                    {i + 1}
+                  </span>
+                  <h4 className="font-display text-[14px] uppercase tracking-tight text-on-surface leading-snug mt-1">
+                    {p.title}
+                  </h4>
+                  <p className="text-[12.5px] leading-[1.6] text-on-surface-variant">{p.body}</p>
+                  <span className="font-hand text-[17px] text-primary mt-1">{p.note}</span>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-surface-container-highest border border-outline-variant rounded-[20px] p-10 relative overflow-hidden flex flex-col"
-          >
-            {/* Left Accent Bar instead of a quote */}
-            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary" />
-
-            <h3 className="font-display text-[24px] font-bold text-on-surface mb-4">
-              My Engineering Philosophy
-            </h3>
-            <p className="text-[16px] leading-[1.8] text-on-surface-variant italic mb-6">
-              &quot;True innovation happens at the intersection of intelligence and usability. I believe that the most powerful algorithms are only as effective as the interfaces that present them. My goal is to engineer systems that are not only computationally robust, but also deeply intuitive for the end user.&quot;
-            </p>
-
-            <div className="mt-auto pt-6 border-t border-outline-variant flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="font-bold text-on-surface text-[14px]">Nabil</span>
-                <span className="text-[11px] font-semibold tracking-[0.05em] uppercase text-primary mt-1">AI & Software Engineer</span>
+          {/* Right: photos + work timeline + skills */}
+          <div className="flex flex-col gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="relative h-[220px] sm:h-[260px]"
+            >
+              <div className="absolute left-0 top-0 w-[62%] aspect-[4/5] rounded-2xl overflow-hidden border-4 border-white shadow-xl tape-corner -rotate-3 z-10">
+                <Image src="/assets/images/foto.jpg" alt="Nabil" fill className="object-cover" sizes="45vw" />
               </div>
-            </div>
-          </motion.div>
+              <div className="absolute right-0 bottom-0 w-[55%] aspect-[4/3] rounded-2xl overflow-hidden border-4 border-white shadow-xl tape-corner rotate-3 z-20">
+                <Image src="/assets/images/WhatsApp Image 2026-04-11 at 22.47.17 (1).jpeg" alt="Scholarship day" fill className="object-cover" sizes="45vw" />
+              </div>
+              <span
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 font-hand text-[16px] px-3 py-1 rounded-md shadow-md z-30 rotate-2"
+                style={{ background: "var(--ca-lime)", color: "var(--ca-lime-ink)" }}
+              >
+                scholarship day
+              </span>
+            </motion.div>
+
+            {/* Work */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <h3 className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-4 flex items-center gap-2">
+                <span className="w-6 h-px bg-primary" /> Work
+              </h3>
+              <div className="flex flex-col gap-4">
+                {WORK.map((w) => (
+                  <div key={w.role} className="flex items-start justify-between gap-3 pb-4 border-b border-outline-variant last:border-0">
+                    <div>
+                      <div className="font-bold text-[14px] text-on-surface">{w.role}</div>
+                      <div className="text-[12.5px] text-on-surface-variant">{w.company}</div>
+                    </div>
+                    <span className="text-[10.5px] font-semibold uppercase tracking-wide text-on-surface-variant whitespace-nowrap mt-0.5">{w.period}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Education */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <h3 className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-4 flex items-center gap-2">
+                <span className="w-6 h-px bg-primary" /> Education
+              </h3>
+              <div className="flex flex-col gap-4">
+                {EDUCATION.map((w) => (
+                  <div key={w.role} className="flex items-start justify-between gap-3 pb-4 border-b border-outline-variant last:border-0">
+                    <div>
+                      <div className="font-bold text-[14px] text-on-surface">{w.role}</div>
+                      <div className="text-[12.5px] text-on-surface-variant">{w.company}</div>
+                    </div>
+                    <span className="text-[10.5px] font-semibold uppercase tracking-wide text-on-surface-variant whitespace-nowrap mt-0.5">{w.period}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Skills */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <h3 className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-4 flex items-center gap-2">
+                <span className="w-6 h-px bg-primary" /> Focus Areas
+              </h3>
+              <div className="flex flex-wrap gap-2.5">
+                {SKILLS.map((s) => (
+                  <span
+                    key={s.label}
+                    className="px-4 py-2 rounded-full text-[12.5px] font-semibold shadow-sm"
+                    style={{ background: s.color, color: s.dark ? "#fff" : "var(--ca-ink)" }}
+                  >
+                    {s.label}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
