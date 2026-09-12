@@ -101,6 +101,10 @@ const PROJECTS = [
   }
 ];
 
+// Cycled per project card — mirrors the colored category tags in the
+// reference "Crayon" template's featured-work grid.
+const TAG_COLORS = ["var(--ca-blue)", "var(--ca-magenta)", "var(--ca-green)", "var(--ca-orange)", "var(--ca-brown)"];
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
@@ -122,7 +126,7 @@ export default function Projects() {
   const visibleProjects = showAllProjects ? PROJECTS : PROJECTS.slice(0, 3);
 
   return (
-    <section id="projects" className="min-h-[100dvh] py-12 pb-16 bg-transparent relative z-10 w-full overflow-y-auto overflow-x-hidden snap-start snap-always flex flex-col justify-start">
+    <section id="projects" className="min-h-[100dvh] py-12 pb-16 bg-transparent relative z-10 w-full overflow-x-hidden snap-start snap-always flex flex-col justify-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
 
         {/* Header */}
@@ -132,19 +136,28 @@ export default function Projects() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-4"
+              className="font-mono-accent text-[11px] tracking-[0.15em] uppercase text-on-surface-variant mb-3"
             >
-              My Work
+              explore my work!
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ delay: 0.1 }}
-              className="font-display text-[clamp(28px,4vw,48px)] font-bold tracking-[-0.03em] text-on-surface"
+              className="font-display uppercase text-[clamp(32px,6vw,64px)] leading-[0.95] tracking-[-0.02em] text-on-surface"
             >
-              Featured <span className="text-primary">Projects</span>
+              Featured Works
             </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.15 }}
+              className="text-[14px] md:text-[16px] text-on-surface-variant mt-3 max-w-md"
+            >
+              A few things I&apos;ve built to make ideas ship faster and problems easier to solve.
+            </motion.p>
           </div>
 
           {PROJECTS.length > 3 && (
@@ -175,8 +188,11 @@ export default function Projects() {
               transition={{ delay: idx * 0.08, duration: 0.5 }}
               className="group relative mt-8"
             >
-              {/* Folder Tab */}
-              <div className="absolute -top-7 left-0 bg-surface-container border border-outline-variant/50 border-b-0 px-5 py-2 rounded-t-xl text-[11px] font-bold text-primary tracking-wider uppercase z-0 flex items-center gap-2 h-8">
+              {/* Folder Tab — colored per project, like the category tags in the reference */}
+              <div
+                className="absolute -top-7 left-0 border border-b-0 px-5 py-2 rounded-t-xl text-[11px] font-bold tracking-wider uppercase z-0 flex items-center gap-2 h-8"
+                style={{ background: TAG_COLORS[idx % TAG_COLORS.length], borderColor: TAG_COLORS[idx % TAG_COLORS.length], color: "#fff" }}
+              >
                 <Folder className="w-3.5 h-3.5" />
                 {project.category}
               </div>
@@ -184,6 +200,7 @@ export default function Projects() {
               {/* Folder Body */}
               <div
                 className="bg-surface-container border border-outline-variant/50 rounded-2xl rounded-tl-none p-5 relative z-10 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all h-full flex flex-col cursor-pointer"
+                style={{ borderTopColor: TAG_COLORS[idx % TAG_COLORS.length], borderTopWidth: 2 }}
                 onClick={() => openProject(project)}
               >
                 <div className="flex justify-between items-start mb-3">
@@ -346,13 +363,13 @@ export default function Projects() {
                   {selectedProject.category}
                 </div>
 
-                <div className="mb-6">
-                  <h4 className="text-[14px] font-bold text-on-surface mb-2">Project Overview</h4>
+                <div className="mb-5">
+                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-2">the challenge</h4>
                   <p className="text-[15px] leading-[1.7] text-on-surface-variant">{selectedProject.desc}</p>
                 </div>
 
-                <div className="mb-6">
-                  <h4 className="text-[14px] font-bold text-on-surface mb-3">Tech Stack</h4>
+                <div className="mb-5">
+                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-3">my approach</h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.techStack?.map(tech => (
                       <span key={tech} className="px-3 py-1 bg-surface-container-highest border border-outline-variant rounded-full text-[12px] text-on-surface font-medium">
@@ -360,6 +377,13 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
+                </div>
+
+                <div className="mb-6">
+                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-2">the result</h4>
+                  <p className="text-[15px] leading-[1.7] text-on-surface-variant">
+                    A working {selectedProject.category.toLowerCase()} build, shipped end-to-end with {selectedProject.techStack?.[0] ?? "the stack above"} — one more real project in the portfolio, not just a mockup.
+                  </p>
                 </div>
 
                 <div className="flex flex-col gap-3 mt-auto pt-6">
