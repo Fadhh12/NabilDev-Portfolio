@@ -102,7 +102,7 @@ const PROJECTS: ProjectItem[] = [
     date: "Nov 2024",
     desc: "Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini) for intelligent campus queries.",
     github: "https://github.com/Fadhh12",
-    demo: null,
+    demo: "https://jarvis-ai-presuniv.vercel.app/",
     techStack: ["Python", "Llama 3.2", "Gemini API", "FastAPI", "VectorDB", "RAG"],
     theme: { bg: "#eab308", fg: "#191510", tabBg: "#ca8a04", tabFg: "#ffffff", tape: "#fef08a" },
     slides: [
