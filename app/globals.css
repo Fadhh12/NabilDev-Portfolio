@@ -2,46 +2,55 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+.font-pixel {
+  font-family: var(--font-pixelify), var(--font-silkscreen), monospace !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
   /* ============================================================
-     "CRAYON" PALETTE — matched to the portfoliofy.io creative-artsy
-     template: warm paper surface, near-black ink, a lime action
-     accent, and a set of playful tag colors for categories/skills.
+     "CRAYON" PALETTE — exact match to portfoliofy.io creative-artsy
+     Reference: warm ruled notebook paper, near-black ink, bright
+     pastel sticker/tape accents (yellow, blue, green, pink, mint).
      ============================================================ */
-  --ca-surface: #fdfdfb;
-  --ca-ink: #191510;
-  --ca-gray: #857b69;
-  --ca-chrome: #ece3d1;
-  --ca-tick: #c0b49d;
-  --ca-grid-line: rgba(25, 21, 16, 0.06);
-  --ca-grid-dot: rgba(25, 21, 16, 0.16);
+  --ca-surface: #f0ece0;       /* warm white card surface */
+  --ca-ink: #191510;           /* near-black ink */
+  --ca-gray: #7a7066;          /* muted text */
+  --ca-chrome: #ddd8c8;        /* light chrome/border */
+  --ca-tick: #bdb3a0;          /* medium tick/divider */
+  --ca-grid-line: rgba(25, 21, 16, 0.10); /* ruled line color */
+  --ca-grid-dot: rgba(25, 21, 16, 0.10);
 
-  --ca-blue: #2b57d6;
+  /* Accent palette — exact from reference screenshots */
+  --ca-blue: #2563eb;          /* project card 1 */
   --ca-cyan: #b7c6ef;
-  --ca-yellow: #f7c948;
-  --ca-yellow-soft: #f3e2ad;
-  --ca-magenta: #ff4d8d;
-  --ca-green: #16b06a;
-  --ca-mint: #a9dfc6;
-  --ca-pink-soft: #ffc6da;
-  --ca-orange: #ff6a35;
+  --ca-yellow: #eab308;        /* active nav, sticky notes */
+  --ca-yellow-nav: #facc15;    /* nav active highlight */
+  --ca-yellow-soft: #fef08a;   /* light yellow badge */
+  --ca-magenta: #ec4899;       /* project card 4, social circle */
+  --ca-green: #10b981;         /* skill badge */
+  --ca-mint: #a7f3d0;          /* mint badge */
+  --ca-pink-soft: #fce7f3;
+  --ca-orange: #f97316;        /* name box outline */
   --ca-brown: #5c3a2e;
 
   --ca-lime: #d4f24a;
   --ca-lime-ink: #1f2a00;
   --ca-lime-soft: #e8f4bf;
-  --ca-paper: #f5f3ee;
+  --ca-paper: #e8e4da;         /* ruled notebook paper background */
 
-  /* Semantic tokens — kept so existing component classes (bg-surface,
-     text-on-surface-variant, border-outline-variant, bg-primary, ...)
-     repaint automatically with the new palette. */
+  /* ── Social circle colors matching reference ── */
+  --ca-social-linkedin: #eab308;   /* yellow */
+  --ca-social-github: #ec4899;     /* pink/magenta */
+  --ca-social-instagram: #10b981;  /* green */
+
+  /* Semantic tokens */
   --primary: var(--ca-ink);
   --primary-hover: #2e2820;
   --primary-light: var(--ca-lime-soft);
   --primary-container: var(--ca-chrome);
-  --on-primary: var(--ca-lime);
+  --on-primary: #ffffff;
 
   --secondary: var(--ca-chrome);
   --secondary-container: var(--ca-chrome);
@@ -50,17 +59,17 @@
 
   --background: var(--ca-paper);
   --surface: var(--ca-surface);
-  --surface-container-low: #f8f6f0;
-  --surface-container: var(--ca-paper);
+  --surface-container-low: #f0ece0;
+  --surface-container: #e8e4da;
   --surface-container-high: var(--ca-chrome);
-  --surface-container-highest: #e4ddc8;
+  --surface-container-highest: #d9d4c4;
   --surface-dim: var(--ca-tick);
   --surface-bright: #ffffff;
 
   --on-surface: var(--ca-ink);
   --on-surface-variant: var(--ca-gray);
   --outline: var(--ca-tick);
-  --outline-variant: #ddd6c6;
+  --outline-variant: #ccc7b5;
   --inverse-surface: var(--ca-ink);
   --inverse-on-surface: var(--ca-paper);
   --error: #c0392b;
@@ -68,36 +77,36 @@
   --transition-smooth: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Shadcn overrides mapped to the same ink/paper palette */
+  /* Shadcn overrides */
   --foreground: var(--ca-ink);
   --card: var(--ca-surface);
   --card-foreground: var(--ca-ink);
   --popover: var(--ca-surface);
   --popover-foreground: var(--ca-ink);
-  --primary-foreground: var(--ca-lime);
+  --primary-foreground: #ffffff;
   --secondary-foreground: var(--ca-ink);
   --muted: var(--ca-paper);
   --muted-foreground: var(--ca-gray);
   --accent: var(--ca-chrome);
   --accent-foreground: var(--ca-ink);
   --destructive: #c0392b;
-  --border: #ddd6c6;
-  --input: #ddd6c6;
+  --border: #ccc7b5;
+  --input: #ccc7b5;
   --ring: var(--ca-ink);
   --chart-1: var(--ca-blue);
   --chart-2: var(--ca-green);
   --chart-3: var(--ca-magenta);
   --chart-4: var(--ca-yellow);
   --chart-5: var(--ca-orange);
-  --radius: 0.9rem;
+  --radius: 0.5rem;
 
   --sidebar: var(--ca-surface);
   --sidebar-foreground: var(--ca-ink);
   --sidebar-primary: var(--ca-ink);
-  --sidebar-primary-foreground: var(--ca-lime);
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: var(--ca-chrome);
   --sidebar-accent-foreground: var(--ca-ink);
-  --sidebar-border: #ddd6c6;
+  --sidebar-border: #ccc7b5;
   --sidebar-ring: var(--ca-ink);
 }
 
@@ -146,19 +155,28 @@
     color: var(--on-surface);
     overflow-x: hidden;
     line-height: 1.6;
+    cursor: none;
     @apply bg-background text-foreground;
   }
 
+  /* Restore cursor only where truly needed (e.g. text inputs) */
+  input, textarea, select {
+    cursor: text;
+  }
 
+  /* Ensure interactive slots don't show default cursor */
+  a, button, [role="button"] {
+    cursor: none;
+  }
 
   ::selection {
-    background: var(--ca-lime);
-    color: var(--ca-lime-ink);
+    background: var(--ca-yellow);
+    color: var(--ca-ink);
   }
 
   ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--surface-container-low); }
-  ::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: var(--ca-paper); }
+  ::-webkit-scrollbar-thumb { background: var(--ca-tick); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
   * {
     @apply border-border outline-ring/50;
@@ -166,23 +184,48 @@
 }
 
 @layer utilities {
-  /* Dotted "ruled paper" grid — the scrapbook canvas backdrop */
+  /* ── Horizontal ruled notebook-paper lines — the main site backdrop ── */
   .grid-pattern {
     background-image: repeating-linear-gradient(
       to bottom,
       transparent 0,
-      transparent 32px,
-      var(--ca-grid-dot) 32px,
-      var(--ca-grid-dot) 33px
+      transparent 31px,
+      var(--ca-grid-line) 31px,
+      var(--ca-grid-line) 32px
     );
   }
 
-  /* Organic hand-drawn "blob" radius used on badges/photo frames */
+  /* ── Organic blob radius ── */
   .blob-radius {
     border-radius: 255px 15px 225px / 15px 225px 15px 255px;
   }
 
-  /* Washi-tape corner fold, used on polaroid-style photos */
+  /* ── Polaroid photo frame ── */
+  .polaroid {
+    background: #ffffff;
+    padding: 10px 10px 32px;
+    box-shadow: 0 4px 16px rgba(25, 21, 16, 0.15), 0 2px 4px rgba(25, 21, 16, 0.08);
+  }
+
+  /* ── Washi tape strip — horizontal tape over photo corners ── */
+  .tape-h {
+    position: relative;
+  }
+  .tape-h::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 18px;
+    background: rgba(252, 211, 77, 0.72);
+    border-radius: 2px;
+    z-index: 10;
+    filter: drop-shadow(0 1px 1px rgba(25,21,16,0.12));
+  }
+
+  /* ── Washi tape corner fold (original) ── */
   .tape-corner {
     position: relative;
   }
@@ -197,23 +240,28 @@
     border-right: 0 solid transparent;
   }
 
-  .tape-strip {
-    opacity: 0.85;
-    filter: drop-shadow(0 1.5px 1px rgba(25, 21, 16, 0.22));
+  /* ── Washi tape parallelogram (TechStack badges, Trusted By) ── */
+  .washi-tape {
+    position: relative;
+    clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
   }
-  .tape-strip::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(110deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 34%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0) 86%);
+
+  /* ── Zigzag torn-paper badge edge ── */
+  .torn-badge {
+    position: relative;
+    clip-path: polygon(
+      0% 8%, 4% 0%, 8% 8%, 12% 0%, 16% 8%, 20% 0%, 24% 8%, 28% 0%,
+      32% 8%, 36% 0%, 40% 8%, 44% 0%, 48% 8%, 52% 0%, 56% 8%, 60% 0%,
+      64% 8%, 68% 0%, 72% 8%, 76% 0%, 80% 8%, 84% 0%, 88% 8%, 92% 0%,
+      96% 8%, 100% 0%, 100% 92%, 96% 100%, 92% 92%, 88% 100%, 84% 92%,
+      80% 100%, 76% 92%, 72% 100%, 68% 92%, 64% 100%, 60% 92%, 56% 100%,
+      52% 92%, 48% 100%, 44% 92%, 40% 100%, 36% 92%, 32% 100%, 28% 92%,
+      24% 100%, 20% 92%, 16% 100%, 12% 92%, 8% 100%, 4% 92%, 0% 100%
+    );
   }
 }
 
-@keyframes ca-wobble {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
+/* ── Blink animation (contact smiley eyes) ── */
 @keyframes ca-blink {
   0%, 92%, 100% { transform: scaleY(1); }
   96% { transform: scaleY(0.08); }
@@ -225,10 +273,15 @@
 }
 .blink-eye:nth-child(2) { animation-delay: 0.08s; }
 
-/* Cursor-follow spotlight — position via --spot-x / --spot-y (set from JS) */
-.spotlight {
-  position: relative;
+/* ── Wobble / floating animation ── */
+@keyframes ca-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
 }
+.ca-float { animation: ca-float 3s ease-in-out infinite; }
+
+/* ── Spotlight: cursor-follow glow on name box ── */
+.spotlight { position: relative; }
 .spotlight::before {
   content: "";
   position: absolute;
@@ -236,7 +289,7 @@
   border-radius: inherit;
   background: radial-gradient(
     260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-    rgba(212, 242, 74, 0.18),
+    rgba(234, 179, 8, 0.14),
     transparent 70%
   );
   opacity: var(--spot-opacity, 0);
@@ -245,10 +298,22 @@
   z-index: 1;
 }
 
-/* Washi-tape logo chip, used in the "trusted stack" strip */
-.washi-tape {
-  position: relative;
-  clip-path: polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%);
+/* ── Tape strip utility ── */
+.tape-strip {
+  opacity: 0.85;
+  filter: drop-shadow(0 1.5px 1px rgba(25, 21, 16, 0.22));
+}
+.tape-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0) 34%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0) 86%);
+}
+
+/* ── Nav ── */
+.nav-link-active {
+  background-color: var(--ca-yellow-nav);
+  color: var(--ca-ink);
 }
 
 @theme inline {
@@ -327,3 +392,14 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+/* ── Global Custom Cursor Rules ── */
+@media (pointer: fine) {
+  body, a, button, [role="button"] {
+    cursor: none !important;
+  }
+  input, textarea, [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+

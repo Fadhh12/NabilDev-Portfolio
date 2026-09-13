@@ -1,300 +1,472 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Folder, ExternalLink, GitCommit, X, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
-import Carousel from "./Carousel";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, X, ExternalLink, GitCommit, Maximize2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import clsx from "clsx";
 
-const PROJECTS = [
+interface SlideItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
+
+interface ProjectItem {
+  id: number;
+  title: string;
+  category: string;
+  date: string;
+  desc: string;
+  github: string | null;
+  demo: string | null;
+  techStack: string[];
+  theme: { bg: string; fg: string; tabBg: string; tabFg: string; tape: string };
+  slides: SlideItem[];
+}
+
+const PROJECTS: ProjectItem[] = [
   {
-    title: "AI Roadmap Adaptive E-Learning",
+    id: 1,
+    title: "AI Roadmap E-Learning",
     category: "EdTech & AI",
-    desc: "Adaptive E-Learning platform utilizing AI for personalized roadmaps.",
-    github: "https://github.com/nabilfadh",
+    date: "Mar 2025",
+    desc: "Adaptive E-Learning platform utilizing AI for personalized roadmaps, interactive skill assessments, and dynamic curriculum generation.",
+    github: "https://github.com/Fadhh12",
     demo: null,
-    techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "OpenAI"],
+    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "OpenAI API", "PostgreSQL"],
+    theme: { bg: "#2563eb", fg: "#ffffff", tabBg: "#1d4ed8", tabFg: "#ffffff", tape: "#93c5fd" },
     slides: [
-      { id: 1, title: "Dashboard", description: "Main User Dashboard", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_75.png" },
-      { id: 2, title: "Roadmap View", description: "AI Generated Roadmap", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_76.png" },
-      { id: 3, title: "Lesson Interface", description: "Interactive Learning", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_77.png" }
-    ]
+      { id: 1, title: "Student Dashboard", description: "Main personalized learning dashboard", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_75.png" },
+      { id: 2, title: "Roadmap View", description: "AI generated node-based curriculum path", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_76.png" },
+      { id: 3, title: "Interactive Lesson", description: "Dynamic quiz and assessment module", image: "/assets/projects/AI Roadmap Adaptive E-Learning/Screenshot_77.png" },
+    ],
   },
   {
+    id: 2,
     title: "Camera AI-VeriVision",
-    category: "Enterprise",
-    desc: "Comprehensive enterprise dashboard and workflow management system.",
+    category: "Enterprise AI",
+    date: "Jan 2025",
+    desc: "Enterprise-grade AI camera verification system with real-time defect detection, live inspection dashboard, automated PASS/FAIL verdicts, and an AI operator assistant chatbot.",
     github: null,
-    demo: null,
-    techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    demo: "https://camera-ai-veri-vision.vercel.app/",
+    techStack: ["React", "Node.js", "Express", "MongoDB", "Computer Vision", "Tailwind CSS"],
+    theme: { bg: "#18181b", fg: "#ffffff", tabBg: "#27272a", tabFg: "#ffffff", tape: "#e5e7eb" },
     slides: [
-      { id: 1, title: "Admin Workflow", description: "Workflow Dashboard", image: "/assets/projects/Astra Projects/Admin_Workflow.png" },
-      { id: 2, title: "Dark Dashboard", description: "Dark Mode Interface", image: "/assets/projects/Astra Projects/Dashboard_dark.png" },
-      { id: 3, title: "Live Monitor", description: "Real-time Monitoring", image: "/assets/projects/Astra Projects/Live_monitor.png" },
-      { id: 4, title: "Integration", description: "Integration Page", image: "/assets/projects/Astra Projects/Integration_Page.png" },
-      { id: 5, title: "ChatBot", description: "AI Chat Interface", image: "/assets/projects/Astra Projects/ChatBot.png" },
-    ]
+      { id: 1, title: "Live Camera Inspection", description: "Real-time AI camera defect detection", image: "/assets/projects/Astra Projects/Live_monitor.png" },
+      { id: 2, title: "Dark Operations Dashboard", description: "Fleet metrics and inspection KPI counters", image: "/assets/projects/Astra Projects/Dashboard_dark.png" },
+      { id: 3, title: "Dataset Training Gallery", description: "Part classification & sample annotations", image: "/assets/projects/Astra Projects/Dataset_Page1.png" },
+      { id: 4, title: "Inspection Verdicts", description: "PASS / FAIL confidence ratings & logs", image: "/assets/projects/Astra Projects/Result_page.png" },
+      { id: 5, title: "Integration & Hardware", description: "Webhook and camera feed configuration", image: "/assets/projects/Astra Projects/Integration_Page.png" },
+      { id: 6, title: "AI VeriAssist Chatbot", description: "Contextual assistant for line operators", image: "/assets/projects/Astra Projects/ChatBot.png" },
+    ],
   },
   {
-    title: "Design Anything",
-    category: "Design Tool",
-    desc: "A creative platform for various design tools and canvas editing.",
-    github: "https://github.com/nabilfadh",
-    demo: null,
-    techStack: ["React", "Redux", "Canvas API", "Tailwind CSS"],
+    id: 3,
+    title: "HireLens AI",
+    category: "HR Tech & AI",
+    date: "2025",
+    desc: "AI-powered recruitment intelligence platform that analyzes CVs, matches candidates to job descriptions, and provides structured hiring insights using multi-model LLM evaluation.",
+    github: "https://github.com/Fadhh12",
+    demo: "https://hirelens-ai-app.vercel.app/",
+    techStack: ["Next.js", "TypeScript", "OpenAI API", "Tailwind CSS", "Vercel AI SDK"],
+    theme: { bg: "#059669", fg: "#ffffff", tabBg: "#047857", tabFg: "#ffffff", tape: "#6ee7b7" },
     slides: [
-      { id: 1, title: "Editor", description: "Main Design Interface", image: "/assets/projects/Design Anything/Screenshot_75.png" },
-      { id: 2, title: "Tools", description: "Design Tools Overview", image: "/assets/projects/Design Anything/Screenshot_76.png" },
-      { id: 3, title: "Export", description: "Export Options", image: "/assets/projects/Design Anything/Screenshot_77.png" }
-    ]
+      { id: 1, title: "AI Resume Scanner", description: "Instant CV analysis and match scoring", image: "/assets/projects/Astra Projects/Dashboard_dark.png" },
+      { id: 2, title: "Job Match Engine", description: "Skill-gap analysis vs job descriptions", image: "/assets/projects/Astra Projects/ChatBot.png" },
+      { id: 3, title: "Candidate Insights", description: "Structured hiring recommendation report", image: "/assets/projects/Astra Projects/Result_page.png" },
+    ],
   },
   {
+    id: 4,
+    title: "Marwa-id",
+    category: "Web Platform",
+    date: "2025",
+    desc: "Modern web platform for a community or organization with clean design, rich content management, and a smooth user experience built for Indonesian audiences.",
+    github: "https://github.com/Fadhh12",
+    demo: "https://marwa-id.vercel.app/",
+    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
+    theme: { bg: "#0369a1", fg: "#ffffff", tabBg: "#075985", tabFg: "#ffffff", tape: "#bae6fd" },
+    slides: [
+      { id: 1, title: "Landing Page", description: "Hero and main content sections", image: "/assets/projects/pu_suites/Screenshot (347).png" },
+      { id: 2, title: "Content Section", description: "Organized information layout", image: "/assets/projects/pu_suites/Screenshot (349).png" },
+      { id: 3, title: "Community Features", description: "Engagement and interaction modules", image: "/assets/projects/pu_suites/Screenshot (351).png" },
+    ],
+  },
+  {
+    id: 5,
     title: "Jarvis AI Assistant",
     category: "Generative AI",
-    desc: "Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support.",
-    github: "https://github.com/nabilfadh",
+    date: "Nov 2024",
+    desc: "Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini) for intelligent campus queries.",
+    github: "https://github.com/Fadhh12",
     demo: null,
-    techStack: ["Python", "Llama 3", "Gemini", "RAG", "FastAPI", "VectorDB"],
+    techStack: ["Python", "Llama 3.2", "Gemini API", "FastAPI", "VectorDB", "RAG"],
+    theme: { bg: "#eab308", fg: "#191510", tabBg: "#ca8a04", tabFg: "#ffffff", tape: "#fef08a" },
     slides: [
-      { id: 1, title: "Chat Interface", description: "RAG Powered Chat", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/Screenshot (337).png" },
-      { id: 2, title: "Settings", description: "LLM Model Configuration", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/Screenshot (338).png" },
-      { id: 3, title: "Architecture", description: "System Flow", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/ray-so-export (1).png" },
-    ]
+      { id: 1, title: "Campus Chat Interface", description: "RAG powered campus Q&A interaction", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/Screenshot (337).png" },
+      { id: 2, title: "Multi-Model Config", description: "Switching between Llama 3.2 and Gemini", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/Screenshot (338).png" },
+      { id: 3, title: "Student Inquiry Flow", description: "Academic calendar and course schedule lookup", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/Screenshot_73.png" },
+      { id: 4, title: "RAG Vector Architecture", description: "Semantic chunking & vector retrieval pipeline", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/ray-so-export (1).png" },
+      { id: 5, title: "LLM Pipeline Engine", description: "Context injection and evaluation logic", image: "/assets/projects/Jarvis AI Context-Aware University Assistant utilizing RAG Architecture with Multi-Model LLM Support (Llama 3.2 & Gemini)/ray-so-export.png" },
+    ],
   },
   {
+    id: 6,
+    title: "Design Anything",
+    category: "Design Tool",
+    date: "Sep 2024",
+    desc: "Creative browser-based platform for multi-layered design tools, SVG vector canvas editing, custom exports, and fluid layout manipulation.",
+    github: "https://github.com/Fadhh12",
+    demo: null,
+    techStack: ["React", "Redux", "Canvas API", "Tailwind CSS", "TypeScript"],
+    theme: { bg: "#ec4899", fg: "#ffffff", tabBg: "#db2777", tabFg: "#ffffff", tape: "#fbcfe8" },
+    slides: [
+      { id: 1, title: "Canvas Artboard", description: "Vector editing and layer transform panel", image: "/assets/projects/Design Anything/Screenshot_75.png" },
+      { id: 2, title: "Design Tool Palette", description: "Typography, brush & shape inspectors", image: "/assets/projects/Design Anything/Screenshot_76.png" },
+      { id: 3, title: "Export & Render", description: "SVG and multi-resolution PNG export", image: "/assets/projects/Design Anything/Screenshot_77.png" },
+    ],
+  },
+  {
+    id: 7,
     title: "Real-time Trash Detection",
     category: "Computer Vision",
-    desc: "Real-time object detection system for automated trash sorting using YOLO.",
-    github: "https://github.com/nabilfadh",
+    date: "Jul 2024",
+    desc: "Real-time object detection and categorization system for automated smart city waste sorting using trained YOLO models and high-fps video pipeline.",
+    github: "https://github.com/Fadhh12",
     demo: null,
-    techStack: ["Python", "YOLO", "PyTorch", "OpenCV"],
+    techStack: ["Python", "YOLO", "PyTorch", "OpenCV", "Flask"],
+    theme: { bg: "#0d9488", fg: "#ffffff", tabBg: "#0f766e", tabFg: "#ffffff", tape: "#99f6e4" },
     slides: [
-      { id: 1, title: "Detection Feed", description: "Live Camera Feed", image: "/assets/projects/Real-time Trash Detection/Screenshot_75.png" },
-      { id: 2, title: "Metrics", description: "Accuracy Metrics", image: "/assets/projects/Real-time Trash Detection/Screenshot_76.png" },
-      { id: 3, title: "Results", description: "Detection Results", image: "/assets/projects/Real-time Trash Detection/Screenshot_77.png" },
-    ]
+      { id: 1, title: "Live Detection Feed", description: "YOLO bounding boxes with class confidence", image: "/assets/projects/Real-time Trash Detection/Screenshot_75.png" },
+      { id: 2, title: "Confusion Matrix", description: "Multi-class validation benchmarks", image: "/assets/projects/Real-time Trash Detection/Screenshot_76.png" },
+      { id: 3, title: "Precision-Recall Curves", description: "Model convergence metrics across epochs", image: "/assets/projects/Real-time Trash Detection/Screenshot_77.png" },
+      { id: 4, title: "Batch Inference", description: "Performance under diverse lighting conditions", image: "/assets/projects/Real-time Trash Detection/Screenshot_78.png" },
+      { id: 5, title: "F1 Score Analysis", description: "Optimal confidence threshold tuning", image: "/assets/projects/Real-time Trash Detection/Screenshot_79.png" },
+      { id: 6, title: "Classification Summary", description: "Waste category breakdown output", image: "/assets/projects/Real-time Trash Detection/Screenshot_80.png" },
+    ],
   },
   {
-    title: "Recreo",
-    category: "Web App",
-    desc: "A lifestyle and recreation web application for events and activities.",
-    github: "https://github.com/nabilfadh",
-    demo: null,
-    techStack: ["PHP", "XAMPP", "MySQL", "JavaScript"],
-    slides: [
-      { id: 1, title: "Landing Page", description: "Recreo Landing Page", image: "/assets/projects/Recreo/Screenshot_75.png" },
-      { id: 2, title: "Features", description: "App Features", image: "/assets/projects/Recreo/Screenshot_76.png" },
-      { id: 3, title: "Explore", description: "Explore Section", image: "/assets/projects/Recreo/Screenshot_77.png" },
-    ]
-  },
-  {
+    id: 8,
     title: "PU Suites",
-    category: "Web App",
-    desc: "Management system and analytics dashboard for PU Suites property.",
-    github: "https://github.com/nabilfadh",
-    demo: null,
-    techStack: ["PHP", "XAMPP", "MySQL", "JavaScript"],
+    category: "Enterprise System",
+    date: "May 2024",
+    desc: "Integrated academic and administrative suite designed to simplify student portals, course registration, and faculty workflows at President University.",
+    github: "https://github.com/Fadhh12",
+    demo: "https://pu-suites.infinityfreeapp.com/",
+    techStack: ["PHP", "MySQL", "Bootstrap", "JavaScript", "Laravel"],
+    theme: { bg: "#7c3aed", fg: "#ffffff", tabBg: "#6d28d9", tabFg: "#ffffff", tape: "#ddd6fe" },
     slides: [
-      { id: 1, title: "Suite Overview", description: "Suite Management", image: "/assets/projects/pu_suites/Screenshot (347).png" },
-      { id: 2, title: "Booking", description: "Booking Interface", image: "/assets/projects/pu_suites/Screenshot (349).png" },
-      { id: 3, title: "Dashboard", description: "Analytics Dashboard", image: "/assets/projects/pu_suites/Screenshot (351).png" },
-    ]
-  }
+      { id: 1, title: "Portal Dashboard", description: "Student and staff central dashboard", image: "/assets/projects/pu_suites/Screenshot (347).png" },
+      { id: 2, title: "Course Schedules", description: "Semester timetable and room allocations", image: "/assets/projects/pu_suites/Screenshot (349).png" },
+      { id: 3, title: "Grade Registry", description: "Academic transcripts and credit tracking", image: "/assets/projects/pu_suites/Screenshot (351).png" },
+      { id: 4, title: "Student Welfare Request", description: "Advocacy and administrative support form", image: "/assets/projects/pu_suites/Screenshot (352).png" },
+      { id: 5, title: "Faculty Management", description: "Staff directory and assignment oversight", image: "/assets/projects/pu_suites/Screenshot (357).png" },
+      { id: 6, title: "Document Archival", description: "Digital certification and letters module", image: "/assets/projects/pu_suites/Screenshot_74.png" },
+    ],
+  },
+  {
+    id: 9,
+    title: "Recreo",
+    category: "Creative Community",
+    date: "Feb 2024",
+    desc: "Interactive community and event engagement hub connecting campus creators, showcasing student projects, and organizing activities.",
+    github: "https://github.com/Fadhh12",
+    demo: null,
+    techStack: ["React", "Firebase", "Tailwind CSS", "Framer Motion"],
+    theme: { bg: "#f97316", fg: "#ffffff", tabBg: "#ea580c", tabFg: "#ffffff", tape: "#fed7aa" },
+    slides: [
+      { id: 1, title: "Community Feed", description: "Upcoming creator events and gatherings", image: "/assets/projects/Recreo/Screenshot_75.png" },
+      { id: 2, title: "Event Registration", description: "Ticket reservation and guest check-in", image: "/assets/projects/Recreo/Screenshot_76.png" },
+      { id: 3, title: "Project Showcase", description: "Spotlight on community members and work", image: "/assets/projects/Recreo/Screenshot_77.png" },
+      { id: 4, title: "Creator Profiles", description: "Portfolio links and skill tags", image: "/assets/projects/Recreo/Screenshot_78.png" },
+      { id: 5, title: "Activity Gallery", description: "Memories, photos, and highlight reels", image: "/assets/projects/Recreo/Screenshot_80.png" },
+    ],
+  },
 ];
 
-// Alternating card + ribbon-tab colors — mirrors the reference's stacked
-// "PROJECT 01 / 02 / 03" cards (dark → tan → pink → dark ...).
-const CARD_THEMES = [
-  { bg: "var(--ca-ink)", fg: "#ffffff", tab: "var(--ca-blue)" },
-  { bg: "var(--ca-yellow-soft)", fg: "var(--ca-ink)", tab: "var(--ca-ink)" },
-  { bg: "var(--ca-magenta)", fg: "#ffffff", tab: "var(--ca-ink)" },
-  { bg: "var(--ca-mint)", fg: "var(--ca-ink)", tab: "var(--ca-blue)" },
-];
-const TAG_COLORS = ["var(--ca-blue)", "var(--ca-magenta)", "var(--ca-green)", "var(--ca-orange)", "var(--ca-brown)"];
+/**
+ * Individual Project Card with sticky stack + puzzle merge/unmerge zoom
+ */
+function ProjectCard({
+  project,
+  index,
+  total,
+  onOpenModal,
+}: {
+  project: ProjectItem;
+  index: number;
+  total: number;
+  onOpenModal: (project: ProjectItem, slideIndex?: number) => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-const FEATURED = PROJECTS.slice(0, 4);
-const MORE = PROJECTS.slice(4);
+  // Measure scroll progress for this specific card
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start start"],
+  });
 
-export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const openProject = (project: typeof PROJECTS[0]) => {
-    setSelectedProject(project);
-    setCurrentSlide(0);
-    const mainScroll = document.getElementById('main-scroll');
-    if (mainScroll) mainScroll.style.scrollSnapType = 'none';
-  };
-
-  const closeProject = () => {
-    setSelectedProject(null);
-    const mainScroll = document.getElementById('main-scroll');
-    if (mainScroll) mainScroll.style.scrollSnapType = 'y mandatory';
-  };
+  // Scale down slightly when being overlapped by the next card (puzzle merge effect)
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
+  // Smooth opacity and scaling for sticky behavior
+  const cardTop = 64 + index * 12; // slight cascading tab offset
 
   return (
-    <section id="projects" className="relative z-10 w-full overflow-x-hidden snap-start py-16 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mb-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="font-hand text-[22px] text-on-surface-variant mb-2"
+    <div
+      ref={containerRef}
+      className="sticky w-full flex items-center justify-center py-6 min-h-[90dvh]"
+      style={{
+        top: `${cardTop}px`,
+        zIndex: index + 10,
+      }}
+    >
+      <motion.div
+        style={{ scale }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
+      >
+        <div
+          className="relative rounded-sm overflow-hidden border-2 border-[#191510] shadow-[8px_8px_0_#191510] transition-transform duration-300"
+          style={{ background: project.theme.bg, color: project.theme.fg }}
         >
-          explore my work!
-        </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ delay: 0.1 }}
-          className="font-pixel uppercase text-[clamp(32px,7vw,68px)] leading-[1.25] tracking-tight text-on-surface"
-        >
-          Featured Projects
-        </motion.h2>
-      </div>
-
-      {/* ── Sticky stack: each card pins at the same spot and the next one
-          slides up to cover it — pure CSS position:sticky, no JS needed. ── */}
-      <div className="relative">
-        {FEATURED.map((project, idx) => {
-          const theme = CARD_THEMES[idx % CARD_THEMES.length];
-          return (
-            <div
-              key={project.title}
-              className="sticky top-20 md:top-24 h-[calc(100dvh-6rem)] flex items-center"
-              style={{ zIndex: idx + 1 }}
-            >
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          {/* Top Folder Tabs (Photo 1 exact layout) */}
+          <div className="flex items-center border-b-2 border-[#191510] bg-black/10 overflow-x-auto no-scrollbar">
+            {PROJECTS.map((p, pIdx) => {
+              const isCurrent = p.id === project.id;
+              return (
                 <div
-                  className="relative rounded-[28px] p-6 sm:p-10 md:p-12 shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center overflow-hidden"
-                  style={{ background: theme.bg, color: theme.fg }}
+                  key={p.id}
+                  className="px-5 sm:px-7 py-3 text-[11px] sm:text-[12px] font-bold tracking-widest uppercase flex items-center gap-2 border-r-2 border-[#191510] shrink-0"
+                  style={{
+                    background: isCurrent ? p.theme.tabBg : "rgba(0,0,0,0.25)",
+                    color: isCurrent ? p.theme.tabFg : "rgba(255,255,255,0.7)",
+                  }}
                 >
-                  {/* Corner-cut ribbon tab */}
-                  <div
-                    className="absolute -top-px left-0 px-5 py-2.5 text-[11px] font-bold tracking-widest uppercase flex items-center gap-2"
+                  <span className="text-[10px]">{isCurrent ? "✦" : "+"}</span>
+                  Project 0{pIdx + 1}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 sm:p-10 md:p-12 items-center">
+            {/* Left Col (5 cols): Details */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-[12px] font-bold tracking-widest uppercase opacity-85 mb-3 font-mono-accent">
+                  <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                  {project.date}
+                </div>
+
+                <h3 className="font-display text-[clamp(32px,4.5vw,56px)] font-bold leading-[1.05] tracking-tight mb-4 drop-shadow-sm">
+                  {project.title}
+                </h3>
+
+                <p className="text-[14px] sm:text-[15px] leading-[1.65] opacity-90 mb-6 max-w-[440px]">
+                  {project.desc}
+                </p>
+
+                <div className="flex items-center gap-4 mb-6">
+                  <button
+                    onClick={() => onOpenModal(project)}
+                    className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest border-b-2 pb-1 hover:opacity-75 transition-opacity font-mono-accent cursor-pointer"
+                    style={{ borderColor: "currentColor" }}
+                  >
+                    View Project <ArrowUpRight className="w-4 h-4" />
+                  </button>
+
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="GitHub Repository"
+                      className="p-2 rounded-full border-2 border-white/40 hover:border-white transition-colors"
+                    >
+                      <GitCommit className="w-4 h-4" />
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="Live Demo"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest rounded-sm border-2 border-white/60 hover:bg-white hover:text-[#191510] transition-all font-mono-accent"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" /> Live Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Category & Tech Pills */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                <span className="px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-black text-white rounded-sm border border-white/30">
+                  {project.category}
+                </span>
+                {project.techStack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-sm border"
                     style={{
-                      background: theme.tab,
-                      color: "#fff",
-                      clipPath: "polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%)",
+                      borderColor: project.theme.fg === "#ffffff" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)",
+                      background: "rgba(0,0,0,0.15)",
                     }}
                   >
-                    <Folder className="w-3.5 h-3.5" /> Project 0{idx + 1}
-                  </div>
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-                  <div className="pt-10 md:pt-0">
-                    <div className="flex items-center gap-2 text-[12px] font-bold tracking-widest uppercase opacity-70 mb-4">
-                      <span className="w-2 h-2 rounded-full" style={{ background: "currentColor" }} />
-                      {project.category}
-                    </div>
-                    <h3 className="font-display text-[32px] sm:text-[42px] font-bold leading-[1.05] mb-4">
-                      {project.title}
-                    </h3>
-                    <p className="text-[14px] sm:text-[16px] leading-[1.6] opacity-85 mb-6 max-w-[420px]">
-                      {project.desc}
-                    </p>
-                    <button
-                      onClick={() => openProject(project)}
-                      className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest border-b-2 pb-1 hover:opacity-70 transition-opacity"
-                      style={{ borderColor: "currentColor" }}
-                    >
-                      View Project <ArrowUpRight className="w-4 h-4" />
-                    </button>
-                    <div className="flex flex-wrap gap-2 mt-6">
-                      {project.techStack?.slice(0, 3).map((t) => (
-                        <span key={t} className="px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wide" style={{ background: "rgba(255,255,255,0.15)" }}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+            {/* Right Col (7 cols): Multi-Screen Mockup Collage Frame (Photo 1 layout) */}
+            <div className="lg:col-span-7 relative">
+              {/* Taped Frame Container */}
+              <div className="relative p-3 sm:p-4 bg-white/95 rounded-sm border-4 border-white shadow-2xl">
+                {/* Washi tape top-left */}
+                <div
+                  className="absolute -top-3 left-[15%] w-16 h-6 z-20 opacity-85 shadow-sm"
+                  style={{
+                    background: project.theme.tape,
+                    transform: "rotate(-3deg)",
+                    border: "1px dashed rgba(0,0,0,0.2)",
+                  }}
+                />
+                {/* Washi tape top-right */}
+                <div
+                  className="absolute -top-3 right-[15%] w-16 h-6 z-20 opacity-85 shadow-sm"
+                  style={{
+                    background: "#fef08a",
+                    transform: "rotate(2deg)",
+                    border: "1px dashed rgba(0,0,0,0.2)",
+                  }}
+                />
 
-                  <div className="h-[220px] sm:h-[300px] md:h-[360px] w-full rounded-2xl overflow-hidden bg-black/20 relative isolate">
-                    <Carousel
-                      items={project.slides}
-                      baseWidth={420}
-                      autoplay={true}
-                      autoplayDelay={4000 + idx * 500}
-                      loop={false}
-                      pauseOnHover={true}
-                    />
-                  </div>
+                {/* Collage Grid: Dynamic responsive collage of UI/app mockups */}
+                <div
+                  className={clsx(
+                    "grid gap-2.5 sm:gap-3 bg-[#e8e4da] p-2 sm:p-3 rounded-sm",
+                    project.slides.length === 2 ? "grid-cols-2" :
+                    project.slides.length === 3 ? "grid-cols-2 sm:grid-cols-3" :
+                    project.slides.length === 4 ? "grid-cols-2" :
+                    "grid-cols-2 sm:grid-cols-3"
+                  )}
+                >
+                  {project.slides.map((slide, sIdx) => {
+                    const isProminent = (project.slides.length === 3 && sIdx === 0) || (project.slides.length === 5 && sIdx === 0);
+                    return (
+                      <motion.div
+                        key={sIdx}
+                        whileHover={{ scale: 1.03, zIndex: 10 }}
+                        onClick={() => onOpenModal(project, sIdx)}
+                        className={clsx(
+                          "group relative rounded-sm overflow-hidden bg-white border border-[#191510]/20 shadow-md cursor-pointer",
+                          isProminent ? "col-span-2 sm:col-span-1 aspect-[16/10] sm:aspect-[3/4]" : "aspect-[3/4]"
+                        )}
+                      >
+                        <Image
+                          src={slide.image}
+                          alt={slide.title}
+                          fill
+                          className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                          sizes="(max-width: 640px) 45vw, 240px"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                          <span className="text-[10px] sm:text-[11px] font-bold text-white leading-tight font-hand drop-shadow">
+                            {slide.title}
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between mt-2 pt-2 px-1 text-[#191510] font-mono-accent text-[11px] font-bold opacity-75">
+                  <span>✦ {project.slides.length} SCREENS / MOCKUPS</span>
+                  <span className="flex items-center gap-1 cursor-pointer hover:underline" onClick={() => onOpenModal(project)}>
+                    <Maximize2 className="w-3 h-3" /> Expand
+                  </span>
                 </div>
               </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function Projects({ showAll = false }: { showAll?: boolean }) {
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [selectedSlideIndex, setSelectedSlideIndex] = useState(0);
+
+  const displayedProjects = showAll ? PROJECTS : PROJECTS.slice(0, 3);
+
+  const openModal = (project: ProjectItem, slideIndex = 0) => {
+    setSelectedProject(project);
+    setSelectedSlideIndex(slideIndex);
+  };
+
+  const closeModal = () => {
+    setSelectedProject(null);
+  };
+
+  return (
+    <section id="projects" className="relative z-10 w-full overflow-x-hidden pb-32">
+      {/* ── Section Header ── */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 md:pt-28 pb-8 text-center md:text-left">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="font-hand text-[24px] text-[#7a7066] mb-1"
+        >
+          explore my work!
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="font-pixel uppercase text-[clamp(36px,7vw,68px)] leading-[1.1] tracking-tight text-[#191510] inline-block border-b-2 border-[#191510] pb-2"
+        >
+          {showAll ? "All Projects" : "Featured Projects"}
+        </motion.h2>
+        <p className="text-[13px] text-[#7a7066] font-mono-accent uppercase tracking-wider mt-3">
+          scroll to merge &amp; separate project cards
+        </p>
       </div>
 
-      {/* ── Remaining projects, plain grid ── */}
-      {MORE.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {MORE.map((project, idx) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.08, duration: 0.5 }}
-                className="group relative mt-8"
-              >
-                <div
-                  className="absolute -top-7 left-0 border border-b-0 px-5 py-2 rounded-t-xl text-[11px] font-bold tracking-wider uppercase z-0 flex items-center gap-2 h-8"
-                  style={{ background: TAG_COLORS[idx % TAG_COLORS.length], borderColor: TAG_COLORS[idx % TAG_COLORS.length], color: "#fff" }}
-                >
-                  <Folder className="w-3.5 h-3.5" />
-                  {project.category}
-                </div>
+      {/* ── Sticky Stacked Project Cards (Puzzle Merge / Unmerge) ── */}
+      <div className="relative w-full">
+        {displayedProjects.map((project, idx) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            index={idx}
+            total={displayedProjects.length}
+            onOpenModal={openModal}
+          />
+        ))}
+      </div>
 
-                <div
-                  className="bg-surface-container border border-outline-variant/50 rounded-2xl rounded-tl-none p-5 relative z-10 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all h-full flex flex-col cursor-pointer"
-                  style={{ borderTopColor: TAG_COLORS[idx % TAG_COLORS.length], borderTopWidth: 2 }}
-                  onClick={() => openProject(project)}
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-display text-[17px] font-bold text-on-surface leading-tight pr-2">
-                      {project.title}
-                    </h3>
-                    <div className="flex gap-2 shrink-0">
-                      {project.github && (
-                        <a href={project.github} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
-                          <GitCommit className="w-4 h-4" />
-                        </a>
-                      )}
-                      {project.demo && (
-                        <a href={project.demo} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="text-on-surface-variant hover:text-primary transition-colors">
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className="text-[13px] text-on-surface-variant mb-4 flex-grow line-clamp-2">
-                    {project.desc}
-                  </p>
-
-                  <div className="h-[160px] w-full rounded-xl overflow-hidden bg-surface relative isolate mb-4">
-                    <Carousel
-                      items={project.slides}
-                      baseWidth={320}
-                      autoplay={true}
-                      autoplayDelay={4000 + (idx * 500)}
-                      loop={false}
-                      pauseOnHover={true}
-                    />
-                  </div>
-
-                  <div className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors text-center mt-auto">
-                    View Details
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* Link to view all projects if on home page */}
+      {!showAll && (
+        <div className="flex justify-center mt-12 relative z-30">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#191510] text-white font-bold text-[13px] tracking-widest uppercase border-2 border-[#191510] shadow-[4px_4px_0_#7a7066] hover:bg-[#2563eb] transition-all"
+          >
+            View All Projects ({PROJECTS.length}) →
+          </Link>
         </div>
       )}
 
-      {/* Modal */}
+      {/* ── High-Res Preview Modal ── */}
       <AnimatePresence>
         {selectedProject && (
           <>
@@ -302,138 +474,104 @@ export default function Projects() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => closeProject()}
-              className="fixed inset-0 bg-on-surface/50 backdrop-blur-sm z-[2000]"
+              onClick={closeModal}
+              className="fixed inset-0 z-[2000] bg-black/80 backdrop-blur-sm"
             />
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
-              animate={{ opacity: 1, y: "-50%", scale: 1, x: "-50%" }}
-              exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
-              className="fixed top-1/2 left-1/2 w-[95%] max-w-[1000px] h-[90vh] max-h-[700px] bg-surface rounded-[24px] overflow-hidden z-[2010] shadow-2xl border border-outline-variant flex flex-col md:flex-row"
-              style={{ x: "-50%", y: "-50%" }}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed inset-0 z-[2001] flex items-center justify-center p-4 sm:p-6 pointer-events-none"
             >
-              <button
-                onClick={() => closeProject()}
-                className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors backdrop-blur-md"
+              <div
+                className="pointer-events-auto bg-[#f0ece0] border-2 border-[#191510] rounded-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 flex flex-col gap-6"
+                onClick={(e) => e.stopPropagation()}
               >
-                <X className="w-5 h-5" />
-              </button>
+                {/* Modal Header */}
+                <div className="flex items-start justify-between border-b-2 border-[#191510] pb-4">
+                  <div>
+                    <span className="px-3 py-1 bg-[#191510] text-white text-[10px] font-bold uppercase tracking-wider rounded-sm">
+                      {selectedProject.category}
+                    </span>
+                    <h3 className="font-display text-[26px] sm:text-[34px] font-bold text-[#191510] mt-2">
+                      {selectedProject.title}
+                    </h3>
+                    <p className="text-[13px] text-[#7a7066] font-mono-accent">
+                      {selectedProject.date} • {selectedProject.techStack.join(", ")}
+                    </p>
+                  </div>
+                  <button
+                    onClick={closeModal}
+                    className="p-2 rounded-sm border-2 border-[#191510] hover:bg-[#191510] hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
 
-              {/* Left Side: Image Viewer */}
-              <div className="w-full md:w-[60%] h-[300px] md:h-full bg-surface-dim relative flex flex-col">
-                <div className="flex-1 relative overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentSlide}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -30 }}
-                      transition={{ duration: 0.25 }}
-                      className="absolute inset-0"
+                {/* Main Selected Image */}
+                <div className="relative w-full h-[320px] sm:h-[450px] bg-black/10 rounded-sm overflow-hidden border-2 border-[#191510]">
+                  <Image
+                    src={selectedProject.slides[selectedSlideIndex]?.image || selectedProject.slides[0].image}
+                    alt={selectedProject.slides[selectedSlideIndex]?.title || selectedProject.title}
+                    fill
+                    className="object-contain p-2"
+                    sizes="(max-width: 1024px) 100vw, 900px"
+                  />
+                  <div className="absolute bottom-3 left-3 bg-[#191510]/85 text-white px-4 py-2 rounded-sm text-[12px] font-mono-accent">
+                    {selectedProject.slides[selectedSlideIndex]?.title}: {selectedProject.slides[selectedSlideIndex]?.description}
+                  </div>
+                </div>
+
+                {/* Thumbnails Row */}
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {selectedProject.slides.map((s, idx) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setSelectedSlideIndex(idx)}
+                      className={`relative w-24 h-16 rounded-sm overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                        selectedSlideIndex === idx ? "border-[#2563eb] scale-105 shadow-md" : "border-[#191510]/30 opacity-70"
+                      }`}
                     >
-                      {selectedProject.slides[currentSlide]?.image ? (
-                        <img
-                          src={selectedProject.slides[currentSlide].image}
-                          alt={selectedProject.slides[currentSlide].title}
-                          className="w-full h-full object-contain bg-black/90"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-on-surface-variant text-sm">No image</div>
-                      )}
-                    </motion.div>
-                  </AnimatePresence>
-
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 z-10">
-                    <div className="font-bold text-white text-sm">{selectedProject.slides[currentSlide]?.title}</div>
-                    <div className="text-white/80 text-xs">{selectedProject.slides[currentSlide]?.description}</div>
-                  </div>
-
-                  {selectedProject.slides.length > 1 && (
-                    <>
-                      <button
-                        onClick={() => setCurrentSlide(prev => Math.max(0, prev - 1))}
-                        disabled={currentSlide === 0}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-black/80 disabled:opacity-30 text-white rounded-full transition-all backdrop-blur-sm"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => setCurrentSlide(prev => Math.min(selectedProject.slides.length - 1, prev + 1))}
-                        disabled={currentSlide === selectedProject.slides.length - 1}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-black/80 disabled:opacity-30 text-white rounded-full transition-all backdrop-blur-sm"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
-                    </>
-                  )}
+                      <Image src={s.image} alt={s.title} fill className="object-cover" sizes="96px" />
+                    </button>
+                  ))}
                 </div>
 
-                {selectedProject.slides.length > 1 && (
-                  <div className="flex justify-center gap-2 py-3 bg-surface-dim">
-                    {selectedProject.slides.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrentSlide(i)}
-                        className={`h-2 rounded-full transition-all duration-200 ${
-                          i === currentSlide ? 'w-5 bg-primary' : 'w-2 bg-outline-variant hover:bg-primary/50'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Right Side: Details */}
-              <div className="w-full md:w-[40%] p-6 md:p-8 flex flex-col overflow-y-auto">
-                <h3 className="font-display text-[28px] font-bold text-on-surface leading-tight mb-2">
-                  {selectedProject.title}
-                </h3>
-                <div className="inline-flex items-center px-3 py-1 bg-surface-container-highest border border-outline-variant rounded-full text-[11px] font-bold tracking-wider uppercase text-primary w-fit mb-6">
-                  {selectedProject.category}
-                </div>
-
-                <div className="mb-5">
-                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-2">the challenge</h4>
-                  <p className="text-[15px] leading-[1.7] text-on-surface-variant">{selectedProject.desc}</p>
-                </div>
-
-                <div className="mb-5">
-                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-3">my approach</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.techStack?.map(tech => (
-                      <span key={tech} className="px-3 py-1 bg-surface-container-highest border border-outline-variant rounded-full text-[12px] text-on-surface font-medium">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="font-mono-accent text-[11px] tracking-[0.1em] uppercase text-on-surface-variant mb-2">the result</h4>
-                  <p className="text-[15px] leading-[1.7] text-on-surface-variant">
-                    A working {selectedProject.category.toLowerCase()} build, shipped end-to-end with {selectedProject.techStack?.[0] ?? "the stack above"} — one more real project in the portfolio, not just a mockup.
+                {/* Modal Footer */}
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t-2 border-[#191510]">
+                  <p className="text-[14px] text-[#191510]/90 max-w-xl">
+                    {selectedProject.desc}
                   </p>
-                </div>
-
-                <div className="flex flex-col gap-3 mt-auto pt-6">
-                  <div className="flex gap-4">
+                  <div className="flex items-center gap-3">
                     {selectedProject.github && (
-                      <a href={selectedProject.github} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 border border-outline-variant text-on-surface rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-surface-container-highest hover:text-primary transition-all">
-                        <GitCommit className="w-4 h-4" /> Code
+                      <a
+                        href={selectedProject.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 border-2 border-[#191510] text-[#191510] font-bold text-[12px] tracking-wider uppercase hover:bg-[#191510] hover:text-white transition-colors"
+                      >
+                        <GitCommit className="w-3.5 h-3.5" /> GitHub
                       </a>
                     )}
                     {selectedProject.demo && (
-                      <a href={selectedProject.demo} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-all">
-                        <ExternalLink className="w-4 h-4" /> Live Demo
+                      <a
+                        href={selectedProject.demo}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 border-2 border-[#2563eb] bg-[#2563eb] text-white font-bold text-[12px] tracking-wider uppercase hover:bg-[#1d4ed8] transition-colors"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" /> Live Demo
                       </a>
                     )}
+                    <button
+                      onClick={closeModal}
+                      className="px-6 py-2 bg-[#191510] text-white font-bold text-[12px] tracking-wider uppercase hover:opacity-90 transition-opacity cursor-pointer"
+                    >
+                      Done
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => closeProject()}
-                    className="w-full py-3 border border-outline-variant text-on-surface-variant rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-surface-container hover:text-on-surface transition-colors mt-2 md:hidden"
-                  >
-                    Close
-                  </button>
                 </div>
               </div>
             </motion.div>

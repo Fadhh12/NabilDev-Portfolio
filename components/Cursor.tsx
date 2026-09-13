@@ -1,15 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 
+/**
+ * Creative Artsy Marquee / Transform Box Cursor (as seen in Reference Photo 4)
+ * Features:
+ * - Follows the cursor with smooth spring physics
+ * - Rectangular transform box with 4 corner handles (Figma / Photoshop style)
+ * - Inverts underlying content (mix-blend-mode: difference) so paper turns dark, text turns white
+ * - Expands when hovering clickable elements (links, buttons)
+ */
 export default function Cursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  const springConfig = { damping: 26, stiffness: 450, mass: 0.4 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    setMounted(true);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      if (!isVisible) setIsVisible(true);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -18,7 +38,8 @@ export default function Cursor() {
         target.tagName.toLowerCase() === "a" ||
         target.tagName.toLowerCase() === "button" ||
         target.closest("a") ||
-        target.closest("button")
+        target.closest("button") ||
+        target.dataset.cursor === "hover"
       ) {
         setIsHovered(true);
       } else {
@@ -26,51 +47,53 @@ export default function Cursor() {
       }
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseOver);
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [mouseX, mouseY, isVisible]);
+
+  if (!mounted) return null;
+
+  const boxSize = isHovered ? 88 : 64;
 
   return (
-    <>
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none mix-blend-difference z-[9999]"
-        style={{
-          border: "2px solid var(--primary-light)",
-        }}
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovered ? 1.5 : 1,
-          backgroundColor: isHovered ? "rgba(212, 242, 74, 0.25)" : "rgba(0, 0, 0, 0)",
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5,
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none mix-blend-difference z-[9999]"
-        style={{
-          background: "var(--primary-light)",
-        }}
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 1000,
-          damping: 40,
-          mass: 0.1,
-        }}
-      />
-    </>
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
+      style={{
+        x: smoothX,
+        y: smoothY,
+        translateX: "-50%",
+        translateY: "-50%",
+        width: boxSize,
+        height: boxSize,
+        opacity: isVisible ? 1 : 0,
+      }}
+      transition={{ opacity: { duration: 0.2 } }}
+    >
+      {/* ── Outer Transform Box with Inversion ── */}
+      <div className="relative w-full h-full bg-white border border-white">
+        {/* Top-Left Handle */}
+        <span className="absolute -top-1 -left-1 w-2 h-2 bg-black border border-white" />
+        {/* Top-Right Handle */}
+        <span className="absolute -top-1 -right-1 w-2 h-2 bg-black border border-white" />
+        {/* Bottom-Left Handle */}
+        <span className="absolute -bottom-1 -left-1 w-2 h-2 bg-black border border-white" />
+        {/* Bottom-Right Handle */}
+        <span className="absolute -bottom-1 -right-1 w-2 h-2 bg-black border border-white" />
+
+        {/* Center crosshair dot */}
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-black rounded-full" />
+      </div>
+    </motion.div>
   );
 }

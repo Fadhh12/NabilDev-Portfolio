@@ -1,171 +1,241 @@
 "use client";
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
+import { Award, ExternalLink, X, CheckCircle2, FileText } from "lucide-react";
 
-// Bundle the worker locally instead of fetching from a CDN — avoids version
-// mismatches with the installed pdfjs-dist and the blank first-paint while
-// the CDN script downloads.
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString();
+interface CertificateItem {
+  id: number;
+  title: string;
+  issuer: string;
+  date: string;
+  file: string;
+  desc: string;
+  tag: string;
+  bg: string;
+  tape: string;
+  rot: number;
+}
 
-// Placeholder data since certificates images aren't fully specified
-const CERTIFICATES = [
-  { id: 1, title: "Machine Learning", issuer: "Coursera / Google", date: "2024", file: "/assets/certificates/Machine Learning.pdf", desc: "Comprehensive Machine Learning certification." },
-  { id: 2, title: "Google AI", issuer: "Google", date: "2024", file: "/assets/certificates/Google AI.pdf", desc: "Google AI learning path certification." },
-  { id: 3, title: "Copilot Best Practices", issuer: "Microsoft", date: "2024", file: "/assets/certificates/Copilot Best Practices, Ethics and Regulatory Implications.pdf", desc: "Best practices, ethics and regulatory implications for using Microsoft Copilot." },
-  { id: 4, title: "AI for App Building", issuer: "Microsoft", date: "2024", file: "/assets/certificates/AI for App Building Sertification.pdf", desc: "Certification for AI App Building." },
-  { id: 5, title: "AI Efficiencies & Governance", issuer: "Microsoft", date: "2024", file: "/assets/certificates/AIEfficienciesandGovernance_Badge20260725-21-tn06uc.pdf", desc: "Badge and certification for AI Efficiencies and Governance." },
-  { id: 6, title: "Intro to Generative AI", issuer: "Google", date: "2024", file: "/assets/certificates/Introduction to Generative AI Learning Path.pdf", desc: "Generative AI learning path certification." },
-  { id: 7, title: "Responsible AI & Risk Management", issuer: "Microsoft", date: "2024", file: "/assets/certificates/ResponsibleAIandRiskManagement_Badge20260724-20-36jmdw.pdf", desc: "Certification for Responsible AI practices." },
-  { id: 8, title: "Your Everyday AI Companion", issuer: "Microsoft", date: "2024", file: "/assets/certificates/Your Everyday AI Companion.pdf", desc: "Everyday AI Companion certification." }
+const CERTIFICATES: CertificateItem[] = [
+  {
+    id: 1,
+    title: "Machine Learning",
+    issuer: "Google & DeepLearning.AI",
+    date: "2024",
+    file: "/assets/certificates/Machine Learning.pdf",
+    desc: "Comprehensive Machine Learning specialization covering supervised learning, neural networks, and decision trees.",
+    tag: "AI & ML",
+    bg: "#fef08a",
+    tape: "#bfdbfe",
+    rot: -2,
+  },
+  {
+    id: 2,
+    title: "Google AI Essentials",
+    issuer: "Google",
+    date: "2024",
+    file: "/assets/certificates/Google AI.pdf",
+    desc: "Foundational concepts of artificial intelligence, generative AI prompting, and responsible AI workflows.",
+    tag: "Generative AI",
+    bg: "#a7f3d0",
+    tape: "#fbcfe8",
+    rot: 2,
+  },
+  {
+    id: 3,
+    title: "Copilot Best Practices & Ethics",
+    issuer: "Microsoft",
+    date: "2024",
+    file: "/assets/certificates/Copilot Best Practices, Ethics and Regulatory Implications.pdf",
+    desc: "Ethical deployment, regulatory implications, and workflow acceleration using Microsoft Copilot.",
+    tag: "Ethics & LLMs",
+    bg: "#bfdbfe",
+    tape: "#fef08a",
+    rot: -1.5,
+  },
+  {
+    id: 4,
+    title: "AI for App Building",
+    issuer: "Microsoft",
+    date: "2024",
+    file: "/assets/certificates/AI for App Building Sertification.pdf",
+    desc: "Architecting and implementing AI capabilities into production applications and cloud services.",
+    tag: "Full-Stack AI",
+    bg: "#fce7f3",
+    tape: "#a7f3d0",
+    rot: 2.5,
+  },
+  {
+    id: 5,
+    title: "AI Efficiencies & Governance",
+    issuer: "Microsoft",
+    date: "2024",
+    file: "/assets/certificates/AIEfficienciesandGovernance_Badge20260725-21-tn06uc.pdf",
+    desc: "Verified badge for AI system efficiencies, auditing mechanisms, and enterprise data governance.",
+    tag: "Governance",
+    bg: "#ddd6fe",
+    tape: "#bfdbfe",
+    rot: -2,
+  },
+  {
+    id: 6,
+    title: "Intro to Generative AI",
+    issuer: "Google Cloud",
+    date: "2024",
+    file: "/assets/certificates/Introduction to Generative AI Learning Path.pdf",
+    desc: "Learning path certification on Large Language Models, Attention mechanisms, and Transformer architectures.",
+    tag: "LLMs",
+    bg: "#fed7aa",
+    tape: "#fbcfe8",
+    rot: 1.5,
+  },
 ];
 
 export default function Certificates() {
-  const [showAll, setShowAll] = useState(false);
-  const [selectedCert, setSelectedCert] = useState<typeof CERTIFICATES[0] | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-  const displayedCerts = showAll ? CERTIFICATES : CERTIFICATES.slice(0, 3);
-
-  const openCert = (cert: typeof CERTIFICATES[0]) => {
-    setSelectedCert(cert);
-    const mainScroll = document.getElementById('main-scroll');
-    if (mainScroll) mainScroll.style.scrollSnapType = 'none';
-  };
-  const closeCert = () => {
-    setSelectedCert(null);
-    const mainScroll = document.getElementById('main-scroll');
-    if (mainScroll) mainScroll.style.scrollSnapType = 'y mandatory';
-  };
+  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
 
   return (
-    <div id="certificates" className="w-full">
-      <div className="w-full">
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <AnimatePresence>
-            {displayedCerts.map((cert) => (
-              <motion.div 
-                layout
-                key={cert.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                className="bg-surface border border-outline-variant rounded-[20px] overflow-hidden group hover:border-primary transition-all duration-300"
-              >
-                <div className="h-[200px] bg-surface-dim relative overflow-hidden border-b border-outline-variant/50 flex items-center justify-center">
-                  <div className="w-full h-full relative overflow-hidden group pointer-events-none bg-white flex items-center justify-center">
-                    <Document file={cert.file} loading={<div className="w-full h-full bg-surface-container animate-pulse" />}>
-                      <Page pageNumber={1} width={400} renderTextLayer={false} renderAnnotationLayer={false} className="opacity-90 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100" />
-                    </Document>
-                  </div>
-                  {/* Click overlay */}
-                  <div className="absolute inset-0 z-10 cursor-pointer" onClick={() => openCert(cert)} />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-display text-[18px] font-bold text-on-surface mb-1">{cert.title}</h3>
-                  <p className="text-[14px] font-semibold text-on-surface-variant mb-4">{cert.issuer} • {cert.date}</p>
-                  
-                  <button 
-                    onClick={() => openCert(cert)}
-                    className="w-full py-2.5 rounded-xl border border-primary text-primary text-[11px] font-bold uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {CERTIFICATES.length > 3 && (
+    <div className="w-full">
+      {/* ── Certificates Cards Grid (Scrapbook Washi Tape Style) ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-4">
+        {CERTIFICATES.map((cert) => (
           <motion.div
-            layout
-            className="flex justify-center mt-8 mb-4"
+            key={cert.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.05, rotate: 0, y: -6 }}
+            style={{ rotate: cert.rot }}
+            transition={{ type: "spring", stiffness: 350, damping: 18 }}
+            onClick={() => setSelectedCert(cert)}
+            className="relative p-6 bg-white border-2 border-[#191510] shadow-[5px_5px_0_#191510] cursor-pointer flex flex-col justify-between select-none group"
           >
-            <button 
-              onClick={() => {
-                setShowAll(!showAll);
-                if (showAll) {
-                  const el = document.getElementById('certificates');
-                  if (el) el.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+            {/* Washi Tape at Top */}
+            <div
+              className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 z-10 opacity-90 shadow-sm border border-black/20"
+              style={{
+                background: cert.tape,
+                transform: `rotate(${cert.rot > 0 ? -3 : 3}deg)`,
               }}
-              className="px-10 py-4 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-full text-[13px] font-bold tracking-[0.06em] uppercase hover:border-primary hover:text-primary transition-all shadow-md"
-            >
-              {showAll ? "↑ Show Less" : "View All Certificates →"}
-            </button>
+            />
+
+            <div>
+              {/* Header Badge */}
+              <div className="flex items-center justify-between mb-4 mt-1">
+                <span
+                  className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-sm border border-[#191510]"
+                  style={{ background: cert.bg, color: "#191510" }}
+                >
+                  {cert.tag}
+                </span>
+                <span className="text-[12px] font-bold font-mono-accent text-[#7a7066]">
+                  {cert.date}
+                </span>
+              </div>
+
+              {/* Title & Issuer */}
+              <h4 className="font-display text-[21px] font-bold text-[#191510] leading-tight mb-2 group-hover:text-[#2563eb] transition-colors">
+                {cert.title}
+              </h4>
+              <p className="text-[14px] text-[#7a7066] font-semibold mb-4">
+                {cert.issuer}
+              </p>
+
+              <p className="text-[13px] text-[#191510]/80 line-clamp-2 leading-relaxed">
+                {cert.desc}
+              </p>
+            </div>
+
+            {/* Bottom Stamp / CTA */}
+            <div className="flex items-center justify-between pt-4 mt-4 border-t-2 border-[#191510]/15">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#10b981] font-mono-accent">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Verified
+              </span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#191510] group-hover:underline flex items-center gap-1">
+                Details <Award className="w-3.5 h-3.5" />
+              </span>
+            </div>
           </motion.div>
-        )}
+        ))}
       </div>
 
-      {/* Modal */}
+      {/* ── Certificate Detail Modal ── */}
       <AnimatePresence>
         {selectedCert && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => closeCert()}
-              className="fixed inset-0 bg-on-surface/50 backdrop-blur-sm z-[2000]"
+              onClick={() => setSelectedCert(null)}
+              className="fixed inset-0 z-[2000] bg-black/75 backdrop-blur-sm"
             />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
-              animate={{ opacity: 1, y: "-50%", scale: 1, x: "-50%" }}
-              exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
-              className="fixed top-1/2 left-1/2 w-[95%] max-w-[800px] max-h-[90vh] bg-surface rounded-[24px] overflow-hidden z-[2010] shadow-2xl border border-outline-variant flex flex-col"
-              style={{ x: "-50%", y: "-50%" }}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="fixed inset-0 z-[2001] flex items-center justify-center p-4 pointer-events-none"
             >
-              {/* Close button always on top */}
-              <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-outline-variant shrink-0">
-                <div>
-                  <h3 className="font-display text-[20px] md:text-[24px] font-bold text-on-surface">{selectedCert.title}</h3>
-                  <p className="text-[13px] font-semibold text-primary mt-0.5">Issued by {selectedCert.issuer} • {selectedCert.date}</p>
+              <div
+                className="pointer-events-auto bg-[#f0ece0] border-2 border-[#191510] shadow-[8px_8px_0_#191510] p-6 sm:p-8 max-w-lg w-full relative flex flex-col gap-5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Washi Tape on Modal Header */}
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 z-10 opacity-90 shadow-sm border border-black/20"
+                  style={{ background: selectedCert.tape }}
+                />
+
+                <div className="flex items-start justify-between mt-2">
+                  <div>
+                    <span
+                      className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-sm border border-[#191510]"
+                      style={{ background: selectedCert.bg }}
+                    >
+                      {selectedCert.tag}
+                    </span>
+                    <h3 className="font-display text-[24px] sm:text-[28px] font-bold text-[#191510] mt-2 leading-tight">
+                      {selectedCert.title}
+                    </h3>
+                    <p className="text-[13px] text-[#7a7066] font-mono-accent mt-1">
+                      Issued by {selectedCert.issuer} • {selectedCert.date}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedCert(null)}
+                    className="p-2 border-2 border-[#191510] hover:bg-[#191510] hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
-                <button 
-                  onClick={() => closeCert()}
-                  className="p-2.5 rounded-full bg-surface-container hover:bg-surface-container-highest border border-outline-variant text-on-surface-variant hover:text-on-surface transition-all shrink-0 ml-4"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="flex-1 min-h-[260px] md:min-h-[420px] bg-surface-dim relative flex flex-col overflow-hidden items-center p-4 overflow-y-auto">
-                <Document file={selectedCert.file} loading={<div className="w-full h-[400px] bg-surface-container animate-pulse rounded-md" />}>
-                  <Page pageNumber={1} width={isMobile ? window.innerWidth * 0.85 : 600} renderTextLayer={false} renderAnnotationLayer={false} className="shadow-lg border border-outline-variant/30 bg-white" />
-                </Document>
-              </div>
-              <div className="px-6 py-4 shrink-0">
-                <p className="text-[13px] md:text-[15px] leading-[1.7] text-on-surface-variant mb-4">
-                  {selectedCert.desc}
-                </p>
-                <div className="flex gap-3">
+
+                <div className="bg-white p-4 border border-[#191510]/20 rounded-sm">
+                  <p className="text-[14px] leading-relaxed text-[#191510]/90">
+                    {selectedCert.desc}
+                  </p>
+                  <div className="flex items-center gap-2 mt-4 pt-3 border-t border-[#191510]/15 text-[#10b981] font-mono-accent text-[12px] font-bold">
+                    <CheckCircle2 className="w-4 h-4 shrink-0" />
+                    <span>Official Credential Verified &amp; Archived</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 pt-2">
                   <a
                     href={selectedCert.file}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-3 bg-primary text-on-primary rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-primary-hover transition-colors text-center"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white text-[12px] font-bold uppercase tracking-wider rounded-sm border-2 border-[#191510] shadow-[2px_2px_0_#191510] hover:translate-y-[-2px] transition-all"
                   >
-                    Open PDF
+                    <FileText className="w-4 h-4" /> View Certificate PDF <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                   <button
-                    onClick={() => closeCert()}
-                    className="flex-1 py-3 bg-surface-container text-on-surface border border-outline-variant rounded-xl text-[12px] font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors"
+                    onClick={() => setSelectedCert(null)}
+                    className="px-5 py-2.5 bg-[#191510] text-white text-[12px] font-bold uppercase tracking-wider rounded-sm hover:opacity-90 transition-opacity cursor-pointer"
                   >
-                    Close
+                    Done
                   </button>
                 </div>
               </div>

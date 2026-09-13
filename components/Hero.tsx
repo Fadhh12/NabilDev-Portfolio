@@ -1,162 +1,213 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   const boxRef = useRef<HTMLDivElement>(null);
 
-  // Cursor-follow spotlight on the name box — mirrors the reference's
-  // hover-reactive hero (mouse near the name lights it up).
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = boxRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    el.style.setProperty("--spot-x", `${x}%`);
-    el.style.setProperty("--spot-y", `${y}%`);
-    el.style.setProperty("--spot-opacity", "1");
-  };
-  const handleMouseLeave = () => {
-    boxRef.current?.style.setProperty("--spot-opacity", "0");
-  };
-
   return (
-    <section id="home" className="min-h-[100dvh] pt-28 pb-16 flex items-center relative overflow-hidden snap-start snap-always">
+    <section
+      id="home"
+      className="min-h-[100dvh] pt-[72px] pb-16 flex items-center justify-center relative overflow-hidden"
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center text-center">
 
-        <motion.span
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="font-hand text-[22px] text-on-surface-variant mb-1 relative"
-        >
-          my name is
-          <svg className="absolute -bottom-1 left-1/2 -translate-x-1/2" width="90" height="8" viewBox="0 0 90 8" fill="none">
-            <path d="M2 5.5C20 1 60 1 88 5.5" stroke="var(--ca-blue)" strokeWidth="2.5" strokeLinecap="round" />
-          </svg>
-        </motion.span>
+        {/* ── Center Stage: Compact Box Matching Photo 3 ── */}
+        <div className="relative mt-2 mb-4 flex items-center justify-center w-full">
 
-        {/* ── Name box, flanked by photos + sticky notes ── */}
-        <div className="relative mt-8 flex items-center justify-center w-full">
-          {/* Mint / yellow scrapbook tags */}
-          <motion.span
-            initial={{ opacity: 0, rotate: -12, scale: 0.8 }}
-            animate={{ opacity: 1, rotate: -8, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="hidden sm:block absolute -top-2 left-2 md:left-10 z-30 px-4 py-2 rounded-full text-[12px] font-bold uppercase tracking-wide shadow-md"
-            style={{ background: "var(--ca-mint)", color: "var(--ca-ink)" }}
-          >
-            builds things
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, rotate: 10, scale: 0.8 }}
-            animate={{ opacity: 1, rotate: 6, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="hidden sm:block absolute -top-4 right-2 md:right-6 z-30 px-4 py-2 rounded-full text-[12px] font-bold uppercase tracking-wide shadow-md"
-            style={{ background: "var(--ca-yellow)", color: "var(--ca-ink)" }}
-          >
-            detail obsessed
-          </motion.span>
-
-          {/* Left photo */}
+          {/* Top-Left Floating Avatar with Orange Border */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="hidden md:block absolute left-0 xl:-left-16 w-[110px] h-[110px] rounded-full overflow-hidden border-[5px] shrink-0 z-20"
-            style={{ borderColor: "var(--ca-orange)" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: [0, -14, 0],
+              rotate: [-2, 2, -2],
+            }}
+            transition={{
+              opacity: { duration: 0.5 },
+              y: { repeat: Infinity, duration: 4, ease: "easeInOut" },
+              rotate: { repeat: Infinity, duration: 4.5, ease: "easeInOut" },
+            }}
+            whileHover={{ scale: 1.15 }}
+            className="hidden md:block absolute left-8 lg:left-16 xl:left-24 top-1/2 -translate-y-1/2 w-[88px] h-[88px] lg:w-[96px] lg:h-[96px] rounded-full overflow-hidden shrink-0 z-20 border-4 border-[#f97316] shadow-xl cursor-pointer"
           >
-            <Image src="/assets/images/foto.jpg" alt="Nabil Fadhlur Rahman" fill className="object-cover" sizes="110px" priority />
+            <Image src="/assets/images/foto.jpg" alt="Nabil Fadhlur Rahman" fill className="object-cover" sizes="96px" priority />
           </motion.div>
 
-          {/* Right photo */}
+          {/* Right Floating Avatar with Orange Border */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="hidden md:block absolute right-0 xl:-right-16 w-[110px] h-[110px] rounded-full overflow-hidden border-[5px] shrink-0 z-20"
-            style={{ borderColor: "var(--ca-orange)" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: [-12, 4, -12],
+              rotate: [2, -2, 2],
+            }}
+            transition={{
+              opacity: { duration: 0.5, delay: 0.2 },
+              y: { repeat: Infinity, duration: 4.2, ease: "easeInOut", delay: 0.2 },
+              rotate: { repeat: Infinity, duration: 4.8, ease: "easeInOut", delay: 0.2 },
+            }}
+            whileHover={{ scale: 1.15 }}
+            className="hidden md:block absolute right-8 lg:right-16 xl:right-24 top-1/2 -translate-y-1/2 w-[88px] h-[88px] lg:w-[96px] lg:h-[96px] rounded-full overflow-hidden shrink-0 z-20 border-4 border-[#f97316] shadow-xl cursor-pointer"
           >
-            <Image src="/assets/images/PUFA Computer Science BEM.jpeg" alt="Nabil at a campus tech event" fill className="object-cover" sizes="110px" />
+            <Image src="/assets/images/PUFA Computer Science BEM.jpeg" alt="Nabil at campus" fill className="object-cover" sizes="96px" />
           </motion.div>
 
-          {/* Marker outline, drawn around the box */}
-          <svg className="absolute -inset-4 sm:-inset-6 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] h-[calc(100%+2rem)] sm:h-[calc(100%+3rem)] pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <rect x="1.5" y="1.5" width="97" height="97" rx="6" fill="none" stroke="var(--ca-orange)" strokeWidth="0.6" />
-          </svg>
+          {/* ── Main Compact Name Block ── */}
+          <div className="relative inline-flex flex-col items-center">
 
-          {/* The name box itself */}
-          <motion.div
-            ref={boxRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="spotlight relative z-10 w-full max-w-[720px] rounded-2xl px-6 sm:px-10 py-10 sm:py-14 flex flex-col items-center gap-4 overflow-hidden cursor-default"
-            style={{ background: "var(--ca-ink)" }}
-          >
-            <h1 className="font-pixel uppercase text-[clamp(40px,10vw,88px)] leading-[1.1] tracking-tight text-white relative z-10">
-              Nabil
-            </h1>
-            <div className="flex items-center gap-2 text-[11px] sm:text-[12px] font-bold tracking-[0.15em] uppercase text-white/90 relative z-10">
-              <span className="w-2 h-2 rounded-full shrink-0" style={{ background: "var(--ca-blue)" }} />
-              Open to internships &amp; good problems
+            {/* "my name is" annotation on top with curved underline and arrow */}
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-hand text-[23px] text-[#7a7066] mb-1 relative inline-flex flex-col items-center"
+            >
+              <span>my name is</span>
+              <svg width="78" height="7" viewBox="0 0 78 7" fill="none" className="mt-0.5">
+                <path d="M2 5C20 1 58 1 76 5" stroke="#191510" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </motion.div>
+
+            {/* Top-left pill badge: MADE THINGS */}
+            <motion.span
+              initial={{ opacity: 0, rotate: -12, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: -6, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              whileHover={{ scale: 1.08, rotate: -2 }}
+              className="absolute -top-3 -left-12 sm:-left-20 z-30 px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border-2 border-[#191510] shadow-[2px_2px_0_#191510] select-none"
+              style={{ background: "#a7f3d0", color: "#191510" }}
+            >
+              MADE THINGS
+            </motion.span>
+
+            {/* Top-right pill badge: SWEAT THE DETAILS */}
+            <motion.span
+              initial={{ opacity: 0, rotate: 10, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: 5, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              whileHover={{ scale: 1.08, rotate: 2 }}
+              className="absolute -top-3 -right-12 sm:-right-24 z-30 px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border-2 border-[#191510] shadow-[2px_2px_0_#191510] select-none"
+              style={{ background: "#fef08a", color: "#191510" }}
+            >
+              SWEAT THE DETAILS
+            </motion.span>
+
+            {/* ── Compact Orange Border Box around NABIL ── */}
+            <div className="relative">
+              {/* Hand-drawn Orange Outline */}
+              <div className="absolute -inset-2.5 sm:-inset-3 border-2 border-[#f97316] rounded-xl pointer-events-none z-0" />
+
+              {/* Name Box Container — data-cursor="nabil" triggers the special NABIL variant on the global cursor */}
+              <div
+                ref={boxRef}
+                data-cursor="nabil"
+                className="relative z-10 w-[290px] sm:w-[360px] md:w-[410px] h-[150px] sm:h-[175px] rounded-lg px-4 sm:px-6 flex flex-col items-center justify-center select-none bg-transparent overflow-visible"
+              >
+                {/* Text reveal entrance (Black pixel font) */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7, y: 25 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ delay: 0.2, type: "spring", damping: 14, stiffness: 220 }}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <h1 className="font-pixel uppercase text-[56px] sm:text-[76px] md:text-[88px] leading-[0.9] tracking-[0.04em] text-[#191510]">
+                    NABIL
+                  </h1>
+                  <div className="flex items-center gap-1.5 mt-2.5 text-[9.5px] sm:text-[11px] font-bold tracking-[0.14em] uppercase text-[#191510]/80 font-mono-accent">
+                    <span className="w-2 h-2 rounded-full shrink-0 bg-[#2563eb]" />
+                    OPEN TO INTERNSHIPS &amp; GOOD PROBLEMS
+                  </div>
+                </motion.div>
+              </div>
             </div>
-          </motion.div>
 
-          {/* Sticky notes overlapping the bottom edge */}
-          <motion.span
-            initial={{ opacity: 0, y: 10, rotate: -6 }}
-            animate={{ opacity: 1, y: 0, rotate: -4 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="absolute -bottom-5 left-4 sm:left-10 z-30 px-4 py-2 rounded-md text-[13px] font-hand text-[18px] shadow-lg"
-            style={{ background: "var(--ca-yellow)", color: "var(--ca-ink)" }}
-          >
-            AI Engineer
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 10, rotate: 6 }}
-            animate={{ opacity: 1, y: 0, rotate: 4 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-            className="absolute -bottom-5 right-4 sm:right-10 z-30 px-4 py-2 rounded-md font-hand text-[18px] shadow-lg"
-            style={{ background: "var(--ca-mint)", color: "var(--ca-ink)" }}
-          >
-            Cikarang, Jababeka
-          </motion.span>
+            {/* Bottom-left pill badge: AI Engineer falling down from above */}
+            <motion.div
+              initial={{ opacity: 0, y: -90, scale: 0.6 }}
+              animate={{ opacity: 1, y: 0, scale: 1, rotate: -3 }}
+              transition={{ delay: 0.55, type: "spring", damping: 12, stiffness: 180 }}
+              whileHover={{ scale: 1.08, rotate: 0 }}
+              className="absolute -bottom-5 -left-10 sm:-left-16 z-30 flex items-center gap-1.5 px-3.5 py-1 rounded-sm font-hand text-[15px] font-bold shadow-md border-2 border-[#191510] cursor-pointer select-none"
+              style={{ background: "#eab308", color: "#191510" }}
+            >
+              <span>AI Engineer</span>
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" className="text-[#191510]">
+                <path d="M1 9L13 1M13 1H6M13 1V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.div>
+
+            {/* Bottom-right pill badge: Cikarang, Jababeka falling down from above */}
+            <motion.div
+              initial={{ opacity: 0, y: -90, scale: 0.6 }}
+              animate={{ opacity: 1, y: 0, scale: 1, rotate: 3 }}
+              transition={{ delay: 0.65, type: "spring", damping: 12, stiffness: 180 }}
+              whileHover={{ scale: 1.08, rotate: 0 }}
+              className="absolute -bottom-5 -right-10 sm:-right-16 z-30 flex items-center gap-1.5 px-3.5 py-1 rounded-sm font-hand text-[15px] font-bold shadow-md border-2 border-[#191510] cursor-pointer select-none"
+              style={{ background: "#a7f3d0", color: "#191510" }}
+            >
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" className="text-[#191510]">
+                <path d="M13 9L1 1M1 1H8M1 1V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span>Cikarang, Jababeka</span>
+            </motion.div>
+
+          </div>
+
         </div>
 
-        {/* Headline */}
+        {/* ── Tagline (Replaced pink flower with tech/AI emoji ⚡ and 🎯) ── */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="mt-16 sm:mt-20 text-[clamp(22px,4.4vw,42px)] leading-[1.25] font-bold text-on-surface max-w-[820px]"
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="mt-14 sm:mt-16 text-[clamp(22px,4vw,38px)] font-bold text-[#191510] leading-[1.3] max-w-[760px]"
         >
-          I build software that gets out of your way
-          <span className="inline-flex w-6 h-6 sm:w-8 sm:h-8 rounded-full mx-2 align-middle" style={{ background: "var(--ca-green)" }} />
-          — bridging AI and the web to solve real problems, end to end.
-          <span className="inline-block ml-2 align-middle">🌸</span>
+          I design software that gets out of your way.
+          <motion.span
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            className="inline-flex w-7 h-7 sm:w-8 sm:h-8 rounded-full mx-2 align-middle items-center justify-center bg-[#10b981] text-white text-xs"
+          >
+            🎯
+          </motion.span>
+          <motion.span
+            animate={{ scale: [1, 1.25, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex w-7 h-7 sm:w-8 sm:h-8 rounded-full mx-1 align-middle items-center justify-center bg-[#facc15] text-[#191510] text-sm border border-[#191510]"
+          >
+            ⚡
+          </motion.span>
         </motion.p>
 
-        <motion.a
-          href="#contact"
-          initial={{ opacity: 0, y: 20 }}
+        {/* ── Contact Button (Photo 3 exact black box with blue arrow icon) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65, duration: 0.5 }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="mt-8 inline-flex items-center gap-3 bg-primary text-on-primary rounded-xl pl-2 pr-6 py-2 text-[12px] font-bold tracking-[0.1em] uppercase shadow-[4px_4px_0_var(--primary-hover)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--primary-hover)] transition-all"
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="mt-8"
         >
-          <span className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: "var(--ca-blue)" }}>
-            <ArrowUpRight className="w-5 h-5 text-white" />
-          </span>
-          Contact Me
-        </motion.a>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-3 rounded-sm pl-2 pr-6 py-2 text-[12px] font-bold tracking-[0.14em] uppercase text-white border-2 border-[#191510] hover:scale-105 transition-transform"
+            style={{
+              background: "#191510",
+              boxShadow: "3px 3px 0 #7a7066",
+            }}
+          >
+            <span className="w-8 h-8 rounded-sm flex items-center justify-center" style={{ background: "#2563eb" }}>
+              <ArrowUpRight className="w-4 h-4 text-white" />
+            </span>
+            Contact Me
+          </Link>
+        </motion.div>
+
       </div>
     </section>
   );

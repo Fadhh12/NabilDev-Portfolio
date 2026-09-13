@@ -1,279 +1,313 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, Plus, Minus } from "lucide-react";
 
-const ITEMS = [
+interface ActivityItem {
+  id: number;
+  role: string;
+  type: string;
+  org: string;
+  date: string;
+  desc: string;
+  label: string;
+  tapeColor: string;
+  image: string;
+  rot: number;
+}
+
+const ACTIVITIES: ActivityItem[] = [
   {
+    id: 1,
     role: "PUFA Computer Science (BEM)",
     type: "Campus Organization",
     org: "President University",
     date: "Oct 2025",
     desc: "Active member of the PUFA Computer Science division within the Executive Board of Students (BEM). Involved in tech-driven campus events, workshops, and community outreach programs.",
-    label: "campus life",
+    label: "Random shot",
+    tapeColor: "#fef08a",
     image: "/assets/images/PUFA Computer Science BEM.jpeg",
-    pos: { top: "8%", left: "6%" }, rotate: -6,
+    rot: -3,
   },
   {
+    id: 2,
     role: "Jababeka Scholarship Recipient",
-    type: "Scholarship",
+    type: "Scholarship & Honor",
     org: "Jababeka Foundation",
     date: "Dec 2023 – Present",
-    desc: "Awarded the prestigious Jababeka Scholarship for academic excellence at President University. Recognizes outstanding academic performance and potential for contributing to the community.",
-    label: "scholarship day",
+    desc: "Awarded the prestigious Jababeka Scholarship for academic excellence at President University. Recognizes outstanding academic performance and leadership potential.",
+    label: "what is this",
+    tapeColor: "#a7f3d0",
     image: "/assets/images/WhatsApp Image 2026-04-11 at 22.47.17 (1).jpeg",
-    pos: { top: "4%", left: "38%" }, rotate: 4,
+    rot: 2.5,
   },
   {
+    id: 3,
     role: "Ocean Young Guards",
     type: "Environmental Volunteering",
     org: "1000 Island Jakarta",
     date: "Feb 2025",
-    desc: "Fully-funded participant in a youth-driven volunteer program dedicated to protecting the ocean. Engaged in beach clean-ups, environmental education, and conservation campaigns to raise awareness about marine pollution.",
-    label: "found the ocean!",
+    desc: "Fully-funded participant in a youth-driven volunteer program dedicated to protecting the ocean. Engaged in marine conservation, youth education, and sustainable campaigns.",
+    label: "found!",
+    tapeColor: "#93c5fd",
     image: "/assets/images/Ocean Young Guards.png",
-    pos: { top: "10%", left: "68%" }, rotate: 5,
+    rot: -4,
   },
   {
+    id: 4,
     role: "Organization Student Hidayatunnajah (OSHAN)",
     type: "Student Organization",
     org: "Pesantren Hidayatunnajah",
     date: "Sep 2021",
-    desc: "Active participant in the school's student organization, involved in organizing school events, leadership activities, and fostering community values within the pesantren environment.",
+    desc: "Active participant in the school's student organization, leading student events, character-building programs, and community service.",
     label: "20th take",
+    tapeColor: "#fbcfe8",
     image: "/assets/images/Organization Student Hidayatunnajah OSHAN.jpeg",
-    pos: { top: "42%", left: "4%" }, rotate: -4,
+    rot: 3,
   },
   {
+    id: 5,
     role: "Effective English Conversation Course (EECC)",
-    type: "Language Intensive Program",
+    type: "Language Intensive",
     org: "Pare Kediri",
     date: "2022",
-    desc: "Completed an intensive one-month English conversation course in Pare Kediri. Achieved Speaking A, Writing A, and Grammar B. Gained practical conversational fluency in an immersive English environment.",
+    desc: "Completed an intensive one-month English immersion in Kampung Inggris Pare Kediri. Achieved Speaking A, Writing A, and Grammar B.",
     label: "hello world",
+    tapeColor: "#fed7aa",
     image: "/assets/images/Effective English Conversation Course EECC.jpeg",
-    pos: { top: "38%", left: "33%" }, rotate: 3,
+    rot: -2,
   },
   {
-    role: "IYG #4 — International Youth Gathering",
-    type: "Conference & Youth Forum",
+    id: 6,
+    role: "International Youth Gathering (IYG #4)",
+    type: "Youth Forum & Summit",
     org: "President University",
     date: "2025",
-    desc: "Represented President University in the International Youth Gathering (IYG) #4. Engaged with youth delegates from international backgrounds to discuss global challenges, leadership, and social innovation.",
+    desc: "Represented President University in the International Youth Gathering #4. Collaborated with international delegates on global tech leadership and youth development.",
     label: "first time",
+    tapeColor: "#fef08a",
     image: "/assets/images/International Youth Gathering.jpeg",
-    pos: { top: "40%", left: "64%" }, rotate: -5,
+    rot: 3.5,
+  },
+  {
+    id: 7,
+    role: "Campus Tech & Hackathons",
+    type: "Innovation & Build",
+    org: "President University",
+    date: "2024 – 2025",
+    desc: "Collaborative prototyping sessions and engineering sprints building AI tools and intelligent full-stack applications.",
+    label: "practiceeee",
+    tapeColor: "#a7f3d0",
+    image: "/assets/images/foto.jpg",
+    rot: -3,
   },
 ];
 
-type Item = (typeof ITEMS)[number];
-
-const MIN_ZOOM = 0.35;
-const MAX_ZOOM = 2;
-
 export default function Gallery() {
-  const [selected, setSelected] = useState<Item | null>(null);
-  const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const dragState = useRef<{ dragging: boolean; startX: number; startY: number; panX: number; panY: number }>({
-    dragging: false, startX: 0, startY: 0, panX: 0, panY: 0,
-  });
-  // Tracks every active touch/pen/mouse pointer by id — a second concurrent
-  // pointer means a pinch, so we measure the distance between the two and
-  // scale zoom from that instead of panning.
-  const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
-  const pinchStartDistRef = useRef<number | null>(null);
-  const pinchStartZoomRef = useRef(1);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState<ActivityItem | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
-  useEffect(() => {
-    document.body.style.overflow = selected ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [selected]);
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelected(null); };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
-
-  // On narrow screens the 1100x620 board is wider than the viewport — start
-  // zoomed out so the whole canvas is visible instead of one cropped corner.
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth < 640) {
-      setZoom(0.4);
-    }
-  }, []);
-
-  // Wheel over the canvas zooms in/out — the "unique" pan-zoom board behavior.
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    setZoom((z) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z - e.deltaY * 0.0015)));
-  }, []);
-
-  const pointerDistance = (pts: { x: number; y: number }[]) => Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-
-    if (pointersRef.current.size === 2) {
-      dragState.current.dragging = false;
-      pinchStartDistRef.current = pointerDistance(Array.from(pointersRef.current.values()));
-      pinchStartZoomRef.current = zoom;
-    } else if (pointersRef.current.size === 1) {
-      dragState.current = { dragging: true, startX: e.clientX, startY: e.clientY, panX: pan.x, panY: pan.y };
-    }
-  };
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!pointersRef.current.has(e.pointerId)) return;
-    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-
-    if (pointersRef.current.size === 2 && pinchStartDistRef.current) {
-      const ratio = pointerDistance(Array.from(pointersRef.current.values())) / pinchStartDistRef.current;
-      setZoom(Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, pinchStartZoomRef.current * ratio)));
-      return;
-    }
-    if (dragState.current.dragging) {
-      const dx = e.clientX - dragState.current.startX;
-      const dy = e.clientY - dragState.current.startY;
-      setPan({ x: dragState.current.panX + dx, y: dragState.current.panY + dy });
-    }
-  };
-  const handlePointerUp = (e: React.PointerEvent) => {
-    pointersRef.current.delete(e.pointerId);
-    if (pointersRef.current.size < 2) pinchStartDistRef.current = null;
-    dragState.current.dragging = pointersRef.current.size === 1;
+  // Smooth zoom limits
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => Math.min(1.35, +(prev + 0.12).toFixed(2)));
   };
 
-  const zoomBy = (delta: number) => setZoom((z) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z + delta)));
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => Math.max(0.75, +(prev - 0.12).toFixed(2)));
+  };
+
+  // Keyboard escape handler for modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelected(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <section id="gallery" className="h-[100dvh] bg-surface-container relative z-10 w-full overflow-hidden snap-start snap-always flex flex-col">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16 md:pt-20 pb-4 text-center shrink-0 relative z-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+    <section
+      id="activities"
+      className="scroll-mt-14 relative z-10 w-full min-h-[100dvh] py-20 md:py-24 border-t-2 border-[#191510] flex flex-col justify-between overflow-hidden"
+      style={{ background: "#e8e4da" }}
+    >
+      {/* ── Section Header (Photo 5 layout) ── */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center shrink-0 mb-10">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="inline-block font-hand text-[20px] text-on-surface-variant mb-2"
+          viewport={{ once: true }}
+          className="font-hand text-[24px] text-[#7a7066] mb-1 lowercase"
         >
           playground
-        </motion.div>
+        </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="font-pixel uppercase text-[clamp(28px,6vw,56px)] leading-[1.2] tracking-tight text-on-surface"
+          className="font-pixel uppercase text-[clamp(32px,6vw,60px)] leading-[1.1] tracking-tight text-[#191510] inline-block border-b-2 border-[#191510] pb-2"
         >
-          My Activities
+          JUST FOR FUN
         </motion.h2>
-        <p className="text-[12px] text-on-surface-variant mt-2 font-semibold uppercase tracking-wide">
-          scroll / pinch to zoom · drag to pan
+        <p className="text-[12px] sm:text-[13px] text-[#7a7066] font-mono-accent uppercase tracking-wider mt-3">
+          click any snapshot to read the story
         </p>
       </div>
 
-      {/* ── Pan / zoom canvas ── */}
-      <div
-        ref={containerRef}
-        className="flex-1 relative cursor-grab active:cursor-grabbing touch-none"
-        onWheel={handleWheel}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-      >
+      {/* ── Scattered Polaroid Scrapbook Canvas (Photo 5 layout) ── */}
+      <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex items-center justify-center">
         <motion.div
-          className="absolute top-1/2 left-1/2 w-[1100px] h-[620px]"
-          animate={{ x: pan.x - 550, y: pan.y - 310, scale: zoom }}
-          transition={{ type: "tween", duration: 0.05 }}
-          style={{ transformOrigin: "center center" }}
+          animate={{ scale: zoomLevel }}
+          transition={{ type: "spring", stiffness: 300, damping: 28 }}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 w-full origin-center py-4"
         >
-          {ITEMS.map((item) => (
-            <motion.button
-              key={item.role}
-              whileHover={{ rotate: 0, scale: 1.06, zIndex: 20 }}
-              style={{ position: "absolute", top: item.pos.top, left: item.pos.left, rotate: item.rotate }}
+          {ACTIVITIES.map((item) => (
+            <motion.div
+              key={item.id}
+              whileHover={{ scale: 1.07, rotate: 0, zIndex: 30 }}
+              style={{ rotate: item.rot }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
               onClick={() => setSelected(item)}
-              onPointerDown={(e) => e.stopPropagation()}
-              className="w-[190px] aspect-[4/5] rounded-xl overflow-hidden border-4 border-white shadow-xl tape-corner bg-surface cursor-pointer text-left"
+              className="relative bg-white p-3 pb-4 shadow-xl border border-black/20 cursor-pointer select-none group"
             >
-              <div className="relative w-full h-full">
-                <Image src={item.image} alt={item.role} fill className="object-cover pointer-events-none" sizes="190px" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent" />
-                <span className="absolute bottom-2 left-2 right-2 font-hand text-white text-[15px] leading-tight drop-shadow">{item.label}</span>
+              {/* Sticky Note Label with Tape (Photo 5 style) */}
+              <div
+                className="absolute -top-3.5 left-4 px-3 py-1 text-[13px] font-hand font-bold shadow-md z-20 border border-black/20"
+                style={{
+                  background: item.tapeColor,
+                  color: "#191510",
+                  transform: `rotate(${item.rot > 0 ? -4 : 4}deg)`,
+                }}
+              >
+                {item.label}
               </div>
-            </motion.button>
+
+              {/* Photo */}
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da] mt-1 border border-black/10">
+                <Image
+                  src={item.image}
+                  alt={item.role}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 250px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+
+              {/* Bottom Caption */}
+              <p className="font-hand text-[15px] sm:text-[16px] text-center text-[#191510] mt-2 line-clamp-1 font-bold">
+                {item.role}
+              </p>
+            </motion.div>
           ))}
         </motion.div>
-
-        {/* Zoom controls — lifted clear of the fixed mobile bottom nav */}
-        <div className="absolute bottom-24 md:bottom-6 right-6 flex flex-col gap-2 z-20">
-          <button onClick={() => zoomBy(0.15)} className="w-10 h-10 rounded-xl bg-surface border border-outline-variant shadow-lg flex items-center justify-center hover:bg-surface-container-highest transition-colors">
-            <Plus className="w-4 h-4 text-on-surface" />
-          </button>
-          <button onClick={() => zoomBy(-0.15)} className="w-10 h-10 rounded-xl bg-surface border border-outline-variant shadow-lg flex items-center justify-center hover:bg-surface-container-highest transition-colors">
-            <Minus className="w-4 h-4 text-on-surface" />
-          </button>
-        </div>
       </div>
 
-      {/* Lightbox modal */}
+      {/* ── Zoom Controls (Photo 5 bottom right) ── */}
+      <div className="absolute bottom-8 right-8 z-[50] flex flex-col gap-1.5 bg-[#f0ece0] border-2 border-[#191510] shadow-[4px_4px_0_#191510] p-1 rounded-sm">
+        <button
+          onClick={handleZoomIn}
+          className="w-9 h-9 flex items-center justify-center hover:bg-[#facc15] transition-colors border-b border-[#191510]/30 text-[#191510] cursor-pointer"
+          aria-label="Zoom in"
+          title="Zoom in"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={handleZoomOut}
+          className="w-9 h-9 flex items-center justify-center hover:bg-[#facc15] transition-colors text-[#191510] cursor-pointer"
+          aria-label="Zoom out"
+          title="Zoom out"
+        >
+          <Minus className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* ── Detail Story Modal (Fixed Close & Return Behavior) ── */}
       <AnimatePresence>
         {selected && (
           <>
+            {/* Backdrop */}
             <motion.div
+              key="modal-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelected(null)}
-              className="fixed inset-0 z-[2000] bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 z-[2500] bg-black/75 backdrop-blur-sm cursor-pointer"
             />
+
+            {/* Modal Dialog */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.88, y: 40 }}
+              key="modal-dialog"
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.88, y: 40 }}
-              transition={{ type: "spring", stiffness: 300, damping: 28 }}
-              className="fixed inset-0 z-[2001] flex items-center justify-center p-4 pointer-events-none"
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="fixed inset-0 z-[2501] flex items-center justify-center p-4 pointer-events-none"
             >
               <div
-                className="pointer-events-auto bg-surface rounded-3xl overflow-hidden w-full max-w-lg shadow-2xl border border-outline-variant/40"
+                className="pointer-events-auto bg-[#f0ece0] border-2 border-[#191510] rounded-sm max-w-lg w-full overflow-hidden shadow-[8px_8px_0_#191510] flex flex-col"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative w-full h-64 sm:h-72 bg-surface-container/50 overflow-hidden">
-                  <Image src={selected.image} alt={selected.role} fill className="object-cover" sizes="(max-width: 512px) 100vw, 512px" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                {/* Photo header */}
+                <div className="relative w-full h-64 sm:h-72 bg-black/20">
+                  <Image
+                    src={selected.image}
+                    alt={selected.role}
+                    fill
+                    className="object-cover"
+                    sizes="512px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+                  {/* Close button top-right */}
+                  <button
+                    onClick={() => setSelected(null)}
+                    className="absolute top-4 right-4 w-9 h-9 bg-white border-2 border-[#191510] text-[#191510] rounded-full flex items-center justify-center shadow-md hover:bg-[#facc15] transition-colors cursor-pointer z-30"
+                    aria-label="Close"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+
                   <div className="absolute top-4 left-4">
-                    <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-white/95 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-lg">
+                    <span
+                      className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider border-2 border-[#191510] shadow-sm font-mono-accent"
+                      style={{ background: selected.tapeColor, color: "#191510" }}
+                    >
                       {selected.type}
                     </span>
                   </div>
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="absolute top-4 right-4 w-9 h-9 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors border border-white/20 shadow-lg"
-                    aria-label="Close"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="font-display uppercase text-[20px] sm:text-[22px] text-white leading-snug drop-shadow-lg">
+
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <h3 className="font-display text-[22px] sm:text-[24px] font-bold drop-shadow leading-tight">
                       {selected.role}
                     </h3>
-                    <p className="text-[13px] font-semibold text-white/90 mt-1 drop-shadow-md">
+                    <p className="text-[13px] text-white/90 font-mono-accent mt-1">
                       {selected.org} • {selected.date}
                     </p>
                   </div>
                 </div>
+
+                {/* Body & Close Button */}
                 <div className="p-6">
-                  <p className="text-[15px] leading-[1.75] text-on-surface-variant">{selected.desc}</p>
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="mt-6 w-full py-3 rounded-2xl bg-primary text-on-primary text-[13px] font-bold tracking-wide hover:opacity-90 transition-all duration-300"
-                  >
-                    Close
-                  </button>
+                  <p className="text-[15px] leading-relaxed text-[#191510]/90">
+                    {selected.desc}
+                  </p>
+
+                  <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t-2 border-[#191510]/15">
+                    <button
+                      onClick={() => setSelected(null)}
+                      className="w-full py-3 bg-[#191510] text-white font-bold text-[13px] tracking-wider uppercase hover:bg-[#2563eb] transition-colors border-2 border-[#191510] cursor-pointer"
+                    >
+                      Close &amp; Return
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>

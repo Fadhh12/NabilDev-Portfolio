@@ -2,45 +2,54 @@
 
 import Link from "next/link";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { Sparkles } from "lucide-react";
 
 const NAV_LINKS = [
-  { name: "About", href: "/#about" },
-  { name: "Projects", href: "/#projects" },
-  { name: "Playground", href: "/#gallery" },
+  { name: "About",      href: "/about" },
+  { name: "Projects",   href: "/projects" },
+  { name: "Activities", href: "/activities" },
+  { name: "Contact",    href: "/contact" },
 ];
 
 const SOCIALS = [
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/nabil-fadhlur-rahman-686794320/", Icon: FaLinkedin, bg: "var(--ca-yellow)" },
-  { name: "GitHub", href: "https://github.com/Fadhh12", Icon: FaGithub, bg: "var(--ca-magenta)" },
-  { name: "Instagram", href: "https://instagram.com", Icon: FaInstagram, bg: "var(--ca-green)" },
+  { name: "LinkedIn",  href: "https://www.linkedin.com/in/nabil-fadhlur-rahman-686794320/", Icon: FaLinkedin,  bg: "#eab308" },
+  { name: "GitHub",    href: "https://github.com/Fadhh12",                                   Icon: FaGithub,    bg: "#ec4899" },
+  { name: "Instagram", href: "https://www.instagram.com/nabil_biel/",                       Icon: FaInstagram, bg: "#10b981" },
 ];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full pt-14 pb-28 md:pb-8 bg-surface border-t border-outline-variant snap-end">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8">
+    <footer className="w-full pt-14 pb-28 md:pb-8 border-t-2 border-[#191510]" style={{ background: "#e8e4da" }}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        {/* Main footer row */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-8 border-b-2 border-[#191510]">
+          {/* Name + role */}
           <div>
-            <div className="font-pixel uppercase text-[clamp(28px,6vw,56px)] leading-[1.2] tracking-tight text-on-surface">
-              Nabil Fadhlur
+            <div className="font-pixel uppercase text-[clamp(24px,5vw,44px)] leading-[1.2] tracking-tight text-[#191510]">
+              Nabil Fadhlur Rahman
             </div>
-            <div className="flex items-center gap-2 mt-2 text-[12px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">
-              <span className="w-2 h-2 rounded-full" style={{ background: "var(--ca-blue)" }} />
+            <div className="flex items-center gap-2 mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-[#7a7066] font-mono-accent">
+              <span className="w-2 h-2 rounded-full bg-[#2563eb]" />
               AI Engineer &amp; Full-Stack Developer
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
+          {/* Nav links */}
+          <div className="flex flex-wrap items-center gap-6">
             {NAV_LINKS.map((l) => (
-              <Link key={l.name} href={l.href} className="text-[11px] font-bold tracking-[0.1em] uppercase text-on-surface-variant hover:text-primary transition-colors">
+              <Link
+                key={l.name}
+                href={l.href}
+                className="text-[12px] font-bold tracking-[0.12em] uppercase text-[#7a7066] hover:text-[#191510] transition-colors font-mono-accent"
+              >
                 {l.name}
               </Link>
             ))}
           </div>
 
+          {/* Social circles */}
           <div className="flex items-center gap-3">
             {SOCIALS.map((s) => (
               <a
@@ -49,7 +58,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={s.name}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform border-2 border-[#191510]"
                 style={{ background: s.bg }}
               >
                 <s.Icon className="w-[18px] h-[18px]" />
@@ -58,13 +67,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-outline-variant/60">
-          <div className="text-[12px] font-semibold text-on-surface-variant">
-            © {year} M Nabil Fadhlur Rahman. All Rights Reserved.
-          </div>
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-on-surface-variant bg-surface-container">
-            <Sparkles className="w-3 h-3" /> Designed &amp; built in Cikarang
-          </div>
+        {/* Bottom copyright row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-5 text-[12px] text-[#7a7066]">
+          <span>© {year} M Nabil Fadhlur Rahman. All Rights Reserved.</span>
+          <span className="font-hand text-[15px]">designed &amp; built in Cikarang ⚡</span>
         </div>
       </div>
     </footer>

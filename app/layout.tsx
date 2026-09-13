@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Anton, Inter, Caveat, Space_Mono, Stardos_Stencil } from "next/font/google";
+import { Anton, Inter, Caveat, Space_Mono, Pixelify_Sans, Silkscreen } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import GlobalBackground from "@/components/GlobalBackground";
 import Nav from "@/components/Nav";
+import CustomCursor from "@/components/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -25,12 +26,16 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
-// Chunky stencil display font for the big section titles (ABOUT, PROJECTS,
-// LET'S TALK, the hero name, ...) — matches the reference template's look.
-const stardosStencil = Stardos_Stencil({
-  variable: "--font-pixel",
+const pixelify = Pixelify_Sans({
+  variable: "--font-pixelify",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["600", "700"],
+});
+
+const silkscreen = Silkscreen({
+  variable: "--font-silkscreen",
+  subsets: ["latin"],
+  weight: ["700"],
 });
 
 export const metadata: Metadata = {
@@ -46,9 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("scroll-smooth", "font-sans", inter.variable)}>
       <body
-        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} ${stardosStencil.variable} font-sans antialiased relative min-h-screen bg-surface`}
+        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} ${pixelify.variable} ${silkscreen.variable} font-sans antialiased relative min-h-screen bg-background`}
       >
         <GlobalBackground />
+        <CustomCursor />
         <Nav />
         {children}
       </body>
