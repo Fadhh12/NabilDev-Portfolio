@@ -74,9 +74,11 @@ const PROJECTS: ProjectItem[] = [
     techStack: ["Next.js", "TypeScript", "OpenAI API", "Tailwind CSS", "Vercel AI SDK"],
     theme: { bg: "#059669", fg: "#ffffff", tabBg: "#047857", tabFg: "#ffffff", tape: "#6ee7b7" },
     slides: [
-      { id: 1, title: "AI Resume Scanner", description: "Instant CV analysis and match scoring", image: "/assets/projects/Astra Projects/Dashboard_dark.png" },
-      { id: 2, title: "Job Match Engine", description: "Skill-gap analysis vs job descriptions", image: "/assets/projects/Astra Projects/ChatBot.png" },
-      { id: 3, title: "Candidate Insights", description: "Structured hiring recommendation report", image: "/assets/projects/Astra Projects/Result_page.png" },
+      { id: 1, title: "Recruiter Dashboard", description: "Overview of active jobs and AI match-label distribution", image: "/assets/projects/Herlens-AI/Screenshot_5.png" },
+      { id: 2, title: "Job Postings", description: "Manage active job listings across departments", image: "/assets/projects/Herlens-AI/herlens job.png" },
+      { id: 3, title: "Create Job Criteria", description: "Define required skills and AI scoring weights", image: "/assets/projects/Herlens-AI/herlesn addjob.png" },
+      { id: 4, title: "AI Candidate Scoring", description: "Ranked candidates labeled Strong Match, Consider, or Not a Fit", image: "/assets/projects/Herlens-AI/Screenshot_4.png" },
+      { id: 5, title: "Candidate Insight Report", description: "AI-generated CV summary and skill-fit breakdown", image: "/assets/projects/Herlens-AI/Screenshot_6.png" },
     ],
   },
   {
@@ -159,12 +161,12 @@ const PROJECTS: ProjectItem[] = [
     techStack: ["PHP", "MySQL", "Bootstrap", "JavaScript", "Laravel"],
     theme: { bg: "#7c3aed", fg: "#ffffff", tabBg: "#6d28d9", tabFg: "#ffffff", tape: "#ddd6fe" },
     slides: [
-      { id: 1, title: "Portal Dashboard", description: "Student and staff central dashboard", image: "/assets/projects/pu_suites/Screenshot (347).png" },
-      { id: 2, title: "Course Schedules", description: "Semester timetable and room allocations", image: "/assets/projects/pu_suites/Screenshot (349).png" },
-      { id: 3, title: "Grade Registry", description: "Academic transcripts and credit tracking", image: "/assets/projects/pu_suites/Screenshot (351).png" },
-      { id: 4, title: "Student Welfare Request", description: "Advocacy and administrative support form", image: "/assets/projects/pu_suites/Screenshot (352).png" },
-      { id: 5, title: "Faculty Management", description: "Staff directory and assignment oversight", image: "/assets/projects/pu_suites/Screenshot (357).png" },
-      { id: 6, title: "Document Archival", description: "Digital certification and letters module", image: "/assets/projects/pu_suites/Screenshot_74.png" },
+      { id: 1, title: "Home Page", description: "Luxury hotel landing experience with hero booking CTA", image: "/assets/projects/pu_suites/Screenshot_9.png" },
+      { id: 2, title: "About & Rooms Overview", description: "Legacy section, stats and quick room previews", image: "/assets/projects/pu_suites/Screenshot_10.png" },
+      { id: 3, title: "Rooms & Suites", description: "Full room catalog with categories and booking buttons", image: "/assets/projects/pu_suites/Screenshot (357).png" },
+      { id: 4, title: "Reservation Form", description: "Guest information and reservation details modal", image: "/assets/projects/pu_suites/Screenshot (349).png" },
+      { id: 5, title: "Contact & Booking", description: "Dedicated contact page with full reservation form", image: "/assets/projects/pu_suites/Screenshot (351).png" },
+      { id: 6, title: "Admin Dashboard", description: "Booking metrics, room-type split and profit charts", image: "/assets/projects/pu_suites/Screenshot_11.png" },
     ],
   },
   {
