@@ -139,7 +139,7 @@ export default function About() {
             <div className="bg-white p-3 pb-4 shadow-xl border border-black/15 w-[190px] sm:w-[210px]">
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da]">
                 <Image
-                  src="/assets/images/PUFA Computer Science BEM.jpeg"
+                  src="/assets/images/poto nabil.jpeg"
                   alt="Nabil's workspace"
                   fill
                   className="object-cover"

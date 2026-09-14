@@ -56,7 +56,7 @@ export default function Hero() {
             whileHover={{ scale: 1.15 }}
             className="hidden md:block absolute right-8 lg:right-16 xl:right-24 top-1/2 -translate-y-1/2 w-[88px] h-[88px] lg:w-[96px] lg:h-[96px] rounded-full overflow-hidden shrink-0 z-20 border-4 border-[#f97316] shadow-xl cursor-pointer"
           >
-            <Image src="/assets/images/PUFA Computer Science BEM.jpeg" alt="Nabil at campus" fill className="object-cover" sizes="96px" />
+            <Image src="/assets/images/poto nabil.jpeg" alt="Nabil at campus" fill className="object-cover" sizes="96px" />
           </motion.div>
 
           {/* ── Main Compact Name Block ── */}
