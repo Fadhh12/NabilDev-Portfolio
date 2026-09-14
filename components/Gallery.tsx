@@ -100,7 +100,7 @@ const ACTIVITIES: ActivityItem[] = [
     desc: "Collaborative prototyping sessions and engineering sprints building AI tools and intelligent full-stack applications.",
     label: "practiceeee",
     tapeColor: "#a7f3d0",
-    image: "/assets/images/foto.jpg",
+    image: "/assets/images/poto nabil.jpeg",
     rot: -3,
   },
 ];

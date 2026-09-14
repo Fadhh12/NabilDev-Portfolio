@@ -58,7 +58,7 @@ export default function Contact() {
           >
             <div className="flex items-center gap-3 mb-2.5">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#191510] shrink-0 relative">
-                <Image src="/assets/images/foto.jpg" alt="Nabil" fill className="object-cover" sizes="40px" />
+                <Image src="/assets/images/poto nabil 1.jpeg" alt="Nabil" fill className="object-cover" sizes="40px" />
               </div>
               <span className="font-bold text-[13px] text-[#191510] leading-tight">Nabil Fadhlur Rahman</span>
             </div>

@@ -36,7 +36,7 @@ export default function Hero() {
             whileHover={{ scale: 1.15 }}
             className="hidden md:block absolute left-8 lg:left-16 xl:left-24 top-1/2 -translate-y-1/2 w-[88px] h-[88px] lg:w-[96px] lg:h-[96px] rounded-full overflow-hidden shrink-0 z-20 border-4 border-[#f97316] shadow-xl cursor-pointer"
           >
-            <Image src="/assets/images/foto.jpg" alt="Nabil Fadhlur Rahman" fill className="object-cover" sizes="96px" priority />
+            <Image src="/assets/images/poto nabil 1.jpeg" alt="Nabil Fadhlur Rahman" fill className="object-cover" sizes="96px" priority />
           </motion.div>
 
           {/* Right Floating Avatar with Orange Border */}
