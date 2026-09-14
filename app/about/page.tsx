@@ -77,7 +77,7 @@ export default function AboutPage() {
                   <div className="bg-white p-3 pb-5 shadow-2xl border border-black/20 w-[190px] sm:w-[220px]">
                     <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#e8e4da]">
                       <Image
-                        src="/assets/images/foto.jpg"
+                        src="/assets/images/poto nabil 1.jpeg"
                         alt="Nabil Fadhlur Rahman"
                         fill
                         className="object-cover"

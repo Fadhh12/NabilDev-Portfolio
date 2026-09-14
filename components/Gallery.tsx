@@ -40,7 +40,7 @@ const ACTIVITIES: ActivityItem[] = [
     desc: "Awarded the prestigious Jababeka Scholarship for academic excellence at President University. Recognizes outstanding academic performance and leadership potential.",
     label: "what is this",
     tapeColor: "#a7f3d0",
-    image: "/assets/images/WhatsApp Image 2026-04-11 at 22.47.17 (1).jpeg",
+    image: "/assets/images/poto nabil 1.jpeg",
     rot: 2.5,
   },
   {

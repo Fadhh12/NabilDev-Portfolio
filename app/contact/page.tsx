@@ -270,7 +270,7 @@ export default function ContactPage() {
             <div className="bg-white p-3.5 pb-5 shadow-2xl border border-black/20 w-[200px] xl:w-[220px]">
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da]">
                 <Image
-                  src="/assets/images/foto.jpg"
+                  src="/assets/images/poto nabil.jpeg"
                   alt="what is this"
                   fill
                   className="object-cover"
