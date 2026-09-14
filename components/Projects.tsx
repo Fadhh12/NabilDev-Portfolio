@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, X, ExternalLink, GitCommit, Maximize2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -237,17 +237,22 @@ function ProjectCard({
           className="relative rounded-sm overflow-hidden border-2 border-[#191510] shadow-[8px_8px_0_#191510] transition-transform duration-300"
           style={{ background: project.theme.bg, color: project.theme.fg }}
         >
-          {/* Top Folder Tabs (Photo 1 exact layout) */}
-          <div className="flex items-center border-b-2 border-[#191510] bg-black/10 overflow-x-auto no-scrollbar">
+          {/* Top Folder Tabs — trapezoid tabs that interlock into one continuous strip */}
+          <div className="flex items-end border-b-2 border-[#191510] bg-black/10 overflow-x-auto no-scrollbar">
             {PROJECTS.map((p, pIdx) => {
               const isCurrent = p.id === project.id;
               return (
                 <div
                   key={p.id}
-                  className="px-5 sm:px-7 py-3 text-[11px] sm:text-[12px] font-bold tracking-widest uppercase flex items-center gap-2 border-r-2 border-[#191510] shrink-0"
+                  className={clsx(
+                    "px-5 sm:px-7 py-3 text-[11px] sm:text-[12px] font-bold tracking-widest uppercase flex items-center gap-2 shrink-0 transition-all duration-300 ease-out origin-bottom",
+                    pIdx !== 0 && "-ml-2.5 sm:-ml-3",
+                    isCurrent ? "scale-[1.08] -translate-y-0.5 z-10" : "scale-100 opacity-80"
+                  )}
                   style={{
                     background: isCurrent ? p.theme.tabBg : "rgba(0,0,0,0.25)",
                     color: isCurrent ? p.theme.tabFg : "rgba(255,255,255,0.7)",
+                    clipPath: "polygon(10% 0, 100% 0, 90% 100%, 0 100%)",
                   }}
                 >
                   <span className="text-[10px]">{isCurrent ? "✦" : "+"}</span>
@@ -408,6 +413,7 @@ function ProjectCard({
 export default function Projects({ showAll = false }: { showAll?: boolean }) {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [selectedSlideIndex, setSelectedSlideIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
   const displayedProjects = showAll ? PROJECTS : PROJECTS.slice(0, 3);
 
@@ -437,7 +443,7 @@ export default function Projects({ showAll = false }: { showAll?: boolean }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="font-pixel uppercase text-[clamp(36px,7vw,68px)] leading-[1.1] tracking-tight text-[#191510] inline-block border-b-2 border-[#191510] pb-2"
+          className="font-display uppercase text-[clamp(2rem,6vw,3.5rem)] leading-[0.95] tracking-[-0.02em] text-[#191510] inline-block border-b-2 border-[#191510] pb-2"
         >
           {showAll ? "All Projects" : "Featured Projects"}
         </motion.h2>
@@ -475,18 +481,30 @@ export default function Projects({ showAll = false }: { showAll?: boolean }) {
       <AnimatePresence>
         {selectedProject && (
           <>
+            {/* Card "opens into" the detail view: its own theme color flashes full-bleed first */}
+            {!prefersReducedMotion && (
+              <motion.div
+                key={`flash-${selectedProject.id}`}
+                initial={{ opacity: 1, scale: 0 }}
+                animate={{ opacity: 0, scale: 2.2 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+                className="fixed inset-0 z-[1998] rounded-full pointer-events-none"
+                style={{ background: selectedProject.theme.bg }}
+              />
+            )}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeModal}
-              className="fixed inset-0 z-[2000] bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-[1999] bg-black/80 backdrop-blur-sm"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300, delay: prefersReducedMotion ? 0 : 0.15 }}
               className="fixed inset-0 z-[2001] flex items-center justify-center p-4 sm:p-6 pointer-events-none"
             >
               <div
@@ -499,7 +517,7 @@ export default function Projects({ showAll = false }: { showAll?: boolean }) {
                     <span className="px-3 py-1 bg-[#191510] text-white text-[10px] font-bold uppercase tracking-wider rounded-sm">
                       {selectedProject.category}
                     </span>
-                    <h3 className="font-display text-[26px] sm:text-[34px] font-bold text-[#191510] mt-2">
+                    <h3 className="font-display text-[clamp(1.25rem,3vw,2rem)] font-bold text-[#191510] mt-2">
                       {selectedProject.title}
                     </h3>
                     <p className="text-[13px] text-[#7a7066] font-mono-accent">
