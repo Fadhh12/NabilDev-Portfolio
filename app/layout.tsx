@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Inter, Caveat, Space_Mono, Pixelify_Sans, Silkscreen } from "next/font/google";
+import { Anton, Inter, Caveat, Space_Mono, Pixelify_Sans, Silkscreen, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import GlobalBackground from "@/components/GlobalBackground";
@@ -38,6 +38,15 @@ const silkscreen = Silkscreen({
   weight: ["700"],
 });
 
+// Bold geometric mono-grotesk — used only for the "NABIL" name in the Hero,
+// to match the reference site's blocky headline face (Anton stays the
+// display font everywhere else, unchanged).
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-hero",
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
 export const metadata: Metadata = {
   title: "NabilDev - AI Engineer & Full-Stack Developer",
   description: "Portfolio of Nabil Fadhlur Rahman",
@@ -51,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("scroll-smooth", "font-sans", inter.variable)}>
       <body
-        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} ${pixelify.variable} ${silkscreen.variable} font-sans antialiased relative min-h-screen bg-background`}
+        className={`${anton.variable} ${caveat.variable} ${spaceMono.variable} ${pixelify.variable} ${silkscreen.variable} ${spaceGrotesk.variable} font-sans antialiased relative min-h-screen bg-background`}
       >
         <GlobalBackground />
         <CustomCursor />

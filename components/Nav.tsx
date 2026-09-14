@@ -17,7 +17,7 @@ const NAV_LINKS = [
 
 const SOCIALS = [
   { name: "LinkedIn",  href: "https://www.linkedin.com/in/nabil-fadhlur-rahman-686794320/", icon: FaLinkedin,  bg: "#eab308" },
-  { name: "GitHub",    href: "https://github.com/Fadhh12",                                   icon: FaGithub,    bg: "#ec4899" },
+  { name: "GitHub",    href: "https://github.com/Fadhh12",                                   icon: FaGithub,    bg: "#191510" },
   { name: "Instagram", href: "https://www.instagram.com/nabil_biel/",                       icon: FaInstagram, bg: "#10b981" },
 ];
 
@@ -48,26 +48,25 @@ export default function Nav() {
           href="/"
           aria-label="Home"
           className="w-10 h-10 rounded-full flex items-center justify-center text-xl shrink-0 mr-1 hover:scale-110 transition-transform"
-          style={{ background: "#ec4899" }}
+          style={{ background: "#facc15" }}
         >
           🙂
         </Link>
 
         {/* Nav links */}
-        <ul className="flex items-center h-full list-none m-0 p-0">
+        <ul className="flex items-center h-full list-none m-0 p-0 gap-1 ml-2">
           {NAV_LINKS.map((item) => {
             const active = isLinkActive(item.href);
             return (
-              <li key={item.name} className="h-full">
+              <li key={item.name}>
                 <Link
                   href={item.href}
                   className={clsx(
-                    "h-full flex items-center gap-1.5 px-5 text-[12px] font-bold tracking-[0.1em] uppercase border-r-2 transition-colors",
+                    "flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-[12px] font-bold tracking-[0.1em] uppercase font-mono-accent text-[#191510] transition-colors",
                     active
-                      ? "bg-[#facc15] text-[#191510]"
-                      : "text-[#191510] hover:bg-[#facc15]/40"
+                      ? "bg-[#facc15]"
+                      : "hover:bg-[#191510]/10"
                   )}
-                  style={{ borderRightColor: "#191510" }}
                 >
                   <item.icon className="w-3.5 h-3.5 shrink-0" />
                   {item.name}
@@ -158,7 +157,7 @@ export default function Nav() {
               <div className="flex flex-col p-6 max-h-[80vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-[16px]" style={{ background: "#ec4899" }}>🙂</span>
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-[16px]" style={{ background: "#facc15" }}>🙂</span>
                     <h3 className="font-pixel text-[16px] text-[#191510]">Menu</h3>
                   </div>
                   <button onClick={() => setMobileOpen(false)} className="p-2 rounded-full border-2 border-[#191510] hover:bg-[#191510] hover:text-white transition-colors">

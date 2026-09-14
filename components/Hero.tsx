@@ -289,7 +289,7 @@ export default function Hero() {
                   className="flex flex-col items-center justify-center"
                 >
                   <h1
-                    className="font-display uppercase text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-[-0.03em] text-[#191510]"
+                    className="font-hero uppercase text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-[0.01em] text-[#191510]"
                     aria-label={NAME}
                   >
                     {prefersReducedMotion ? NAME : phase === "scramble" ? scrambledName : NAME}

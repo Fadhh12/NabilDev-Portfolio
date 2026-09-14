@@ -108,6 +108,18 @@
   --sidebar-accent-foreground: var(--ca-ink);
   --sidebar-border: #ccc7b5;
   --sidebar-ring: var(--ca-ink);
+
+  /* ============================================================
+     "EDITORIAL" tokens — scoped to Hero, Home Projects stack,
+     the /projects archive and /projects/[slug] case studies only.
+     Everything else (Nav/About/Contact/Footer/TechStack) keeps the
+     Crayon tokens above untouched.
+     ============================================================ */
+  --ed-bg: #f6f4ee;         /* warm paper-white, calmer than --ca-paper */
+  --ed-ink: #100f0c;        /* near-black type */
+  --ed-muted: #726c60;      /* secondary/meta text */
+  --ed-line: rgba(16, 15, 12, 0.14);
+  --ed-accent: #2563eb;     /* shared with the site's existing CTA blue */
 }
 
 @theme {
@@ -138,6 +150,7 @@
   --color-lime: var(--ca-lime);
   --color-lime-ink: var(--ca-lime-ink);
   --font-display: var(--font-display);
+  --font-hero: var(--font-hero);
   --font-body: var(--font-body);
   --font-hand: var(--font-hand);
   --font-mono-accent: var(--font-mono-accent);

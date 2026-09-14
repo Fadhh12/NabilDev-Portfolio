@@ -46,8 +46,14 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* ── Main Bio Row: Left Polaroid + Center Text + Right Polaroid (Photo 2) ── */}
+        {/* ── Main Bio Row: Left Polaroid + Center Text + Right Polaroid (Photo 2) ──
+             Mobile: the two polaroids sit side by side in their own row (fixed
+             width, not squeezed by a 50/50 column split), bio text below.
+             Desktop: the wrapper collapses (display:contents) so all three
+             become siblings again in the original left / text / right order. */}
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 mb-14">
+
+          <div className="flex flex-row justify-center items-start gap-4 sm:gap-8 lg:contents">
 
           {/* Left Polaroid with blue tape */}
           <motion.div
@@ -56,7 +62,7 @@ export default function About() {
             viewport={{ once: true }}
             whileHover={{ rotate: 0, scale: 1.05 }}
             transition={{ type: "spring", damping: 20 }}
-            className="shrink-0 relative cursor-pointer"
+            className="lg:order-1 shrink-0 relative cursor-pointer"
           >
             {/* Blue tape top-left */}
             <div
@@ -69,7 +75,7 @@ export default function About() {
               style={{ background: "#93c5fd", transform: "rotate(25deg)" }}
             />
 
-            <div className="bg-white p-3 pb-4 shadow-xl border border-black/15 w-[190px] sm:w-[210px]">
+            <div className="bg-white p-3 pb-4 shadow-xl border border-black/15 w-[150px] sm:w-[210px]">
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da]">
                 <Image
                   src="/assets/images/poto nabil 1.jpeg"
@@ -85,12 +91,50 @@ export default function About() {
             </div>
           </motion.div>
 
+          {/* Right Polaroid with blue tape */}
+          <motion.div
+            initial={{ opacity: 0, x: 30, rotate: 8 }}
+            whileInView={{ opacity: 1, x: 0, rotate: 4 }}
+            viewport={{ once: true }}
+            whileHover={{ rotate: 0, scale: 1.05 }}
+            transition={{ type: "spring", damping: 20 }}
+            className="lg:order-3 shrink-0 relative cursor-pointer"
+          >
+            {/* Blue tape top-right */}
+            <div
+              className="absolute -top-3 -right-3 w-12 h-6 z-20 opacity-85 shadow-sm"
+              style={{ background: "#93c5fd", transform: "rotate(35deg)" }}
+            />
+            {/* Blue tape bottom-right */}
+            <div
+              className="absolute -bottom-2 -right-2 w-10 h-5 z-20 opacity-85 shadow-sm"
+              style={{ background: "#93c5fd", transform: "rotate(-25deg)" }}
+            />
+
+            <div className="bg-white p-3 pb-4 shadow-xl border border-black/15 w-[150px] sm:w-[210px]">
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da]">
+                <Image
+                  src="/assets/images/poto nabil.jpeg"
+                  alt="Nabil's workspace"
+                  fill
+                  className="object-cover"
+                  sizes="210px"
+                />
+              </div>
+              <p className="font-hand text-[17px] text-center text-[#191510] mt-3 font-bold">
+                my workspace
+              </p>
+            </div>
+          </motion.div>
+
+          </div>
+
           {/* Center Handwritten Bio Text (Photo 2) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex-1 text-center max-w-[620px] px-2"
+            className="lg:order-2 flex-1 text-center max-w-[620px] px-2"
           >
             <p className="font-hand text-[clamp(24px,3.8vw,34px)] leading-[1.5] text-[#191510]">
               I&apos;m an <strong className="font-bold text-[#2563eb]">AI engineer &amp; developer</strong> who gets a little too excited about making complicated things feel simple.{" "}
@@ -114,42 +158,6 @@ export default function About() {
             <p className="mt-4 text-[13px] sm:text-[14px] text-[#7a7066] font-mono-accent uppercase tracking-wider">
               President University · Jababeka, Cikarang · GPA 3.65
             </p>
-          </motion.div>
-
-          {/* Right Polaroid with blue tape */}
-          <motion.div
-            initial={{ opacity: 0, x: 30, rotate: 8 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 4 }}
-            viewport={{ once: true }}
-            whileHover={{ rotate: 0, scale: 1.05 }}
-            transition={{ type: "spring", damping: 20 }}
-            className="shrink-0 relative cursor-pointer"
-          >
-            {/* Blue tape top-right */}
-            <div
-              className="absolute -top-3 -right-3 w-12 h-6 z-20 opacity-85 shadow-sm"
-              style={{ background: "#93c5fd", transform: "rotate(35deg)" }}
-            />
-            {/* Blue tape bottom-right */}
-            <div
-              className="absolute -bottom-2 -right-2 w-10 h-5 z-20 opacity-85 shadow-sm"
-              style={{ background: "#93c5fd", transform: "rotate(-25deg)" }}
-            />
-
-            <div className="bg-white p-3 pb-4 shadow-xl border border-black/15 w-[190px] sm:w-[210px]">
-              <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#e8e4da]">
-                <Image
-                  src="/assets/images/poto nabil.jpeg"
-                  alt="Nabil's workspace"
-                  fill
-                  className="object-cover"
-                  sizes="210px"
-                />
-              </div>
-              <p className="font-hand text-[17px] text-center text-[#191510] mt-3 font-bold">
-                my workspace
-              </p>
-            </div>
           </motion.div>
 
         </div>
