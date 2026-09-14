@@ -156,9 +156,9 @@ const PROJECTS: ProjectItem[] = [
   {
     id: 8,
     title: "PU Suites",
-    category: "Enterprise System",
+    category: "Hospitality & Booking",
     date: "May 2024",
-    desc: "Integrated academic and administrative suite designed to simplify student portals, course registration, and faculty workflows at President University.",
+    desc: "Hotel reservation and management system for PU Suites — a public booking site with room catalog and live reservation flow, backed by an admin dashboard for bookings, payments, and revenue reporting.",
     github: "https://github.com/Fadhh12",
     demo: "https://pu-suites.infinityfreeapp.com/",
     techStack: ["PHP", "MySQL", "Bootstrap", "JavaScript", "Laravel"],
